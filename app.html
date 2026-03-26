@@ -1,0 +1,122 @@
+// Check if a user is logged in
+const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+if (currentUser) {
+    document.getElementById('user-display').textContent = `Logged in as: ${currentUser.name}`;
+}
+
+// Drag and Drop Logic
+function allowDrop(ev) { ev.preventDefault(); }
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    var taskElement = document.getElementById(data);
+    
+    let target = ev.target;
+    while (target && !target.classList.contains('column')) {
+        target = target.parentElement;
+    }
+
+    if (target) {
+        const taskList = target.querySelector('div[id$="-tasks"]');
+        taskList.appendChild(taskElement);
+        saveTasks(); 
+    }
+}
+
+// --- TIME TRACKING LOGIC ---
+let timers = {}; 
+
+function toggleTimer(taskId) {
+    const btn = document.querySelector(`#${taskId} .timer-btn`);
+    const display = document.querySelector(`#${taskId} .time-display`);
+    
+    if (timers[taskId]) {
+        // Stop the timer
+        clearInterval(timers[taskId].interval);
+        delete timers[taskId];
+        btn.textContent = "▶ Start Timer";
+        btn.style.background = "#28a745";
+        saveTasks();
+    } else {
+        // Start the timer
+        btn.textContent = "Stop Timer";
+        btn.style.background = "#dc3545";
+        
+        timers[taskId] = {
+            interval: setInterval(() => {
+                let currentTotal = parseFloat(display.getAttribute('data-hours')) || 0;
+                // Add 1 second worth of hours (1/3600)
+                currentTotal += (1/3600); 
+                display.setAttribute('data-hours', currentTotal);
+                display.textContent = currentTotal.toFixed(2) + " hrs";
+            }, 1000)
+        };
+    }
+}
+
+function addTask(columnId) {
+    const title = prompt("Enter task title:");
+    if (!title) return;
+
+    const taskId = "task-" + Date.now();
+    createTaskElement(title, columnId, taskId, 0);
+    saveTasks();
+}
+
+function createTaskElement(title, columnId, taskId, hours = 0) {
+    const card = document.createElement('div');
+    card.className = 'task-card';
+    card.id = taskId;
+    card.draggable = true;
+    card.ondragstart = drag;
+    
+    card.innerHTML = `
+        <h4>${title}</h4>
+        <div style="margin: 10px 0;">
+            <span class="time-display" data-hours="${hours}">${parseFloat(hours).toFixed(2)} hrs</span>
+        </div>
+        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+            <button class="timer-btn" onclick="toggleTimer('${taskId}')" style="background:#28a745; color:white; border:none; padding:5px; border-radius:3px; cursor:pointer;">▶ Start Timer</button>
+            <button onclick="this.parentElement.parentElement.remove(); saveTasks();" style="background:#ddd; border:none; padding:5px; border-radius:3px; cursor:pointer;">Delete</button>
+        </div>
+    `;
+
+    document.getElementById(columnId + '-tasks').appendChild(card);
+}
+
+// Persistent Storage
+function saveTasks() {
+    const todoHtml = document.getElementById('todo-tasks').innerHTML;
+    const progressHtml = document.getElementById('inprogress-tasks').innerHTML;
+    const doneHtml = document.getElementById('done-tasks').innerHTML;
+    
+    // We store the data-hours manually to ensure they persist
+    const taskData = [];
+    document.querySelectorAll('.task-card').forEach(card => {
+        taskData.push({
+            id: card.id,
+            title: card.querySelector('h4').textContent,
+            hours: card.querySelector('.time-display').getAttribute('data-hours'),
+            column: card.parentElement.id
+        });
+    });
+
+    localStorage.setItem('worklog_tasks_v2', JSON.stringify(taskData));
+}
+
+function loadTasks() {
+    const saved = localStorage.getItem('worklog_tasks_v2');
+    if (saved) {
+        const taskData = JSON.parse(saved);
+        taskData.forEach(task => {
+            createTaskElement(task.title, task.column.replace('-tasks', ''), task.id, task.hours);
+        });
+    }
+}
+
+loadTasks();
