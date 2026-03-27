@@ -935,17 +935,11 @@ async function handleLandingPageLogin(event) {
     const userName = data.user.user_metadata?.name || 'User';
     alert('Logged in successfully!\n\nWelcome, ' + userName + '!');
     
-    // Explicitly verify storage before redirecting
-    const storageKey = `sb-${new URL(supabaseUrl).hostname.split('.')[0]}-auth-token`;
-    const sessionExists = localStorage.getItem(storageKey);
-    console.log("Storage Check:", storageKey, sessionExists ? "Found" : "Not Found");
+    const session = data.session;
+    const authHash = `#access_token=${session.access_token}&refresh_token=${session.refresh_token}`;
     
-    if (!sessionExists) {
-        console.warn("Session not found in localStorage immediately after login. This may be a browser storage restriction.");
-    }
-
     setTimeout(() => {
-        window.location.href = 'app.html';
+        window.location.href = 'app.html' + authHash;
     }, 500);
 }
 
@@ -1018,8 +1012,11 @@ async function handleLandingPageSignup(event) {
         }
         
         alert('✅ Account created successfully!\n\nWelcome, ' + name + '!');
+        const session = data.session;
+        const authHash = `#access_token=${session.access_token}&refresh_token=${session.refresh_token}`;
+        
         setTimeout(() => {
-            window.location.href = 'app.html';
+            window.location.href = 'app.html' + authHash;
         }, 500);
     } catch (err) {
         console.error("Signup error:", err);
