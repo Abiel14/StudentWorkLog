@@ -682,8 +682,26 @@
                 <button class="btn-retry" onclick="location.reload()">🔄 Retry</button>
                 <button class="btn-home" onclick="window.location.href='index.html'">🏠 Go to Login</button>
             </div>
+            <button onclick="toggleDebugInfo()" style="margin-top: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 12px;">Show Debug Details</button>
+            <div id="debugInfo" style="display: none; margin-top: 15px; text-align: left; background: #000; color: #0f0; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 11px; max-height: 150px; overflow: auto; border: 1px solid #333;"></div>
         </div>
     </div>
+
+    <script>
+        function toggleDebugInfo() {
+            const el = document.getElementById('debugInfo');
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+            if (el.style.display === 'block') {
+                const logs = {
+                    localStorage: Object.keys(localStorage).filter(k => k.includes('supabase')),
+                    authDebug: sessionStorage.getItem('authDebug'),
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                };
+                el.textContent = JSON.stringify(logs, null, 2);
+            }
+        }
+    </script>
 
 
     <nav class="navbar">
@@ -826,31 +844,54 @@
 
         // --- Authentication & Initialization ---
         async function initializeApp() {
-            // First check manually
-            let { data: { session } } = await supabaseClient.auth.getSession();
+            console.log("🚀 Initializing application...");
+            let session = null;
+            let retryCount = 0;
+            const maxRetries = 10; // Try for ~5 seconds
             
-            // If null, it might just need a moment to hydrate from storage
+            async function attemptSession() {
+                try {
+                    const { data } = await supabaseClient.auth.getSession();
+                    if (data && data.session) return data.session;
+                } catch(e) { console.error("Session check error:", e); }
+                return null;
+            }
+
+            // 1. Initial immediate check
+            session = await attemptSession();
+            
+            // 2. If no immediate session, wait for events or keep polling
             if (!session) {
-                console.log("No immediate session, waiting for auth state change...");
-                session = await new Promise((resolve) => {
+                console.log("No immediate session, starting hydration polling...");
+                
+                session = await new Promise(async (resolve) => {
                     const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event, s) => {
-                        console.log("Auth Event:", event);
-                        // INITIAL_SESSION occurs as soon as the library finishes its first check
-                        if (event === 'INITIAL_SESSION' || s) {
+                        console.log("Auth Event Received:", event);
+                        if (s) {
                             subscription.unsubscribe();
                             resolve(s);
                         }
                     });
-                    
-                    // Fallback timeout after 3 seconds if INITIAL_SESSION never fires or takes too long
-                    setTimeout(() => {
-                        subscription.unsubscribe();
-                        resolve(null);
-                    }, 3000);
+
+                    // Polling fallback
+                    const interval = setInterval(async () => {
+                        retryCount++;
+                        const s = await attemptSession();
+                        if (s) {
+                            clearInterval(interval);
+                            subscription.unsubscribe();
+                            resolve(s);
+                        } else if (retryCount >= maxRetries) {
+                            clearInterval(interval);
+                            subscription.unsubscribe();
+                            resolve(null);
+                        }
+                    }, 500);
                 });
             }
 
             if (session) {
+                console.log("✅ Session verified successfully!");
                 sessionUser = session.user;
                 activeWorkspaceOwnerId = sessionUser.id;
                 
@@ -864,10 +905,8 @@
                 await loadSharedWorkspaces();
                 await switchWorkspace(sessionUser.id);
             } else {
-                // Still no session after waiting.
-                console.error("No session found in app.html!");
-                sessionStorage.setItem('authDebug', 'Failed to find session on app.html');
-                // Show overlay instead of alert-loop
+                console.error("❌ Final session check failed after 5 seconds.");
+                sessionStorage.setItem('authDebug', 'Timed out waiting for session hydration.');
                 document.getElementById('authOverlay').classList.add('show');
             }
         }
@@ -1284,3 +1323,4 @@
     </script>
 </body>
 </html>
+
