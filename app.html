@@ -44,7 +44,7 @@
             --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
             --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
-            /* Priority Colors - Darkened a bit for contrast */
+            /* Priority Colors */
             --priority-high: #ff6b6b;
             --priority-high-bg: rgba(255, 107, 107, 0.15);
             --priority-medium: #ffb84d;
@@ -133,6 +133,116 @@
             background: rgba(255,255,255,0.1);
         }
 
+        /* Workspace & Invite */
+        .workspace-select {
+            background: transparent;
+            color: var(--text-nav);
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            outline: none;
+        }
+        .workspace-select option {
+            color: var(--text-main);
+            background: var(--bg-card);
+        }
+        .btn-invite {
+            background: rgba(255,255,255,0.2);
+            color: var(--text-nav);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-invite:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Chat Widget */
+        #chatWidget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 450px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            z-index: 500;
+            transform: translateY(calc(100% - 40px));
+            transition: transform 0.3s ease;
+        }
+        #chatWidget.open {
+            transform: translateY(0);
+        }
+        .chat-header {
+            padding: 10px 15px;
+            background: var(--bg-nav);
+            color: var(--text-nav);
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-message {
+            background: var(--bg-column);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            align-self: flex-start;
+            max-width: 85%;
+            word-break: break-word;
+        }
+        .chat-message.me {
+            background: var(--priority-low-bg);
+            align-self: flex-end;
+        }
+        .chat-sender {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .chat-input-area {
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 5px;
+        }
+        .chat-input-area input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-body);
+            color: var(--text-main);
+            outline: none;
+        }
+        .chat-input-area button {
+            background: var(--btn-primary);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chat-input-area button:hover { background: var(--btn-primary-hover); }
+
         /* Board Headers */
         .board-header {
             padding: 30px 40px 10px 40px;
@@ -158,6 +268,73 @@
             background: var(--btn-primary-hover);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
+        }
+
+        /* Priority Filter Pills */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .priority-filters {
+            display: flex;
+            gap: 5px;
+            background: var(--bg-card);
+            padding: 5px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+        .pill-filter {
+            background: transparent;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pill-filter:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] .pill-filter:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .pill-filter.active {
+            background: var(--btn-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        .pill-filter.active.priority-high {
+            background: var(--priority-high);
+        }
+        .pill-filter.active.priority-medium {
+            background: var(--priority-medium);
+        }
+        .pill-filter.active.priority-low {
+            background: var(--priority-low);
+        }
+        
+        .btn-edit-task {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 12px;
+            right: 40px;
+            font-size: 16px;
+            line-height: 1;
+            padding: 2px;
+            border-radius: 50%;
+            opacity: 0.6;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .btn-edit-task:hover {
+            opacity: 1;
+            transform: scale(1.1);
         }
 
         /* Board Area */
@@ -236,7 +413,6 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Priority Colors */
         .task-card[data-priority="High"] {
             border-left-color: var(--priority-high);
         }
@@ -257,7 +433,7 @@
             font-weight: 600;
             font-size: 16px;
             word-wrap: break-word;
-            padding-right: 25px; /* space for delete button */
+            padding-right: 25px;
         }
         
         .task-priority-badge {
@@ -296,10 +472,6 @@
             display: flex;
             align-items: center;
             gap: 6px;
-        }
-
-        .timer-icon {
-            font-size: 16px;
         }
 
         .btn-timer {
@@ -438,7 +610,6 @@
             transform: translateY(-1px);
         }
 
-        /* Drag over visual */
         .column.drag-over {
             border-color: var(--btn-primary);
             background-color: rgba(0, 61, 153, 0.05);
@@ -464,6 +635,10 @@
     <nav class="navbar">
         <div class="nav-logo">📋 Student Work Log</div>
         <div class="nav-controls">
+            <select id="workspaceSelect" class="workspace-select" onchange="changeWorkspace()">
+                <option value="me">My Workspace</option>
+            </select>
+            <button class="btn-invite" onclick="openInviteModal()">+ Invite</button>
             <span class="user-info" id="user-display">👤 Logged out</span>
             <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button>
             <button class="btn-logout" onclick="logout()">Logout</button>
@@ -471,12 +646,19 @@
     </nav>
 
     <div class="board-header">
-        <h1 class="board-title">Project Board</h1>
+        <div class="header-left">
+            <h1 class="board-title">Project Board</h1>
+            <div class="priority-filters">
+                <button class="pill-filter active" onclick="filterByPriority('All', this)">All</button>
+                <button class="pill-filter priority-high" onclick="filterByPriority('High', this)">High</button>
+                <button class="pill-filter priority-medium" onclick="filterByPriority('Medium', this)">Medium</button>
+                <button class="pill-filter priority-low" onclick="filterByPriority('Low', this)">Low</button>
+            </div>
+        </div>
         <button class="btn-add-task" onclick="openTaskModal()">+ Add New Task</button>
     </div>
 
     <div class="board">
-        <!-- To Do -->
         <div class="column" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
             <div class="column-header">
                 <span>To Do</span>
@@ -485,7 +667,6 @@
             <div class="tasks-container" id="todo-tasks"></div>
         </div>
 
-        <!-- In Progress -->
         <div class="column" id="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
             <div class="column-header">
                 <span>In Progress</span>
@@ -494,13 +675,27 @@
             <div class="tasks-container" id="inprogress-tasks"></div>
         </div>
 
-        <!-- Done -->
         <div class="column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
             <div class="column-header">
                 <span>Done</span>
                 <span class="task-count" id="done-count">0</span>
             </div>
             <div class="tasks-container" id="done-tasks"></div>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div class="modal-overlay" id="inviteModal">
+        <div class="modal-body">
+            <h3>Invite Collaborator</h3>
+            <div class="form-group">
+                <label>Colleague's Email Address</label>
+                <input type="email" id="inviteEmailInput" placeholder="their@email.com" autocomplete="off">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeInviteModal()">Cancel</button>
+                <button class="btn-save" onclick="sendInvite()">Share Worklog</button>
+            </div>
         </div>
     </div>
 
@@ -527,22 +722,236 @@
         </div>
     </div>
 
+    <!-- Edit Task Modal -->
+    <div class="modal-overlay" id="editTaskModal">
+        <div class="modal-body">
+            <h3>Edit Task</h3>
+            <input type="hidden" id="editTaskIdInput">
+            <div class="form-group">
+                <label>Task Title</label>
+                <input type="text" id="editTaskTitleInput" placeholder="e.g. Write Introduction Section" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Priority</label>
+                <select id="editTaskPriorityInput">
+                    <option value="High">High 🔴</option>
+                    <option value="Medium">Medium 🟠</option>
+                    <option value="Low">Low 🔵</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeEditTaskModal()">Cancel</button>
+                <button class="btn-save" onclick="saveEditedTask()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div id="chatWidget">
+        <div class="chat-header" onclick="toggleChat()">
+            <span>💬 Team Chat</span>
+            <span id="chatToggleIcon">▲</span>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button onclick="sendChatMessage()">Send</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://teclqhxbohgljgcqcljq.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlY2xxaHhib2hnbGpnY3FjbGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzgxMjAsImV4cCI6MjA5MDA1NDEyMH0.B06AiesYThA9Z-4MD8q5DxVmI5fbs2PWpimWDNzkyAk';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        let sessionUser = null;
+        let activeWorkspaceOwnerId = null;
+        let realtimeChannel = null;
+
         // --- Authentication & Initialization ---
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (currentUser && currentUser.name) {
-            document.getElementById('user-display').textContent = `👤 ${currentUser.name}`;
-        } else {
-            alert("Please log in to use the application.");
+        async function initializeApp() {
+            const { data } = await supabaseClient.auth.getSession();
+            if (data && data.session) {
+                sessionUser = data.session.user;
+                activeWorkspaceOwnerId = sessionUser.id;
+                
+                const name = sessionUser.user_metadata?.name || 'User';
+                document.getElementById('user-display').textContent = `👤 ${name}`;
+                
+                await checkAndMigrateTasks();
+                await loadSharedWorkspaces();
+                await switchWorkspace(sessionUser.id);
+            } else {
+                alert("Please log in to use the application.");
+                window.location.href = "index.html";
+            }
+        }
+
+        async function logout() {
+            if (realtimeChannel) supabaseClient.removeChannel(realtimeChannel);
+            await supabaseClient.auth.signOut();
             window.location.href = "index.html";
         }
 
-        function logout() {
-            localStorage.removeItem('currentUser');
-            window.location.href = "index.html";
+        // --- Workspaces & Sharing ---
+        async function loadSharedWorkspaces() {
+            const { data, error } = await supabaseClient
+                .from('shared_worklogs')
+                .select('*')
+                .eq('guest_email', sessionUser.email);
+            
+            const selectTarget = document.getElementById('workspaceSelect');
+            selectTarget.innerHTML = `<option value="me">My Workspace</option>`;
+            
+            if (data && data.length > 0) {
+                // Populate the drop down
+                data.forEach(share => {
+                    const opt = document.createElement('option');
+                    opt.value = share.owner_id;
+                    opt.textContent = `${share.owner_name || 'Someone'}'s Workspace`;
+                    selectTarget.appendChild(opt);
+                });
+            }
         }
 
-        // --- Theme Management (Dark Mode) ---
+        async function changeWorkspace() {
+            const val = document.getElementById('workspaceSelect').value;
+            if (val === 'me') {
+                await switchWorkspace(sessionUser.id);
+            } else {
+                await switchWorkspace(val);
+            }
+        }
+
+        async function switchWorkspace(ownerId) {
+            activeWorkspaceOwnerId = ownerId;
+            document.getElementById('todo-tasks').innerHTML = "";
+            document.getElementById('inprogress-tasks').innerHTML = "";
+            document.getElementById('done-tasks').innerHTML = "";
+            document.getElementById('chatMessages').innerHTML = "";
+            
+            await loadTasks();
+            await loadMessages();
+            setupRealtime(); // Reconnect listeners to new workspace tasks
+        }
+
+        function openInviteModal() {
+            document.getElementById('inviteModal').classList.add('show');
+            document.getElementById('inviteEmailInput').focus();
+        }
+
+        function closeInviteModal() {
+            document.getElementById('inviteModal').classList.remove('show');
+            document.getElementById('inviteEmailInput').value = '';
+        }
+
+        async function sendInvite() {
+            const email = document.getElementById('inviteEmailInput').value.trim();
+            if (!email) return;
+
+            const payload = {
+                owner_id: sessionUser.id,
+                owner_name: sessionUser.user_metadata?.name || 'User',
+                guest_email: email
+            };
+
+            const { error } = await supabaseClient.from('shared_worklogs').insert([payload]);
+            if (error) {
+                if(error.code === '23505') alert('This person is already invited!');
+                else alert('Error inviting user');
+                console.error(error);
+            } else {
+                alert('Invite sent!');
+                closeInviteModal();
+            }
+        }
+
+        // --- Real-time Syncing ---
+        function setupRealtime() {
+            if (realtimeChannel) {
+                supabaseClient.removeChannel(realtimeChannel);
+            }
+
+            // We listen to ANY changes in tasks and messages, then we just soft refresh
+            realtimeChannel = supabaseClient.channel('workspace_changes')
+                .on('postgres_changes', { 
+                    event: '*', schema: 'public', table: 'tasks', filter: `user_id=eq.${activeWorkspaceOwnerId}` 
+                }, payload => {
+                    // Quickest sync: Reload task UI entirely seamlessly or selectively
+                    loadTasks();
+                })
+                .on('postgres_changes', { 
+                    event: 'INSERT', schema: 'public', table: 'messages', filter: `worklog_owner_id=eq.${activeWorkspaceOwnerId}` 
+                }, payload => {
+                    appendChatMessage(payload.new);
+                })
+                .subscribe();
+        }
+
+        // --- Chat System ---
+        function toggleChat() {
+            const widget = document.getElementById('chatWidget');
+            const icon = document.getElementById('chatToggleIcon');
+            if (widget.classList.contains('open')) {
+                widget.classList.remove('open');
+                icon.textContent = '▲';
+            } else {
+                widget.classList.add('open');
+                icon.textContent = '▼';
+                // Scroll to bottom
+                const msgs = document.getElementById('chatMessages');
+                msgs.scrollTop = msgs.scrollHeight;
+            }
+        }
+
+        async function loadMessages() {
+            const { data, error } = await supabaseClient
+                .from('messages')
+                .select('*')
+                .eq('worklog_owner_id', activeWorkspaceOwnerId)
+                .order('created_at', { ascending: true });
+                
+            if (data) {
+                data.forEach(msg => appendChatMessage(msg));
+            }
+            const msgs = document.getElementById('chatMessages');
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function appendChatMessage(msg) {
+            const container = document.getElementById('chatMessages');
+            const el = document.createElement('div');
+            el.className = `chat-message ${msg.sender_id === sessionUser.id ? 'me' : ''}`;
+            el.innerHTML = `
+                <div class="chat-sender">${msg.sender_name}</div>
+                <div>${msg.content}</div>
+            `;
+            container.appendChild(el);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const content = input.value.trim();
+            if (!content) return;
+            
+            input.value = '';
+            
+            // Immediately show optimistic UI message if we want, but realtime takes care of it so fast
+            
+            const payload = {
+                worklog_owner_id: activeWorkspaceOwnerId,
+                sender_id: sessionUser.id,
+                sender_name: sessionUser.user_metadata?.name || 'User',
+                content: content
+            };
+            
+            await supabaseClient.from('messages').insert([payload]);
+        }
+
+        // --- Theme Management ---
         function toggleTheme() {
             const html = document.documentElement;
             const currentTheme = html.getAttribute('data-theme');
@@ -557,69 +966,55 @@
             btn.textContent = theme === 'dark' ? '☀️' : '🌙';
         }
 
-        // Load saved theme
         const savedTheme = localStorage.getItem('studentLogTheme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
 
-
         // --- Drag and Drop Logic ---
-        function allowDrop(ev) {
+        function allowDrop(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-over'); }
+        function dragLeave(ev) { ev.currentTarget.classList.remove('drag-over'); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+
+        async function drop(ev) {
             ev.preventDefault();
-            ev.currentTarget.classList.add('drag-over');
-        }
-
-        function dragLeave(ev) {
-            ev.currentTarget.classList.remove('drag-over');
-        }
-
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-
-        function drop(ev) {
-            ev.preventDefault();
-            
             let target = ev.currentTarget;
             target.classList.remove('drag-over');
-
             const data = ev.dataTransfer.getData("text");
             const taskElement = document.getElementById(data);
             
             if (target && taskElement) {
+                const targetColumn = target.id;
                 const taskList = target.querySelector('.tasks-container');
                 if(taskList) {
                     taskList.appendChild(taskElement);
-                    saveTasks(); 
                     updateCounts();
+                    const { error } = await supabaseClient.from('tasks').update({ status: targetColumn }).eq('id', data);
                 }
             }
         }
 
-
-        // --- Time Tracking Logic ---
+        // --- Task System ---
         let timers = {}; 
 
-        function toggleTimer(taskId) {
+        async function toggleTimer(taskId) {
             const btn = document.querySelector(`#${taskId} .btn-timer`);
             const display = document.querySelector(`#${taskId} .time-display-val`);
             
             if (timers[taskId]) {
-                // Stop the timer
                 clearInterval(timers[taskId].interval);
                 delete timers[taskId];
                 btn.innerHTML = "▶ Start";
                 btn.classList.remove('running');
-                saveTasks();
+                
+                const finalHours = parseFloat(display.getAttribute('data-hours'));
+                await supabaseClient.from('tasks').update({ hours: finalHours }).eq('id', taskId);
             } else {
-                // Start the timer
                 btn.innerHTML = "⏸ Stop";
                 btn.classList.add('running');
                 
                 timers[taskId] = {
                     interval: setInterval(() => {
                         let currentTotal = parseFloat(display.getAttribute('data-hours')) || 0;
-                        // Add 1 second worth of hours (1/3600)
                         currentTotal += (1/3600); 
                         display.setAttribute('data-hours', currentTotal);
                         display.textContent = currentTotal.toFixed(2) + "h";
@@ -628,37 +1023,38 @@
             }
         }
 
-        // --- Task Modal & Creation ---
         function openTaskModal() {
             document.getElementById('taskModal').classList.add('show');
             document.getElementById('taskTitleInput').focus();
         }
-
         function closeTaskModal() {
             document.getElementById('taskModal').classList.remove('show');
             document.getElementById('taskTitleInput').value = '';
-            document.getElementById('taskPriorityInput').value = 'Medium';
         }
 
-        function saveNewTask() {
+        async function saveNewTask() {
             const title = document.getElementById('taskTitleInput').value.trim();
             const priorityInput = document.getElementById('taskPriorityInput').value;
-            // Clean priority to basic values
             const priority = priorityInput.replace(/[^a-zA-Z]/g, '').trim(); 
             
-            if (!title) {
-                alert("Please enter a task title");
-                return;
-            }
+            if (!title) { alert("Please enter a task title"); return; }
 
-            const taskId = "task-" + Date.now();
-            createTaskElement(title, 'todo', taskId, priority, 0);
-            saveTasks();
-            updateCounts();
-            closeTaskModal();
+            const payload = {
+                user_id: activeWorkspaceOwnerId,
+                title: title,
+                status: 'todo',
+                priority: priority,
+                hours: 0
+            };
+            
+            const { data, error } = await supabaseClient.from('tasks').insert([payload]);
+            if (!error) closeTaskModal();
         }
 
         function createTaskElement(title, columnId, taskId, priority, hours = 0) {
+            // Remove existing if realtime duplicated it
+            if(document.getElementById(taskId)) document.getElementById(taskId).remove();
+            
             const card = document.createElement('div');
             card.className = 'task-card';
             card.id = taskId;
@@ -667,10 +1063,9 @@
             card.setAttribute('data-priority', priority);
             
             card.innerHTML = `
+                <button class="btn-edit-task" onclick="openEditTaskModal('${taskId}')" title="Edit Task">✏️</button>
                 <button class="btn-delete" onclick="deleteTask('${taskId}')" title="Delete Task">×</button>
-                <div class="task-header">
-                    <div class="task-title">${title}</div>
-                </div>
+                <div class="task-header"><div class="task-title">${title}</div></div>
                 <div><span class="task-priority-badge">${priority}</span></div>
                 <div class="task-controls">
                     <div class="time-display">
@@ -680,74 +1075,129 @@
                     <button class="btn-timer" onclick="toggleTimer('${taskId}')">▶ Start</button>
                 </div>
             `;
-
             const container = document.getElementById(columnId + '-tasks');
-            if (container) {
-                container.appendChild(card);
-            }
+            if (container) container.appendChild(card);
         }
 
-        function deleteTask(taskId) {
+        async function deleteTask(taskId) {
             if(confirm("Are you sure you want to delete this task?")) {
-                if(timers[taskId]) {
-                    clearInterval(timers[taskId].interval);
-                    delete timers[taskId];
-                }
+                if(timers[taskId]){ clearInterval(timers[taskId].interval); delete timers[taskId]; }
                 const el = document.getElementById(taskId);
                 if(el) el.remove();
-                saveTasks();
+                await supabaseClient.from('tasks').delete().eq('id', taskId);
                 updateCounts();
             }
         }
 
-        // --- Persistent Storage ---
-        function saveTasks() {
-            const taskData = [];
-            // To ensure task order is saved, we iterate through each column and save tasks in order
-            ['todo', 'inprogress', 'done'].forEach(col => {
-                document.querySelectorAll(`#${col}-tasks .task-card`).forEach(card => {
-                    taskData.push({
-                        id: card.id,
-                        title: card.querySelector('.task-title').textContent,
-                        priority: card.getAttribute('data-priority') || 'Medium',
-                        hours: card.querySelector('.time-display-val').getAttribute('data-hours'),
-                        column: col
-                    });
-                });
-            });
-
-            localStorage.setItem('worklog_tasks_v3', JSON.stringify(taskData));
-        }
-
-        function loadTasks() {
-            const saved = localStorage.getItem('worklog_tasks_v3');
+        // --- Persistent Storage (Supabase) ---
+        async function checkAndMigrateTasks() {
+            const saved = localStorage.getItem('worklog_tasks_v3') || localStorage.getItem('worklog_tasks_v2');
             if (saved) {
                 const taskData = JSON.parse(saved);
-                taskData.forEach(task => {
-                    createTaskElement(task.title, task.column, task.id, task.priority, task.hours);
-                });
-            } else {
-                // Try migrating old data
-                const oldSaved = localStorage.getItem('worklog_tasks_v2');
-                if (oldSaved) {
-                    const taskData = JSON.parse(oldSaved);
-                    taskData.forEach(task => {
-                        createTaskElement(task.title, task.column.replace('-tasks', ''), task.id, 'Medium', task.hours);
-                    });
+                if (taskData && taskData.length > 0) {
+                    const toInsert = taskData.map(t => ({
+                        user_id: sessionUser.id,
+                        title: t.title,
+                        status: t.column ? t.column.replace('-tasks', '') : 'todo',
+                        priority: t.priority || 'Medium',
+                        hours: t.hours ? parseFloat(t.hours) : 0
+                    }));
+                    const { error } = await supabaseClient.from('tasks').insert(toInsert);
+                    if(!error) {
+                        localStorage.removeItem('worklog_tasks_v3');
+                        localStorage.removeItem('worklog_tasks_v2');
+                    }
                 }
             }
+        }
+
+        async function loadTasks() {
+            const { data, error } = await supabaseClient
+                .from('tasks')
+                .select('*')
+                .eq('user_id', activeWorkspaceOwnerId)
+                .order('created_at', { ascending: true });
+                
+            document.getElementById('todo-tasks').innerHTML = "";
+            document.getElementById('inprogress-tasks').innerHTML = "";
+            document.getElementById('done-tasks').innerHTML = "";
+            
+            if(data) {
+                data.forEach(task => createTaskElement(task.title, task.status, task.id, task.priority, task.hours));
+            }
+            updateCounts();
+            applyCurrentFilter();
+        }
+
+        // --- Filter & Edit ---
+        let currentFilterPriority = 'All';
+
+        function filterByPriority(priority, btnElement) {
+            currentFilterPriority = priority;
+            document.querySelectorAll('.pill-filter').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            applyCurrentFilter();
+        }
+        
+        function applyCurrentFilter() {
+            document.querySelectorAll('.task-card').forEach(card => {
+                if (currentFilterPriority === 'All' || card.getAttribute('data-priority') === currentFilterPriority) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
             updateCounts();
         }
 
-        function updateCounts() {
-            document.getElementById('todo-count').textContent = document.querySelectorAll('#todo-tasks .task-card').length;
-            document.getElementById('inprogress-count').textContent = document.querySelectorAll('#inprogress-tasks .task-card').length;
-            document.getElementById('done-count').textContent = document.querySelectorAll('#done-tasks .task-card').length;
+        function openEditTaskModal(taskId) {
+            const card = document.getElementById(taskId);
+            if (!card) return;
+            const title = card.querySelector('.task-title').textContent;
+            const priority = card.getAttribute('data-priority');
+            
+            document.getElementById('editTaskIdInput').value = taskId;
+            document.getElementById('editTaskTitleInput').value = title;
+            document.getElementById('editTaskPriorityInput').value = priority;
+            
+            document.getElementById('editTaskModal').classList.add('show');
+            document.getElementById('editTaskTitleInput').focus();
         }
 
-        // Initialize App
-        window.addEventListener('load', loadTasks);
+        function closeEditTaskModal() {
+            document.getElementById('editTaskModal').classList.remove('show');
+        }
+
+        async function saveEditedTask() {
+            const taskId = document.getElementById('editTaskIdInput').value;
+            const title = document.getElementById('editTaskTitleInput').value.trim();
+            const priority = document.getElementById('editTaskPriorityInput').value.replace(/[^a-zA-Z]/g, '').trim(); 
+            
+            if (!title) { alert("Please enter a task title"); return; }
+            
+            const card = document.getElementById(taskId);
+            if (card) {
+                card.querySelector('.task-title').textContent = title;
+                card.setAttribute('data-priority', priority);
+                card.querySelector('.task-priority-badge').textContent = priority;
+            }
+            closeEditTaskModal();
+            applyCurrentFilter();
+            
+            await supabaseClient.from('tasks').update({ title: title, priority: priority }).eq('id', taskId);
+        }
+
+        function updateCounts() {
+            let td = 0, ip = 0, d = 0;
+            document.querySelectorAll('#todo-tasks .task-card').forEach(c => { if(c.style.display !== 'none') td++; });
+            document.querySelectorAll('#inprogress-tasks .task-card').forEach(c => { if(c.style.display !== 'none') ip++; });
+            document.querySelectorAll('#done-tasks .task-card').forEach(c => { if(c.style.display !== 'none') d++; });
+            document.getElementById('todo-count').textContent = td;
+            document.getElementById('inprogress-count').textContent = ip;
+            document.getElementById('done-count').textContent = d;
+        }
+
+        window.addEventListener('load', initializeApp);
     </script>
 </body>
 </html>
-
