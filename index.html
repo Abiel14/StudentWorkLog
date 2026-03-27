@@ -3,936 +3,1219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Work Log - Collaborative Task Management</title>
-    
+    <title>Student Work Log - Dashboard</title>
     <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #ffffff;
-    color: #001a4d;
-    line-height: 1.6;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* ===== NAVBAR ===== */
-.navbar {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
-    color: white;
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.nav-logo {
-    font-size: 24px;
-    font-weight: bold;
-    white-space: nowrap;
-    color: white;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.nav-menu a {
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 500;
-    cursor: pointer;
-    padding: 8px 12px;
-    transition: all 0.3s;
-    border-radius: 5px;
-    display: inline-block;
-}
-
-.nav-menu a:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.btn-launch {
-    background: white !important;
-    color: #003d99 !important;
-    padding: 10px 20px !important;
-    border-radius: 5px !important;
-    font-weight: 600 !important;
-    border: none !important;
-    cursor: pointer !important;
-}
-
-.btn-launch:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
-}
-
-.btn-login {
-    background: transparent !important;
-    color: white !important;
-    padding: 8px 16px !important;
-    border: 2px solid white !important;
-    border-radius: 5px !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-}
-
-.btn-login:hover {
-    background: white !important;
-    color: #003d99 !important;
-    transform: translateY(-2px);
-}
-
-.btn-signup {
-    background: white !important;
-    color: #003d99 !important;
-    padding: 10px 20px !important;
-    border-radius: 5px !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-    border: none !important;
-}
-
-.btn-signup:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
-}
-
-/* ===== HERO ===== */
-.hero {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e8eaed 100%);
-    padding: 80px 20px;
-    text-align: center;
-}
-
-.hero h1 {
-    font-size: 48px;
-    line-height: 1.2;
-    color: #001a4d;
-    margin-bottom: 20px;
-}
-
-.hero-subtitle {
-    font-size: 18px;
-    color: #666;
-    margin-bottom: 30px;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: inline-block;
-    border: none;
-    text-align: center;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 61, 153, 0.3);
-}
-
-.btn-secondary {
-    background: white;
-    color: #003d99;
-    border: 2px solid #003d99;
-}
-
-.btn-secondary:hover {
-    background: #f8f9fa;
-}
-
-.btn-large {
-    padding: 15px 40px;
-    font-size: 16px;
-}
-
-/* ===== CONTAINER ===== */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* ===== FEATURES ===== */
-.features {
-    padding: 80px 20px;
-    background: white;
-}
-
-.features h2 {
-    font-size: 42px;
-    text-align: center;
-    color: #001a4d;
-    margin-bottom: 10px;
-}
-
-.section-subtitle {
-    text-align: center;
-    color: #666;
-    font-size: 18px;
-    margin-bottom: 50px;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.feature-card {
-    background: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    transition: all 0.3s;
-}
-
-.feature-card:hover {
-    background: white;
-    box-shadow: 0 10px 30px rgba(0, 26, 77, 0.1);
-    transform: translateY(-5px);
-}
-
-.feature-icon {
-    font-size: 48px;
-    margin-bottom: 15px;
-}
-
-.feature-card h3 {
-    font-size: 20px;
-    color: #001a4d;
-    margin-bottom: 12px;
-}
-
-.feature-card p {
-    color: #666;
-    line-height: 1.6;
-}
-
-/* ===== HOW IT WORKS ===== */
-.how-it-works {
-    padding: 80px 20px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e8eaed 100%);
-}
-
-.how-it-works h2 {
-    font-size: 42px;
-    text-align: center;
-    color: #001a4d;
-    margin-bottom: 50px;
-}
-
-.steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.step {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.step-number {
-    display: inline-flex;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
-    color: white;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 24px;
-    margin-bottom: 15px;
-}
-
-.step-icon {
-    font-size: 42px;
-    margin: 15px 0;
-}
-
-.step h3 {
-    color: #001a4d;
-    margin-bottom: 10px;
-    font-size: 20px;
-}
-
-.step p {
-    color: #666;
-}
-
-/* ===== FEEDBACK ===== */
-.feedback {
-    padding: 80px 20px;
-    background: white;
-}
-
-.feedback h2 {
-    font-size: 42px;
-    text-align: center;
-    color: #001a4d;
-    margin-bottom: 15px;
-}
-
-.feedback-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background: #f8f9fa;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.feedback-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.feedback-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #001a4d;
-    font-weight: 600;
-}
-
-.feedback-group input,
-.feedback-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-.feedback-group input:focus,
-.feedback-group textarea:focus {
-    outline: none;
-    border-color: #003d99;
-    background-color: white;
-}
-
-.feedback-group textarea {
-    resize: vertical;
-    height: 120px;
-}
-
-.btn-submit-feedback {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.3s;
-    font-size: 16px;
-}
-
-.btn-submit-feedback:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 61, 153, 0.3);
-}
-
-/* ===== CTA ===== */
-.cta {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
-    color: white;
-    padding: 80px 20px;
-    text-align: center;
-}
-
-.cta h2 {
-    font-size: 42px;
-    margin-bottom: 15px;
-    color: white;
-}
-
-.cta p {
-    font-size: 18px;
-    margin-bottom: 30px;
-    opacity: 0.9;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-    background: #0a1433;
-    color: white;
-    padding: 30px 20px;
-    text-align: center;
-}
-
-/* ===== MODALS ===== */
-.auth-modal {
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 26, 77, 0.7);
-    display: none !important;
-    justify-content: center;
-    align-items: center;
-}
-
-.auth-modal.show {
-    display: flex !important;
-}
-
-.auth-modal-content {
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
-    position: relative;
-    animation: slideUp 0.3s ease-in-out;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.auth-modal-close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    color: #999;
-    cursor: pointer;
-    background: none;
-    border: none;
-    transition: color 0.3s;
-}
-
-.auth-modal-close:hover {
-    color: #001a4d;
-}
-
-.auth-modal h2 {
-    color: #001a4d;
-    margin-bottom: 25px;
-    font-size: 24px;
-    text-align: center;
-}
-
-.auth-modal-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.auth-modal-form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.auth-modal-form-group label {
-    color: #001a4d;
-    font-weight: 600;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.auth-modal-form-group input {
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    color: #001a4d;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-.auth-modal-form-group input:focus {
-    outline: none;
-    border-color: #003d99;
-    background-color: white;
-}
-
-.auth-modal-submit {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.3s;
-    margin-top: 10px;
-}
-
-.auth-modal-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 61, 153, 0.3);
-}
-
-.auth-modal-toggle {
-    text-align: center;
-    margin-top: 15px;
-    color: #666;
-    font-size: 14px;
-}
-
-.auth-modal-toggle a {
-    color: #003d99;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.auth-modal-toggle a:hover {
-    color: #002266;
-}
-
-.auth-modal-error {
-    background: #ffebee;
-    color: #c62828;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-bottom: 15px;
-    border-left: 4px solid #c62828;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .nav-menu {
-        gap: 10px;
-    }
-
-    .btn-launch,
-    .btn-login,
-    .btn-signup {
-        padding: 8px 12px !important;
-        font-size: 12px !important;
-    }
-
-    .hero h1 {
-        font-size: 32px;
-    }
-
-    .features h2,
-    .how-it-works h2,
-    .feedback h2,
-    .cta h2 {
-        font-size: 32px;
-    }
-
-    .features-grid,
-    .steps-grid {
-        grid-template-columns: 1fr;
-    }
-}
+        :root {
+            /* Light Mode Variables */
+            --bg-body: #f4f7f6;
+            --bg-nav: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+            --text-nav: #ffffff;
+            --bg-column: #e9ecef;
+            --bg-card: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #dee2e6;
+            --btn-primary: #003d99;
+            --btn-primary-hover: #002266;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            /* Priority Colors */
+            --priority-high: #ff4d4d;
+            --priority-high-bg: rgba(255, 77, 77, 0.1);
+            --priority-medium: #ffa64d;
+            --priority-medium-bg: rgba(255, 166, 77, 0.1);
+            --priority-low: #4da6ff;
+            --priority-low-bg: rgba(77, 166, 255, 0.1);
+        }
+
+        [data-theme="dark"] {
+            /* Dark Mode Variables */
+            --bg-body: #121212;
+            --bg-nav: linear-gradient(135deg, #1f1f1f 0%, #171717 100%);
+            --text-nav: #e0e0e0;
+            --bg-column: #212529;
+            --bg-card: #2c3034;
+            --text-main: #f8f9fa;
+            --text-muted: #adb5bd;
+            --border-color: #495057;
+            --btn-primary: #4da6ff;
+            --btn-primary-hover: #1a8cff;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+            /* Priority Colors */
+            --priority-high: #ff6b6b;
+            --priority-high-bg: rgba(255, 107, 107, 0.15);
+            --priority-medium: #ffb84d;
+            --priority-medium-bg: rgba(255, 184, 77, 0.15);
+            --priority-low: #66b3ff;
+            --priority-low-bg: rgba(102, 179, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: var(--bg-nav);
+            color: var(--text-nav);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-logo {
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .user-info {
+            font-weight: 500;
+            font-size: 14px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-logout {
+            background: transparent;
+            color: var(--text-nav);
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Dark Mode Toggle */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-nav);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Workspace & Invite */
+        .workspace-select {
+            background: transparent;
+            color: var(--text-nav);
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            outline: none;
+        }
+        .workspace-select option {
+            color: var(--text-main);
+            background: var(--bg-card);
+        }
+        .btn-invite {
+            background: rgba(255,255,255,0.2);
+            color: var(--text-nav);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-invite:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Chat Widget */
+        #chatWidget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 450px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            z-index: 500;
+            transform: translateY(calc(100% - 40px));
+            transition: transform 0.3s ease;
+        }
+        #chatWidget.open {
+            transform: translateY(0);
+        }
+        .chat-header {
+            padding: 10px 15px;
+            background: var(--bg-nav);
+            color: var(--text-nav);
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-message {
+            background: var(--bg-column);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            align-self: flex-start;
+            max-width: 85%;
+            word-break: break-word;
+        }
+        .chat-message.me {
+            background: var(--priority-low-bg);
+            align-self: flex-end;
+        }
+        .chat-sender {
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+        }
+        .chat-input-area {
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 5px;
+        }
+        .chat-input-area input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-body);
+            color: var(--text-main);
+            outline: none;
+        }
+        .chat-input-area button {
+            background: var(--btn-primary);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chat-input-area button:hover { background: var(--btn-primary-hover); }
+
+        /* Board Headers */
+        .board-header {
+            padding: 30px 40px 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .board-title {
+            font-size: 28px;
+            font-weight: 600;
+        }
+        .btn-add-task {
+            background: var(--btn-primary);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-add-task:hover {
+            background: var(--btn-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Priority Filter Pills */
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .priority-filters {
+            display: flex;
+            gap: 5px;
+            background: var(--bg-card);
+            padding: 5px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+        .pill-filter {
+            background: transparent;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pill-filter:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        [data-theme="dark"] .pill-filter:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .pill-filter.active {
+            background: var(--btn-primary);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        .pill-filter.active.priority-high {
+            background: var(--priority-high);
+        }
+        .pill-filter.active.priority-medium {
+            background: var(--priority-medium);
+        }
+        .pill-filter.active.priority-low {
+            background: var(--priority-low);
+        }
+        
+        .btn-edit-task {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 12px;
+            right: 40px;
+            font-size: 16px;
+            line-height: 1;
+            padding: 2px;
+            border-radius: 50%;
+            opacity: 0.6;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .btn-edit-task:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Board Area */
+        .board {
+            display: flex;
+            flex-grow: 1;
+            padding: 20px 40px;
+            gap: 25px;
+            overflow-x: auto;
+            align-items: flex-start;
+        }
+
+        .column {
+            background-color: var(--bg-column);
+            border-radius: 10px;
+            width: 350px;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+            max-height: calc(100vh - 160px);
+            border: 1px solid var(--border-color);
+        }
+
+        .column-header {
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .task-count {
+            background: rgba(0,0,0,0.1);
+            [data-theme="dark"] & { background: rgba(255,255,255,0.1); }
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .tasks-container {
+            padding: 15px;
+            overflow-y: auto;
+            flex-grow: 1;
+            min-height: 100px;
+        }
+        .tasks-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .tasks-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* Task Cards */
+        .task-card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: var(--shadow-sm);
+            cursor: grab;
+            border-left: 4px solid transparent;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        .task-card:active {
+            cursor: grabbing;
+            transform: scale(0.98);
+        }
+        .task-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .task-card[data-priority="High"] {
+            border-left-color: var(--priority-high);
+        }
+        .task-card[data-priority="Medium"] {
+            border-left-color: var(--priority-medium);
+        }
+        .task-card[data-priority="Low"] {
+            border-left-color: var(--priority-low);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .task-title {
+            font-weight: 600;
+            font-size: 16px;
+            word-wrap: break-word;
+            padding-right: 25px;
+        }
+        
+        .task-priority-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .task-card[data-priority="High"] .task-priority-badge {
+            background-color: var(--priority-high-bg);
+            color: var(--priority-high);
+        }
+        .task-card[data-priority="Medium"] .task-priority-badge {
+            background-color: var(--priority-medium-bg);
+            color: var(--priority-medium);
+        }
+        .task-card[data-priority="Low"] .task-priority-badge {
+            background-color: var(--priority-low-bg);
+            color: var(--priority-low);
+        }
+
+        .task-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .time-display {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-timer {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(40,167,69,0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-timer.running {
+            background: #dc3545;
+            box-shadow: 0 2px 4px rgba(220,53,69,0.3);
+        }
+        .btn-timer:hover {
+            filter: brightness(1.1);
+        }
+        
+        .btn-delete {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 18px;
+            line-height: 1;
+            padding: 2px;
+            border-radius: 50%;
+        }
+        .btn-delete:hover {
+            color: #dc3545;
+            background: rgba(220,53,69,0.1);
+        }
+
+        /* Modal Settings */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-overlay.show {
+            display: flex;
+        }
+        .modal-body {
+            background: var(--bg-card);
+            padding: 35px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--shadow-lg);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-body h3 {
+            margin-bottom: 25px;
+            color: var(--text-main);
+            font-size: 24px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--btn-primary);
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 30px;
+        }
+        .btn-cancel {
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-cancel:hover {
+            background: var(--border-color);
+        }
+        .btn-save {
+            background: var(--btn-primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-save:hover {
+            background: var(--btn-primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .column.drag-over {
+            border-color: var(--btn-primary);
+            background-color: rgba(0, 61, 153, 0.05);
+            [data-theme="dark"] & {
+                background-color: rgba(102, 179, 255, 0.05);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .board {
+                flex-direction: column;
+                align-items: center;
+            }
+            .column {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
     </style>
-
 </head>
 <body>
 
-<div id="landingPage" class="landing-page">
-    
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">📋 Student Work Log</div>
-            <ul class="nav-menu">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#feedback">Feedback</a></li>
-                <li><a href="#" onclick="goToApp(event)" class="btn-launch">Launch App</a></li>
-                <li><a href="#" onclick="showLoginModal(event)" class="btn-login">Login</a></li>
-                <li><a href="#" onclick="showSignupModal(event)" class="btn-signup">Sign Up</a></li>
-            </ul>
+        <div class="nav-logo">📋 Student Work Log</div>
+        <div class="nav-controls">
+            <select id="workspaceSelect" class="workspace-select" onchange="changeWorkspace()">
+                <option value="me">My Workspace</option>
+            </select>
+            <button class="btn-invite" onclick="openInviteModal()">+ Invite</button>
+            <span class="user-info" id="user-display">👤 Logged out</span>
+            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button>
+            <button class="btn-logout" onclick="logout()">Logout</button>
         </div>
     </nav>
 
-    <section class="hero">
-        <h1>Collaborate on Projects.<br>Track Progress.<br>Achieve Goals.</h1>
-        <p class="hero-subtitle">A modern work log system for student teams. Organize tasks, track time, and boost productivity.</p>
-        <div class="hero-buttons">
-            <a href="#" onclick="goToApp(event)" class="btn btn-primary">Get Started Free</a>
-            <a href="#features" class="btn btn-secondary">Learn More</a>
-        </div>
-    </section>
-
-    <section id="features" class="features">
-        <div class="container">
-            <h2>Powerful Features</h2>
-            <p class="section-subtitle">Everything you need to manage group projects effectively</p>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Kanban Board</h3>
-                    <p>Organize tasks into To Do, In Progress, and Done columns. Drag and drop cards to update status instantly.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Dashboard Analytics</h3>
-                    <p>Track your productivity with real-time statistics. Monitor completion rates, hours worked, and project progress.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
-                    <h3>Team Collaboration</h3>
-                    <p>Share tasks with teammates, assign work, and see boards shared with you. Collaborate seamlessly.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⏱️</div>
-                    <h3>Time Tracking</h3>
-                    <p>Log hours on each task. Track daily productivity and see how long different tasks typically take.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔔</div>
-                    <h3>Priority System</h3>
-                    <p>Mark tasks as High, Medium, or Low priority. Stay focused on what matters most.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌙</div>
-                    <h3>Dark Mode</h3>
-                    <p>Switch to dark mode for comfortable work at night. Your preference is automatically saved.</p>
-                </div>
+    <div class="board-header">
+        <div class="header-left">
+            <h1 class="board-title">Project Board</h1>
+            <div class="priority-filters">
+                <button class="pill-filter active" onclick="filterByPriority('All', this)">All</button>
+                <button class="pill-filter priority-high" onclick="filterByPriority('High', this)">High</button>
+                <button class="pill-filter priority-medium" onclick="filterByPriority('Medium', this)">Medium</button>
+                <button class="pill-filter priority-low" onclick="filterByPriority('Low', this)">Low</button>
             </div>
         </div>
-    </section>
+        <button class="btn-add-task" onclick="openTaskModal()">+ Add New Task</button>
+    </div>
 
-    <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <h2>How It Works</h2>
-            <p class="section-subtitle">Get started in 4 simple steps</p>
-            <div class="steps-grid">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-icon">📝</div>
-                    <h3>Sign Up</h3>
-                    <p>Create your account in seconds. No credit card required.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-icon">📋</div>
-                    <h3>Create Tasks</h3>
-                    <p>Add your project tasks with details like hours, priority, and due date.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-icon">👥</div>
-                    <h3>Share & Assign</h3>
-                    <p>Invite teammates and assign tasks to them. Collaborate in real-time.</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-icon">📊</div>
-                    <h3>Track Progress</h3>
-                    <p>Watch your dashboard update as tasks progress. Celebrate completed work!</p>
-                </div>
+    <div class="board">
+        <div class="column" id="todo" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <span>To Do</span>
+                <span class="task-count" id="todo-count">0</span>
             </div>
+            <div class="tasks-container" id="todo-tasks"></div>
         </div>
-    </section>
 
-    <section id="feedback" class="feedback">
-        <div class="container">
-            <h2>We Value Your Feedback</h2>
-            <p class="section-subtitle">Let us know how we can improve Student Work Log for you</p>
-            <form class="feedback-form" onsubmit="handleFeedbackSubmission(event)">
-                <div class="feedback-group">
-                    <label for="feedbackName">Full Name</label>
-                    <input type="text" id="feedbackName" placeholder="Enter your name" required>
-                </div>
-                <div class="feedback-group">
-                    <label for="feedbackEmail">Email Address</label>
-                    <input type="email" id="feedbackEmail" placeholder="your@email.com" required>
-                </div>
-                <div class="feedback-group">
-                    <label for="feedbackMessage">Your Feedback</label>
-                    <textarea id="feedbackMessage" placeholder="Tell us what you love or what we can do better..." required></textarea>
-                </div>
-                <button type="submit" class="btn-submit-feedback">Submit Feedback</button>
-            </form>
+        <div class="column" id="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <span>In Progress</span>
+                <span class="task-count" id="inprogress-count">0</span>
+            </div>
+            <div class="tasks-container" id="inprogress-tasks"></div>
         </div>
-    </section>
 
-    <section class="cta">
-        <h2>Ready to Transform Your Workflow?</h2>
-        <p>Join thousands of students managing their projects better.</p>
-        <a href="#" onclick="goToApp(event)" class="btn btn-primary btn-large">Start Using Student Work Log</a>
-    </section>
-
-    <footer class="footer">
-        <p>&copy; 2026 Student Work Log. All rights reserved.</p>
-    </footer>
-
-</div>
-
-<div id="loginModal" class="auth-modal">
-    <div class="auth-modal-content">
-        <button class="auth-modal-close" onclick="closeAuthModal('loginModal')">&times;</button>
-        <h2>Welcome Back</h2>
-        <div id="loginModalError" class="auth-modal-error" style="display: none;"></div>
-        <form class="auth-modal-form" onsubmit="handleLandingPageLogin(event)">
-            <div class="auth-modal-form-group">
-                <label>Email</label>
-                <input type="email" id="landingLoginEmail" placeholder="your@email.com" required>
+        <div class="column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <span>Done</span>
+                <span class="task-count" id="done-count">0</span>
             </div>
-            <div class="auth-modal-form-group">
-                <label>Password</label>
-                <input type="password" id="landingLoginPassword" placeholder="Enter password" required>
-            </div>
-            <button type="submit" class="auth-modal-submit">Login</button>
-        </form>
-        <div class="auth-modal-toggle">
-            Don't have an account? <a onclick="toggleToSignup(event)">Sign Up</a>
+            <div class="tasks-container" id="done-tasks"></div>
         </div>
     </div>
-</div>
 
-<div id="signupModal" class="auth-modal">
-    <div class="auth-modal-content">
-        <button class="auth-modal-close" onclick="closeAuthModal('signupModal')">&times;</button>
-        <h2>Create Account</h2>
-        <div id="signupModalError" class="auth-modal-error" style="display: none;"></div>
-        <form class="auth-modal-form" onsubmit="handleLandingPageSignup(event)">
-            <div class="auth-modal-form-group">
-                <label>Full Name</label>
-                <input type="text" id="landingSignupName" placeholder="John Doe" required>
+    <!-- Invite Modal -->
+    <div class="modal-overlay" id="inviteModal">
+        <div class="modal-body">
+            <h3>Invite Collaborator</h3>
+            <div class="form-group">
+                <label>Colleague's Email Address</label>
+                <input type="email" id="inviteEmailInput" placeholder="their@email.com" autocomplete="off">
             </div>
-            <div class="auth-modal-form-group">
-                <label>Email</label>
-                <input type="email" id="landingSignupEmail" placeholder="your@email.com" required>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeInviteModal()">Cancel</button>
+                <button class="btn-save" onclick="sendInvite()">Share Worklog</button>
             </div>
-            <div class="auth-modal-form-group">
-                <label>Password</label>
-                <input type="password" id="landingSignupPassword" placeholder="Create a password" required>
-            </div>
-            <div class="auth-modal-form-group">
-                <label>Confirm Password</label>
-                <input type="password" id="landingSignupConfirmPassword" placeholder="Confirm password" required>
-            </div>
-            <button type="submit" class="auth-modal-submit">Sign Up</button>
-        </form>
-        <div class="auth-modal-toggle">
-            Already have an account? <a onclick="toggleToLogin(event)">Login</a>
         </div>
     </div>
-</div>
 
-<script>
-// ===== MODAL FUNCTIONS =====
+    <!-- Task Creation Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal-body">
+            <h3>Create a New Task</h3>
+            <div class="form-group">
+                <label>Task Title</label>
+                <input type="text" id="taskTitleInput" placeholder="e.g. Write Introduction Section" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Priority</label>
+                <select id="taskPriorityInput">
+                    <option value="High">High 🔴</option>
+                    <option value="Medium" selected>Medium 🟠</option>
+                    <option value="Low">Low 🔵</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeTaskModal()">Cancel</button>
+                <button class="btn-save" onclick="saveNewTask()">Create Task</button>
+            </div>
+        </div>
+    </div>
 
-function showLoginModal(e) {
-    if (e) e.preventDefault();
-    const loginModal = document.getElementById('loginModal');
-    const signupModal = document.getElementById('signupModal');
-    if (loginModal) loginModal.classList.add('show');
-    if (signupModal) signupModal.classList.remove('show');
-}
+    <!-- Edit Task Modal -->
+    <div class="modal-overlay" id="editTaskModal">
+        <div class="modal-body">
+            <h3>Edit Task</h3>
+            <input type="hidden" id="editTaskIdInput">
+            <div class="form-group">
+                <label>Task Title</label>
+                <input type="text" id="editTaskTitleInput" placeholder="e.g. Write Introduction Section" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label>Priority</label>
+                <select id="editTaskPriorityInput">
+                    <option value="High">High 🔴</option>
+                    <option value="Medium">Medium 🟠</option>
+                    <option value="Low">Low 🔵</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeEditTaskModal()">Cancel</button>
+                <button class="btn-save" onclick="saveEditedTask()">Save Changes</button>
+            </div>
+        </div>
+    </div>
 
-function showSignupModal(e) {
-    if (e) e.preventDefault();
-    const signupModal = document.getElementById('signupModal');
-    const loginModal = document.getElementById('loginModal');
-    if (signupModal) signupModal.classList.add('show');
-    if (loginModal) loginModal.classList.remove('show');
-}
+    <!-- Chat Widget -->
+    <div id="chatWidget">
+        <div class="chat-header" onclick="toggleChat()">
+            <span>💬 Team Chat</span>
+            <span id="chatToggleIcon">▲</span>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button onclick="sendChatMessage()">Send</button>
+        </div>
+    </div>
 
-function closeAuthModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('show');
-    }
-}
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase configuration
+        const supabaseUrl = 'https://teclqhxbohgljgcqcljq.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlY2xxaHhib2hnbGpnY3FjbGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzgxMjAsImV4cCI6MjA5MDA1NDEyMH0.B06AiesYThA9Z-4MD8q5DxVmI5fbs2PWpimWDNzkyAk';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        let sessionUser = null;
+        let activeWorkspaceOwnerId = null;
+        let realtimeChannel = null;
 
-function toggleToSignup(e) {
-    if (e) e.preventDefault();
-    closeAuthModal('loginModal');
-    showSignupModal();
-}
+        // --- Authentication & Initialization ---
+        async function initializeApp() {
+            // First check manually
+            let { data } = await supabaseClient.auth.getSession();
+            
+            // If null, it might just need a tiny moment to hydrate from storage
+            if (!data || !data.session) {
+                console.log("No immediate session, waiting for auth state change...");
+                // Wait briefly
+                await new Promise(resolve => setTimeout(resolve, 500));
+                const res = await supabaseClient.auth.getSession();
+                data = res.data;
+            }
 
-function toggleToLogin(e) {
-    if (e) e.preventDefault();
-    closeAuthModal('signupModal');
-    showLoginModal();
-}
-
-function handleLandingPageLogin(event) {
-    event.preventDefault();
-    
-    const email = document.getElementById('landingLoginEmail').value.trim();
-    const password = document.getElementById('landingLoginPassword').value.trim();
-    const errorDiv = document.getElementById('loginModalError');
-    
-    if (!email || !password) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Please fill in all fields';
-            errorDiv.style.display = 'block';
+            if (data && data.session) {
+                sessionUser = data.session.user;
+                activeWorkspaceOwnerId = sessionUser.id;
+                
+                const name = sessionUser.user_metadata?.name || 'User';
+                document.getElementById('user-display').textContent = `👤 ${name}`;
+                
+                try {
+                    await checkAndMigrateTasks();
+                } catch(err) { console.error(err); }
+                
+                await loadSharedWorkspaces();
+                await switchWorkspace(sessionUser.id);
+            } else {
+                // Still no session after waiting.
+                console.error("No session found in app.html!");
+                sessionStorage.setItem('authDebug', 'Failed to find session on app.html');
+                alert("Please log in to use the application.");
+                window.location.href = "index.html";
+            }
         }
-        return;
-    }
-    
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const user = users.find(u => u.email === email && u.password === password);
-    
-    if (!user) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Invalid email or password';
-            errorDiv.style.display = 'block';
+
+        async function logout() {
+            if (realtimeChannel) supabaseClient.removeChannel(realtimeChannel);
+            await supabaseClient.auth.signOut();
+            window.location.href = "index.html";
         }
-        return;
-    }
-    
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    alert('Logged in successfully!\n\nWelcome, ' + user.name + '!');
-    window.location.href = 'app.html';
-}
 
-function handleLandingPageSignup(event) {
-    event.preventDefault();
-    
-    const name = document.getElementById('landingSignupName').value.trim();
-    const email = document.getElementById('landingSignupEmail').value.trim();
-    const password = document.getElementById('landingSignupPassword').value.trim();
-    const confirmPassword = document.getElementById('landingSignupConfirmPassword').value.trim();
-    const errorDiv = document.getElementById('signupModalError');
-    
-    if (errorDiv) errorDiv.style.display = 'none';
-    
-    if (!name || !email || !password || !confirmPassword) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Please fill in all fields';
-            errorDiv.style.display = 'block';
+        // --- Workspaces & Sharing ---
+        async function loadSharedWorkspaces() {
+            const { data, error } = await supabaseClient
+                .from('shared_worklogs')
+                .select('*')
+                .eq('guest_email', sessionUser.email);
+            
+            const selectTarget = document.getElementById('workspaceSelect');
+            selectTarget.innerHTML = `<option value="me">My Workspace</option>`;
+            
+            if (data && data.length > 0) {
+                // Populate the drop down
+                data.forEach(share => {
+                    const opt = document.createElement('option');
+                    opt.value = share.owner_id;
+                    opt.textContent = `${share.owner_name || 'Someone'}'s Workspace`;
+                    selectTarget.appendChild(opt);
+                });
+            }
         }
-        return;
-    }
-    
-    if (password !== confirmPassword) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Passwords do not match';
-            errorDiv.style.display = 'block';
+
+        async function changeWorkspace() {
+            const val = document.getElementById('workspaceSelect').value;
+            if (val === 'me') {
+                await switchWorkspace(sessionUser.id);
+            } else {
+                await switchWorkspace(val);
+            }
         }
-        return;
-    }
-    
-    if (password.length < 6) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Password must be at least 6 characters';
-            errorDiv.style.display = 'block';
+
+        async function switchWorkspace(ownerId) {
+            activeWorkspaceOwnerId = ownerId;
+            document.getElementById('todo-tasks').innerHTML = "";
+            document.getElementById('inprogress-tasks').innerHTML = "";
+            document.getElementById('done-tasks').innerHTML = "";
+            document.getElementById('chatMessages').innerHTML = "";
+            
+            await loadTasks();
+            await loadMessages();
+            setupRealtime(); // Reconnect listeners to new workspace tasks
         }
-        return;
-    }
-    
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    
-    if (users.find(u => u.email === email)) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Email has already been registered';
-            errorDiv.style.display = 'block';
+
+        function openInviteModal() {
+            document.getElementById('inviteModal').classList.add('show');
+            document.getElementById('inviteEmailInput').focus();
         }
-        return;
-    }
-    
-    const newUser = {
-        id: Date.now(),
-        name: name,
-        email: email,
-        password: password
-    };
-    
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
-    
-    alert('✅ Account created successfully!\n\nWelcome, ' + name + '!');
-    window.location.href = 'app.html';
-}
 
-// ===== FEEDBACK FORM FUNCTION =====
-function handleFeedbackSubmission(event) {
-    event.preventDefault();
-    
-    const name = document.getElementById('feedbackName').value.trim();
-    
-    // In a real application, you would send this data to your backend here.
-    alert(`✅ Thank you for your feedback, ${name}! We appreciate your input.`);
-    
-    // Clear the form fields
-    document.getElementById('feedbackName').value = '';
-    document.getElementById('feedbackEmail').value = '';
-    document.getElementById('feedbackMessage').value = '';
-}
+        function closeInviteModal() {
+            document.getElementById('inviteModal').classList.remove('show');
+            document.getElementById('inviteEmailInput').value = '';
+        }
 
-function goToApp(e) {
-    if (e) e.preventDefault();
-    window.location.href = 'app.html';
-}
+        async function sendInvite() {
+            const email = document.getElementById('inviteEmailInput').value.trim();
+            if (!email) return;
 
-// Close modal when clicking outside
-document.addEventListener('click', function(event) {
-    const loginModal = document.getElementById('loginModal');
-    const signupModal = document.getElementById('signupModal');
-    
-    if (event.target === loginModal && loginModal) {
-        closeAuthModal('loginModal');
-    }
-    if (event.target === signupModal && signupModal) {
-        closeAuthModal('signupModal');
-    }
-});
+            const payload = {
+                owner_id: sessionUser.id,
+                owner_name: sessionUser.user_metadata?.name || 'User',
+                guest_email: email
+            };
 
-console.log('✅ Website loaded successfully!');
-</script>
+            const { error } = await supabaseClient.from('shared_worklogs').insert([payload]);
+            if (error) {
+                if(error.code === '23505') alert('This person is already invited!');
+                else alert('Error inviting user');
+                console.error(error);
+            } else {
+                alert('Invite sent!');
+                closeInviteModal();
+            }
+        }
 
+        // --- Real-time Syncing ---
+        function setupRealtime() {
+            if (realtimeChannel) {
+                supabaseClient.removeChannel(realtimeChannel);
+            }
+
+            // We listen to ANY changes in tasks and messages, then we just soft refresh
+            realtimeChannel = supabaseClient.channel('workspace_changes')
+                .on('postgres_changes', { 
+                    event: '*', schema: 'public', table: 'tasks', filter: `user_id=eq.${activeWorkspaceOwnerId}` 
+                }, payload => {
+                    // Quickest sync: Reload task UI entirely seamlessly or selectively
+                    loadTasks();
+                })
+                .on('postgres_changes', { 
+                    event: 'INSERT', schema: 'public', table: 'messages', filter: `worklog_owner_id=eq.${activeWorkspaceOwnerId}` 
+                }, payload => {
+                    appendChatMessage(payload.new);
+                })
+                .subscribe();
+        }
+
+        // --- Chat System ---
+        function toggleChat() {
+            const widget = document.getElementById('chatWidget');
+            const icon = document.getElementById('chatToggleIcon');
+            if (widget.classList.contains('open')) {
+                widget.classList.remove('open');
+                icon.textContent = '▲';
+            } else {
+                widget.classList.add('open');
+                icon.textContent = '▼';
+                // Scroll to bottom
+                const msgs = document.getElementById('chatMessages');
+                msgs.scrollTop = msgs.scrollHeight;
+            }
+        }
+
+        async function loadMessages() {
+            const { data, error } = await supabaseClient
+                .from('messages')
+                .select('*')
+                .eq('worklog_owner_id', activeWorkspaceOwnerId)
+                .order('created_at', { ascending: true });
+                
+            if (data) {
+                data.forEach(msg => appendChatMessage(msg));
+            }
+            const msgs = document.getElementById('chatMessages');
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function appendChatMessage(msg) {
+            const container = document.getElementById('chatMessages');
+            const el = document.createElement('div');
+            el.className = `chat-message ${msg.sender_id === sessionUser.id ? 'me' : ''}`;
+            el.innerHTML = `
+                <div class="chat-sender">${msg.sender_name}</div>
+                <div>${msg.content}</div>
+            `;
+            container.appendChild(el);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const content = input.value.trim();
+            if (!content) return;
+            
+            input.value = '';
+            
+            // Immediately show optimistic UI message if we want, but realtime takes care of it so fast
+            
+            const payload = {
+                worklog_owner_id: activeWorkspaceOwnerId,
+                sender_id: sessionUser.id,
+                sender_name: sessionUser.user_metadata?.name || 'User',
+                content: content
+            };
+            
+            await supabaseClient.from('messages').insert([payload]);
+        }
+
+        // --- Theme Management ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('studentLogTheme', newTheme);
+            updateThemeIcon(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const btn = document.getElementById('themeToggleBtn');
+            btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        const savedTheme = localStorage.getItem('studentLogTheme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        // --- Drag and Drop Logic ---
+        function allowDrop(ev) { ev.preventDefault(); ev.currentTarget.classList.add('drag-over'); }
+        function dragLeave(ev) { ev.currentTarget.classList.remove('drag-over'); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.id); }
+
+        async function drop(ev) {
+            ev.preventDefault();
+            let target = ev.currentTarget;
+            target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const taskElement = document.getElementById(data);
+            
+            if (target && taskElement) {
+                const targetColumn = target.id;
+                const taskList = target.querySelector('.tasks-container');
+                if(taskList) {
+                    taskList.appendChild(taskElement);
+                    updateCounts();
+                    const { error } = await supabaseClient.from('tasks').update({ status: targetColumn }).eq('id', data);
+                }
+            }
+        }
+
+        // --- Task System ---
+        let timers = {}; 
+
+        async function toggleTimer(taskId) {
+            const btn = document.querySelector(`#${taskId} .btn-timer`);
+            const display = document.querySelector(`#${taskId} .time-display-val`);
+            
+            if (timers[taskId]) {
+                clearInterval(timers[taskId].interval);
+                delete timers[taskId];
+                btn.innerHTML = "▶ Start";
+                btn.classList.remove('running');
+                
+                const finalHours = parseFloat(display.getAttribute('data-hours'));
+                await supabaseClient.from('tasks').update({ hours: finalHours }).eq('id', taskId);
+            } else {
+                btn.innerHTML = "⏸ Stop";
+                btn.classList.add('running');
+                
+                timers[taskId] = {
+                    interval: setInterval(() => {
+                        let currentTotal = parseFloat(display.getAttribute('data-hours')) || 0;
+                        currentTotal += (1/3600); 
+                        display.setAttribute('data-hours', currentTotal);
+                        display.textContent = currentTotal.toFixed(2) + "h";
+                    }, 1000)
+                };
+            }
+        }
+
+        function openTaskModal() {
+            document.getElementById('taskModal').classList.add('show');
+            document.getElementById('taskTitleInput').focus();
+        }
+        function closeTaskModal() {
+            document.getElementById('taskModal').classList.remove('show');
+            document.getElementById('taskTitleInput').value = '';
+        }
+
+        async function saveNewTask() {
+            const title = document.getElementById('taskTitleInput').value.trim();
+            const priorityInput = document.getElementById('taskPriorityInput').value;
+            const priority = priorityInput.replace(/[^a-zA-Z]/g, '').trim(); 
+            
+            if (!title) { alert("Please enter a task title"); return; }
+
+            const payload = {
+                user_id: activeWorkspaceOwnerId,
+                title: title,
+                status: 'todo',
+                priority: priority,
+                hours: 0
+            };
+            
+            const { data, error } = await supabaseClient.from('tasks').insert([payload]);
+            if (!error) closeTaskModal();
+        }
+
+        function createTaskElement(title, columnId, taskId, priority, hours = 0) {
+            // Remove existing if realtime duplicated it
+            if(document.getElementById(taskId)) document.getElementById(taskId).remove();
+            
+            const card = document.createElement('div');
+            card.className = 'task-card';
+            card.id = taskId;
+            card.draggable = true;
+            card.ondragstart = drag;
+            card.setAttribute('data-priority', priority);
+            
+            card.innerHTML = `
+                <button class="btn-edit-task" onclick="openEditTaskModal('${taskId}')" title="Edit Task">✏️</button>
+                <button class="btn-delete" onclick="deleteTask('${taskId}')" title="Delete Task">×</button>
+                <div class="task-header"><div class="task-title">${title}</div></div>
+                <div><span class="task-priority-badge">${priority}</span></div>
+                <div class="task-controls">
+                    <div class="time-display">
+                        <span class="timer-icon">⏱️</span>
+                        <span class="time-display-val" data-hours="${hours}">${parseFloat(hours).toFixed(2)}h</span>
+                    </div>
+                    <button class="btn-timer" onclick="toggleTimer('${taskId}')">▶ Start</button>
+                </div>
+            `;
+            const container = document.getElementById(columnId + '-tasks');
+            if (container) container.appendChild(card);
+        }
+
+        async function deleteTask(taskId) {
+            if(confirm("Are you sure you want to delete this task?")) {
+                if(timers[taskId]){ clearInterval(timers[taskId].interval); delete timers[taskId]; }
+                const el = document.getElementById(taskId);
+                if(el) el.remove();
+                await supabaseClient.from('tasks').delete().eq('id', taskId);
+                updateCounts();
+            }
+        }
+
+        // --- Persistent Storage (Supabase) ---
+        async function checkAndMigrateTasks() {
+            const saved = localStorage.getItem('worklog_tasks_v3') || localStorage.getItem('worklog_tasks_v2');
+            if (saved) {
+                const taskData = JSON.parse(saved);
+                if (taskData && taskData.length > 0) {
+                    const toInsert = taskData.map(t => ({
+                        user_id: sessionUser.id,
+                        title: t.title,
+                        status: t.column ? t.column.replace('-tasks', '') : 'todo',
+                        priority: t.priority || 'Medium',
+                        hours: t.hours ? parseFloat(t.hours) : 0
+                    }));
+                    const { error } = await supabaseClient.from('tasks').insert(toInsert);
+                    if(!error) {
+                        localStorage.removeItem('worklog_tasks_v3');
+                        localStorage.removeItem('worklog_tasks_v2');
+                    }
+                }
+            }
+        }
+
+        async function loadTasks() {
+            const { data, error } = await supabaseClient
+                .from('tasks')
+                .select('*')
+                .eq('user_id', activeWorkspaceOwnerId)
+                .order('created_at', { ascending: true });
+                
+            document.getElementById('todo-tasks').innerHTML = "";
+            document.getElementById('inprogress-tasks').innerHTML = "";
+            document.getElementById('done-tasks').innerHTML = "";
+            
+            if(data) {
+                data.forEach(task => createTaskElement(task.title, task.status, task.id, task.priority, task.hours));
+            }
+            updateCounts();
+            applyCurrentFilter();
+        }
+
+        // --- Filter & Edit ---
+        let currentFilterPriority = 'All';
+
+        function filterByPriority(priority, btnElement) {
+            currentFilterPriority = priority;
+            document.querySelectorAll('.pill-filter').forEach(btn => btn.classList.remove('active'));
+            if(btnElement) btnElement.classList.add('active');
+            applyCurrentFilter();
+        }
+        
+        function applyCurrentFilter() {
+            document.querySelectorAll('.task-card').forEach(card => {
+                if (currentFilterPriority === 'All' || card.getAttribute('data-priority') === currentFilterPriority) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            updateCounts();
+        }
+
+        function openEditTaskModal(taskId) {
+            const card = document.getElementById(taskId);
+            if (!card) return;
+            const title = card.querySelector('.task-title').textContent;
+            const priority = card.getAttribute('data-priority');
+            
+            document.getElementById('editTaskIdInput').value = taskId;
+            document.getElementById('editTaskTitleInput').value = title;
+            document.getElementById('editTaskPriorityInput').value = priority;
+            
+            document.getElementById('editTaskModal').classList.add('show');
+            document.getElementById('editTaskTitleInput').focus();
+        }
+
+        function closeEditTaskModal() {
+            document.getElementById('editTaskModal').classList.remove('show');
+        }
+
+        async function saveEditedTask() {
+            const taskId = document.getElementById('editTaskIdInput').value;
+            const title = document.getElementById('editTaskTitleInput').value.trim();
+            const priority = document.getElementById('editTaskPriorityInput').value.replace(/[^a-zA-Z]/g, '').trim(); 
+            
+            if (!title) { alert("Please enter a task title"); return; }
+            
+            const card = document.getElementById(taskId);
+            if (card) {
+                card.querySelector('.task-title').textContent = title;
+                card.setAttribute('data-priority', priority);
+                card.querySelector('.task-priority-badge').textContent = priority;
+            }
+            closeEditTaskModal();
+            applyCurrentFilter();
+            
+            await supabaseClient.from('tasks').update({ title: title, priority: priority }).eq('id', taskId);
+        }
+
+        function updateCounts() {
+            let td = 0, ip = 0, d = 0;
+            document.querySelectorAll('#todo-tasks .task-card').forEach(c => { if(c.style.display !== 'none') td++; });
+            document.querySelectorAll('#inprogress-tasks .task-card').forEach(c => { if(c.style.display !== 'none') ip++; });
+            document.querySelectorAll('#done-tasks .task-card').forEach(c => { if(c.style.display !== 'none') d++; });
+            document.getElementById('todo-count').textContent = td;
+            document.getElementById('inprogress-count').textContent = ip;
+            document.getElementById('done-count').textContent = d;
+        }
+
+        window.addEventListener('load', initializeApp);
+    </script>
 </body>
 </html>
 
