@@ -772,18 +772,45 @@
 
         // --- Authentication & Initialization ---
         async function initializeApp() {
-            const { data } = await supabaseClient.auth.getSession();
-            if (data && data.session) {
-                sessionUser = data.session.user;
+            // First check manually
+            let { data: { session } } = await supabaseClient.auth.getSession();
+            
+            // If null, it might just need a moment to hydrate from storage
+            if (!session) {
+                console.log("No immediate session, waiting for auth state change...");
+                session = await new Promise((resolve) => {
+                    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event, s) => {
+                        if (s) {
+                            subscription.unsubscribe();
+                            resolve(s);
+                        }
+                    });
+                    
+                    // Timeout after 1.5 seconds if still no session
+                    setTimeout(() => {
+                        subscription.unsubscribe();
+                        resolve(null);
+                    }, 1500);
+                });
+            }
+
+            if (session) {
+                sessionUser = session.user;
                 activeWorkspaceOwnerId = sessionUser.id;
                 
                 const name = sessionUser.user_metadata?.name || 'User';
                 document.getElementById('user-display').textContent = `👤 ${name}`;
                 
-                await checkAndMigrateTasks();
+                try {
+                    await checkAndMigrateTasks();
+                } catch(err) { console.error(err); }
+                
                 await loadSharedWorkspaces();
                 await switchWorkspace(sessionUser.id);
             } else {
+                // Still no session after waiting.
+                console.error("No session found in app.html!");
+                sessionStorage.setItem('authDebug', 'Failed to find session on app.html');
                 alert("Please log in to use the application.");
                 window.location.href = "index.html";
             }
