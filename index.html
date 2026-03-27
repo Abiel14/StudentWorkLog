@@ -838,7 +838,13 @@ a {
 <script>
 const supabaseUrl = 'https://teclqhxbohgljgcqcljq.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlY2xxaHhib2hnbGpnY3FjbGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzgxMjAsImV4cCI6MjA5MDA1NDEyMH0.B06AiesYThA9Z-4MD8q5DxVmI5fbs2PWpimWDNzkyAk';
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey, {
+    auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+    }
+});
 
 // ===== THEME FUNCTIONS =====
 function toggleTheme() {
@@ -1062,4 +1068,5 @@ console.log('✅ Website loaded successfully!');
 
 </body>
 </html>
+
 
