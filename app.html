@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -680,7 +681,7 @@
             <p>We couldn't verify your login. This might be due to a slow connection or a temporary error.</p>
             <div class="btn-row">
                 <button class="btn-retry" onclick="location.reload()">🔄 Retry</button>
-                <button class="btn-home" onclick="window.location.href='index.html'">🏠 Go to Login</button>
+                <button class="btn-home" onclick="logout()">🏠 Sign Out & Restart</button>
             </div>
             <button onclick="toggleDebugInfo()" style="margin-top: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 12px;">Show Debug Details</button>
             <div id="debugInfo" style="display: none; margin-top: 15px; text-align: left; background: #000; color: #0f0; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 11px; max-height: 150px; overflow: auto; border: 1px solid #333;"></div>
@@ -836,67 +837,72 @@
         // Supabase configuration
         const supabaseUrl = 'https://teclqhxbohgljgcqcljq.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlY2xxaHhib2hnbGpnY3FjbGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzgxMjAsImV4cCI6MjA5MDA1NDEyMH0.B06AiesYThA9Z-4MD8q5DxVmI5fbs2PWpimWDNzkyAk';
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey, {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                detectSessionInUrl: true
+            }
+        });
         
         let sessionUser = null;
         let activeWorkspaceOwnerId = null;
         let realtimeChannel = null;
 
         // --- Authentication & Initialization ---
+        
+        // Permanent Auth Listener
+        supabaseClient.auth.onAuthStateChange(async (event, session) => {
+            console.log("🔔 Auth State Changed:", event);
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                if (session) {
+                    sessionUser = session.user;
+                    const name = sessionUser.user_metadata?.name || 'User';
+                    document.getElementById('user-display').textContent = `👤 ${name}`;
+                    // Only switch the workspace if we are not currently initializing
+                    if (!activeWorkspaceOwnerId) {
+                        await switchWorkspace(sessionUser.id);
+                    }
+                }
+            } else if (event === 'SIGNED_OUT') {
+                window.location.href = "index.html";
+            }
+        });
+
         async function initializeApp() {
             console.log("🚀 Initializing application...");
-            let session = null;
             let retryCount = 0;
-            const maxRetries = 10; // Try for ~5 seconds
+            const maxRetries = 10;
             
-            async function attemptSession() {
+            // Function to verify identity with the server (more authoritative)
+            async function verifyIdentity() {
                 try {
-                    const { data } = await supabaseClient.auth.getSession();
-                    if (data && data.session) return data.session;
-                } catch(e) { console.error("Session check error:", e); }
+                    const { data: { user }, error } = await supabaseClient.auth.getUser();
+                    if (user) return user;
+                } catch(e) { console.error("Identity verification error:", e); }
                 return null;
             }
 
-            // 1. Initial immediate check
-            session = await attemptSession();
-            
-            // 2. If no immediate session, wait for events or keep polling
-            if (!session) {
-                console.log("No immediate session, starting hydration polling...");
-                
-                session = await new Promise(async (resolve) => {
-                    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange((event, s) => {
-                        console.log("Auth Event Received:", event);
-                        if (s) {
-                            subscription.unsubscribe();
-                            resolve(s);
-                        }
-                    });
+            // Polling for the user to be ready (hydration check)
+            const user = await new Promise((resolve) => {
+                const check = async () => {
+                    retryCount++;
+                    const u = await verifyIdentity();
+                    if (u) {
+                        resolve(u);
+                    } else if (retryCount >= maxRetries) {
+                        resolve(null);
+                    } else {
+                        setTimeout(check, 500);
+                    }
+                };
+                check();
+            });
 
-                    // Polling fallback
-                    const interval = setInterval(async () => {
-                        retryCount++;
-                        const s = await attemptSession();
-                        if (s) {
-                            clearInterval(interval);
-                            subscription.unsubscribe();
-                            resolve(s);
-                        } else if (retryCount >= maxRetries) {
-                            clearInterval(interval);
-                            subscription.unsubscribe();
-                            resolve(null);
-                        }
-                    }, 500);
-                });
-            }
-
-            if (session) {
-                console.log("✅ Session verified successfully!");
-                sessionUser = session.user;
+            if (user) {
+                console.log("✅ User verified successfully!");
+                sessionUser = user;
                 activeWorkspaceOwnerId = sessionUser.id;
-                
-                const name = sessionUser.user_metadata?.name || 'User';
-                document.getElementById('user-display').textContent = `👤 ${name}`;
                 
                 try {
                     await checkAndMigrateTasks();
@@ -905,7 +911,7 @@
                 await loadSharedWorkspaces();
                 await switchWorkspace(sessionUser.id);
             } else {
-                console.error("❌ Final session check failed after 5 seconds.");
+                console.error("❌ Final identity check failed after 5 seconds.");
                 sessionStorage.setItem('authDebug', 'Timed out waiting for session hydration.');
                 document.getElementById('authOverlay').classList.add('show');
             }
@@ -1323,4 +1329,3 @@
     </script>
 </body>
 </html>
-
