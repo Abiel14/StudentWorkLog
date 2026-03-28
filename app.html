@@ -1009,7 +1009,27 @@
 
         async function initializeApp() {
             logDebug("🚀 Starting App Initialization...");
-            const loader = document.getElementById('initLoader');
+
+            // --- Email Confirmation Token Detection ---
+            // When a user clicks the Supabase confirmation link, it lands here with
+            // token params in the URL. detectSessionInUrl:true handles the exchange,
+            // but we need to wait for it to complete before checking for a session.
+            const urlHash = window.location.hash;
+            const urlSearch = window.location.search;
+            const hasConfirmationToken = urlHash.includes('access_token')
+                || urlHash.includes('type=signup') || urlHash.includes('type=email')
+                || urlSearch.includes('token_hash') || urlSearch.includes('type=signup')
+                || urlSearch.includes('type=email') || urlSearch.includes('confirmation_token');
+
+            if (hasConfirmationToken) {
+                logDebug("🔑 Email confirmation token detected in URL. Waiting for Supabase to exchange it...");
+                // Give detectSessionInUrl extra time to process
+                await new Promise(r => setTimeout(r, 1500));
+                // Clean up the URL so tokens aren't visible or re-processed
+                if (window.history && window.history.replaceState) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            }
             
             try {
                 // 1. Check for existing session
@@ -1017,9 +1037,26 @@
                 
                 if (user) {
                     logDebug("✅ Session found for:", user.email);
+                    // Check if email is confirmed
+                    if (!user.email_confirmed_at) {
+                        logDebug("⚠️ Email not yet confirmed.");
+                        document.getElementById('authOverlay').classList.add('show');
+                        document.getElementById('authOverlayMessage').innerHTML =
+                            `<strong>Your email is not confirmed yet.</strong><br>Please check your inbox and click the confirmation link, then <a href="index.html" style="color: var(--btn-primary);">return to login</a>.`;
+                        const loader = document.getElementById('initLoader');
+                        if (loader) { loader.classList.add('hide'); setTimeout(() => loader.remove(), 500); }
+                        isInitializing = false;
+                        return;
+                    }
+
                     sessionUser = user;
                     activeWorkspaceOwnerId = sessionUser.id;
                     
+                    // If we detected a confirmation token, show a welcome message
+                    if (hasConfirmationToken) {
+                        logDebug("🎉 Email confirmed! Welcome!");
+                    }
+
                     // Run core setup
                     await Promise.all([
                         checkAndMigrateTasks(),
@@ -1031,15 +1068,26 @@
                     finishInit();
                 } else {
                     logDebug("❓ No session found. Checking for tokens...");
-                    // Try to poll briefly just in case LocalStorage is slow
-                    let userRetry = await pollForUser();
+                    // Poll a bit longer if a confirmation token was present
+                    let userRetry = await pollForUser(hasConfirmationToken ? 8 : 5);
                     if (userRetry) {
                         sessionUser = userRetry;
                         activeWorkspaceOwnerId = sessionUser.id;
                         await switchWorkspace(sessionUser.id);
                         finishInit();
                     } else {
-                        throw new Error("AUTHENTICATION_REQUIRED");
+                        if (hasConfirmationToken) {
+                            // Token was present but session still not established — show helpful error
+                            document.getElementById('authOverlay').classList.add('show');
+                            document.getElementById('authOverlayMessage').innerHTML =
+                                `<strong>Confirmation link may have expired.</strong><br>
+                                Please <a href="index.html" style="color: var(--btn-primary);">go back to login</a> and use the "Resend confirmation email" option to get a new link.`;
+                            const loader = document.getElementById('initLoader');
+                            if (loader) { loader.classList.add('hide'); setTimeout(() => loader.remove(), 500); }
+                            isInitializing = false;
+                        } else {
+                            throw new Error("AUTHENTICATION_REQUIRED");
+                        }
                     }
                 }
             } catch (err) {
@@ -1061,9 +1109,8 @@
             }
         }
 
-        async function pollForUser() {
+        async function pollForUser(max = 5) {
             let retries = 0;
-            const max = 5;
             while (retries < max) {
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 if (user) return user;
@@ -1622,5 +1669,4 @@
     </script>
 </body>
 </html>
-
 
