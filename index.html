@@ -1030,18 +1030,42 @@ async function handleLandingPageSignup(event) {
 }
 
 // ===== FEEDBACK FORM FUNCTION =====
-function handleFeedbackSubmission(event) {
+async function handleFeedbackSubmission(event) {
     event.preventDefault();
     
     const name = document.getElementById('feedbackName').value.trim();
-    
-    // In a real application, you would send this data to your backend here.
-    alert(`✅ Thank you for your feedback, ${name}! We appreciate your input.`);
-    
-    // Clear the form fields
-    document.getElementById('feedbackName').value = '';
-    document.getElementById('feedbackEmail').value = '';
-    document.getElementById('feedbackMessage').value = '';
+    const email = document.getElementById('feedbackEmail').value.trim();
+    const message = document.getElementById('feedbackMessage').value.trim();
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+
+    if (!name || !email || !message) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        const { error } = await supabaseClient
+            .from('feedback')
+            .insert([{ name, email, message }]);
+
+        if (error) throw error;
+
+        alert(`✅ Thank you for your feedback, ${name}! Your input has been saved.`);
+        
+        // Clear the form fields
+        document.getElementById('feedbackName').value = '';
+        document.getElementById('feedbackEmail').value = '';
+        document.getElementById('feedbackMessage').value = '';
+    } catch (err) {
+        console.error("Feedback error:", err);
+        alert("❌ Error sending feedback. Your message was not saved, but we'll work on it!");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Feedback';
+    }
 }
 
 async function goToApp(e) {
