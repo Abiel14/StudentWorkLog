@@ -696,6 +696,178 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* ===== BOARD PICKER ===== */
+        #boardPickerOverlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg-body);
+            z-index: 5000;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        #boardPickerOverlay.show { display: flex; }
+
+        .board-picker-header {
+            padding: 28px 40px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .board-picker-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .board-picker-header p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+        .board-picker-header .bp-user {
+            font-size: 14px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .board-picker-header .btn-bp-logout {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .board-picker-header .btn-bp-logout:hover { color: var(--text-main); border-color: var(--text-main); }
+
+        .board-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            padding: 28px 40px 40px;
+        }
+
+        .bp-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 150px;
+            position: relative;
+            animation: fadeInCard 0.3s ease both;
+        }
+        @keyframes fadeInCard {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .bp-card:hover {
+            border-color: var(--btn-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+        .bp-card-icon { font-size: 32px; }
+        .bp-card-name {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text-main);
+            word-break: break-word;
+        }
+        .bp-card-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+        .bp-card-actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .bp-card:hover .bp-card-actions { opacity: 1; }
+        .bp-card-btn {
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+        .bp-card-btn:hover { background: var(--bg-column); color: var(--text-main); }
+        .bp-card-btn.danger:hover { background: rgba(220,53,69,0.1); color: #dc3545; border-color: #dc3545; }
+
+        .bp-new-card {
+            border-style: dashed;
+            background: transparent;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+        }
+        .bp-new-card:hover {
+            border-color: var(--btn-primary);
+            color: var(--btn-primary);
+            background: transparent;
+        }
+        .bp-new-card-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .bp-new-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px dashed currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .bp-new-label { font-size: 14px; font-weight: 600; }
+
+        /* Board name badge in app header */
+        .board-name-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-switch-board {
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-switch-board:hover {
+            border-color: var(--btn-primary);
+            color: var(--btn-primary);
+        }
+
+        /* Rename modal reuses existing .modal-overlay / .modal-body */
     </style>
 </head>
 <body>
@@ -753,6 +925,23 @@
     </script>
 
 
+    <!-- ===== BOARD PICKER OVERLAY ===== -->
+    <div id="boardPickerOverlay">
+        <div class="board-picker-header">
+            <div>
+                <h2>📋 Your Project Boards</h2>
+                <p>Select a board to open, or create a new one.</p>
+            </div>
+            <div class="bp-user">
+                <span id="bpUserName">👤</span>
+                <button class="btn-bp-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+        <div id="boardPickerGrid" class="board-picker-grid">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
     <nav class="navbar">
         <div class="nav-logo">📋 Student Work Log</div>
         <div class="nav-controls">
@@ -768,7 +957,10 @@
 
     <div class="board-header">
         <div class="header-left">
-            <h1 class="board-title">Project Board</h1>
+            <div class="board-name-badge">
+                <h1 class="board-title" id="boardTitleDisplay">Project Board</h1>
+                <button class="btn-switch-board" onclick="showBoardPicker()">⇄ Switch</button>
+            </div>
             <div class="view-toggles" style="display: flex; gap: 10px; margin-left: 15px; background: var(--bg-card); padding: 5px; border-radius: 10px; border: 1px solid var(--border-color);">
                 <button id="btnViewBoard" class="pill-filter active" onclick="setView('board')">📋 Board</button>
                 <button id="btnViewDashboard" class="pill-filter" onclick="setView('dashboard')">📊 Dashboard</button>
@@ -937,6 +1129,22 @@
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeEditTaskModal()">Cancel</button>
                 <button class="btn-save" onclick="saveEditedTask()">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rename Board Modal -->
+    <div class="modal-overlay" id="renameBoardModal">
+        <div class="modal-body" style="max-width: 380px;">
+            <h3>✏️ Rename Board</h3>
+            <input type="hidden" id="renameBoardIdInput">
+            <div class="form-group">
+                <label>Board Name</label>
+                <input type="text" id="renameBoardNameInput" placeholder="e.g. CS Project" autocomplete="off" maxlength="60">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeRenameBoardModal()">Cancel</button>
+                <button class="btn-save" onclick="saveRenameBoard()">Save</button>
             </div>
         </div>
     </div>
