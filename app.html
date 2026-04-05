@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SWL - Dashboard</title>
+    <title>Student Work Log - Dashboard</title>
     <style>
         :root {
             /* Light Mode Variables */
@@ -943,7 +943,7 @@
     </div>
 
     <nav class="navbar">
-        <div class="nav-logo">📋 SWL</div>
+        <div class="nav-logo">📋 Student Work Log</div>
         <div class="nav-controls">
             <select id="workspaceSelect" class="workspace-select" onchange="changeWorkspace()">
                 <option value="me">My Workspace</option>
@@ -973,6 +973,45 @@
             </div>
         </div>
         <button class="btn-add-task" onclick="openTaskModal()">+ Add New Task</button>
+    </div>
+
+    <!-- ===== ADMIN DASHBOARD VIEW ===== -->
+    <div id="adminDashboardView" style="display: none; padding: 30px 40px; flex-grow: 1; overflow-y: auto;">
+        <div style="margin-bottom: 30px;">
+            <h2 style="font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">🛡️ Admin Dashboard</h2>
+            <p style="color: var(--text-muted); font-size: 14px;">Overview of all students and their work logs.</p>
+        </div>
+
+        <!-- Admin Stats -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
+                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Total Students</h4>
+                <div id="adminStatStudents" style="font-size: 36px; font-weight: bold; color: var(--btn-primary);">—</div>
+            </div>
+            <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
+                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Total Tasks</h4>
+                <div id="adminStatTasks" style="font-size: 36px; font-weight: bold; color: #28a745;">—</div>
+            </div>
+            <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
+                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Tasks Completed</h4>
+                <div id="adminStatDone" style="font-size: 36px; font-weight: bold; color: var(--priority-medium);">—</div>
+            </div>
+            <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
+                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Total Hours</h4>
+                <div id="adminStatHours" style="font-size: 36px; font-weight: bold; color: var(--priority-high);">—</div>
+            </div>
+        </div>
+
+        <!-- Student Table -->
+        <div class="column" style="padding: 25px; height: auto; overflow-x: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 18px;">📋 Student Work Logs</h3>
+                <button class="btn-add-task" onclick="loadAdminData()" style="padding: 8px 16px; font-size: 13px;">🔄 Refresh</button>
+            </div>
+            <div id="adminStudentTable">
+                <div style="color: var(--text-muted); text-align: center; padding: 40px;">Loading student data...</div>
+            </div>
+        </div>
     </div>
 
     <!-- Dashboard View [NEW] -->
@@ -1050,9 +1089,9 @@
     <!-- Invite Modal -->
     <div class="modal-overlay" id="inviteModal">
         <div class="modal-body">
-            <h3>Invite person</h3>
+            <h3>Invite Collaborator</h3>
             <div class="form-group">
-                <label>person's email</label>
+                <label>Colleague's Email Address</label>
                 <input type="email" id="inviteEmailInput" placeholder="their@email.com" autocomplete="off">
             </div>
             <div class="modal-actions">
@@ -1262,21 +1301,42 @@
 
                     sessionUser = user;
                     activeWorkspaceOwnerId = sessionUser.id;
-                    
+
+                    // ── ROLE-BASED ROUTING ──────────────────────────────────────
+                    // The custom role is stored in user_metadata, NOT in the
+                    // Supabase auth "role" field (which is always "authenticated").
+                    const userRole = (sessionUser.user_metadata?.role || 'student').toLowerCase();
+                    console.log('🧑‍💻 User role from metadata:', userRole);
+                    console.log('🧑‍💻 Full user_metadata:', JSON.stringify(sessionUser.user_metadata));
+                    logDebug('🧑‍💻 User role:', userRole);
+                    // ────────────────────────────────────────────────────────────
+
                     // If we detected a confirmation token, show a welcome message
                     if (hasConfirmationToken) {
                         logDebug("🎉 Email confirmed! Welcome!");
                     }
 
-                    // Run core setup
-                    await Promise.all([
-                        checkAndMigrateTasks(),
-                        loadSharedWorkspaces(),
-                        switchWorkspace(sessionUser.id)
-                    ]);
-                    
+                    if (userRole === 'admin') {
+                        // ── ADMIN PATH: show admin dashboard ──
+                        console.log('✅ Routing to ADMIN DASHBOARD');
+                        logDebug('🛡️ Admin user detected — loading Admin Dashboard');
+                        applyAdminLayout();
+                        await loadAdminData();
+                        finishInit();
+                    } else {
+                        // ── STUDENT PATH: show worklog board ──
+                        console.log('✅ Routing to STUDENT WORKLOG');
+                        logDebug('🎓 Student user detected — loading Student Worklog');
+                        applyStudentLayout();
+                        await Promise.all([
+                            checkAndMigrateTasks(),
+                            loadSharedWorkspaces(),
+                            switchWorkspace(sessionUser.id)
+                        ]);
+                        finishInit();
+                    }
+
                     logDebug("🎉 App Ready!");
-                    finishInit();
                 } else {
                     logDebug("❓ No session found. Checking for tokens...");
                     // Poll a bit longer if a confirmation token was present
@@ -1284,7 +1344,15 @@
                     if (userRetry) {
                         sessionUser = userRetry;
                         activeWorkspaceOwnerId = sessionUser.id;
-                        await switchWorkspace(sessionUser.id);
+                        const userRole = (sessionUser.user_metadata?.role || 'student').toLowerCase();
+                        console.log('🧑‍💻 User role from metadata (retry):', userRole);
+                        if (userRole === 'admin') {
+                            applyAdminLayout();
+                            await loadAdminData();
+                        } else {
+                            applyStudentLayout();
+                            await switchWorkspace(sessionUser.id);
+                        }
                         finishInit();
                     } else {
                         if (hasConfirmationToken) {
@@ -1389,6 +1457,46 @@
             await loadTasks();
             await loadMessages();
             setupRealtime(); // Reconnect listeners to new workspace tasks
+        }
+
+        // --- Role-Based Layout Helpers ---
+        function applyAdminLayout() {
+            console.log('🛡️ applyAdminLayout() called');
+            // Hide student-only UI, show admin dashboard
+            document.getElementById('boardView').style.display = 'none';
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('adminDashboardView').style.display = 'block';
+            // Hide board controls that don't apply to admins
+            const boardHeader = document.querySelector('.board-header');
+            if (boardHeader) boardHeader.style.display = 'none';
+            const workspaceSelect = document.querySelector('.workspace-select');
+            if (workspaceSelect) workspaceSelect.style.display = 'none';
+            const inviteBtn = document.querySelector('.btn-invite');
+            if (inviteBtn) inviteBtn.style.display = 'none';
+            const chatWidget = document.getElementById('chatWidget');
+            if (chatWidget) chatWidget.style.display = 'none';
+            // Update nav user display with role badge
+            const userDisplay = document.getElementById('user-display');
+            const name = sessionUser.user_metadata?.name || 'Admin';
+            if (userDisplay) userDisplay.textContent = `🛡️ ${name} (Admin)`;
+        }
+
+        function applyStudentLayout() {
+            console.log('🎓 applyStudentLayout() called');
+            // Ensure admin dashboard is hidden, student worklog is visible
+            document.getElementById('adminDashboardView').style.display = 'none';
+            document.getElementById('boardView').style.display = 'flex';
+            document.getElementById('dashboardView').style.display = 'none';
+            // Update nav user display with role badge
+            const userDisplay = document.getElementById('user-display');
+            const name = sessionUser.user_metadata?.name || 'Student';
+            if (userDisplay) userDisplay.textContent = `🎓 ${name} (Student)`;
+        }
+
+        function showBoardPicker() {
+            // Show board picker overlay (for students switching boards)
+            const overlay = document.getElementById('boardPickerOverlay');
+            if (overlay) overlay.classList.add('show');
         }
 
         // --- View Management ---
@@ -1864,6 +1972,98 @@
                 if(el) el.remove();
                 await supabaseClient.from('tasks').delete().eq('id', taskId);
                 updateCounts();
+            }
+        }
+
+        // --- Admin Dashboard Data Loader ---
+        async function loadAdminData() {
+            console.log('📊 loadAdminData() called — fetching all tasks from Supabase');
+            const tableContainer = document.getElementById('adminStudentTable');
+            if (tableContainer) tableContainer.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 40px;">Loading...</div>';
+
+            try {
+                // Fetch all tasks across all users
+                const { data: tasks, error } = await supabaseClient
+                    .from('tasks')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                console.log('📊 Admin: fetched', tasks ? tasks.length : 0, 'tasks total');
+
+                // Aggregate stats
+                const totalTasks = tasks ? tasks.length : 0;
+                const doneTasks = tasks ? tasks.filter(t => t.status === 'done').length : 0;
+                const totalHours = tasks ? tasks.reduce((s, t) => s + (parseFloat(t.hours) || 0), 0) : 0;
+
+                // Unique student IDs
+                const studentIds = tasks ? [...new Set(tasks.map(t => t.user_id))] : [];
+                console.log('📊 Admin: unique user IDs found:', studentIds.length);
+
+                // Update stat cards
+                const statStudents = document.getElementById('adminStatStudents');
+                const statTasks = document.getElementById('adminStatTasks');
+                const statDone = document.getElementById('adminStatDone');
+                const statHours = document.getElementById('adminStatHours');
+                if (statStudents) statStudents.textContent = studentIds.length;
+                if (statTasks) statTasks.textContent = totalTasks;
+                if (statDone) statDone.textContent = doneTasks;
+                if (statHours) statHours.textContent = totalHours.toFixed(1) + 'h';
+
+                // Build student rows grouped by user_id
+                if (!tasks || tasks.length === 0) {
+                    if (tableContainer) tableContainer.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 40px;">No student tasks found in the database.</div>';
+                    return;
+                }
+
+                // Group tasks by user_id
+                const byUser = {};
+                tasks.forEach(t => {
+                    if (!byUser[t.user_id]) byUser[t.user_id] = [];
+                    byUser[t.user_id].push(t);
+                });
+
+                // Build HTML table
+                const tableHTML = `
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted); text-align: left;">
+                                <th style="padding: 10px 12px;">User</th>
+                                <th style="padding: 10px 12px;">Task Title</th>
+                                <th style="padding: 10px 12px;">Priority</th>
+                                <th style="padding: 10px 12px;">Status</th>
+                                <th style="padding: 10px 12px;">Hours</th>
+                                <th style="padding: 10px 12px;">Due Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(byUser).map(([uid, userTasks], idx) => {
+                                const isOwn = uid === sessionUser.id;
+                                return userTasks.map((t, ti) => {
+                                    const statusLabel = t.status === 'todo' ? '📝 To Do' : t.status === 'inprogress' ? '⏳ In Progress' : '✅ Done';
+                                    const priorityColor = t.priority === 'High' ? 'var(--priority-high)' : t.priority === 'Low' ? 'var(--priority-low)' : 'var(--priority-medium)';
+                                    const dueLabel = t.due_date ? new Date(t.due_date).toLocaleDateString() : '—';
+                                    const userLabel = isOwn ? '🛡️ You (Admin)' : `👤 ${uid.slice(0, 8)}...`;
+                                    return `<tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;" onmouseover="this.style.background='var(--bg-column)'" onmouseout="this.style.background='transparent'">
+                                        <td style="padding: 10px 12px; font-weight: ${ti === 0 ? '700' : '400'}; color: var(--text-muted); font-size: 12px;">${ti === 0 ? userLabel : ''}</td>
+                                        <td style="padding: 10px 12px; font-weight: 600;">${t.title}</td>
+                                        <td style="padding: 10px 12px;"><span style="color: ${priorityColor}; font-weight: 700; font-size: 12px;">${t.priority || '—'}</span></td>
+                                        <td style="padding: 10px 12px;">${statusLabel}</td>
+                                        <td style="padding: 10px 12px; font-weight: 600;">${parseFloat(t.hours || 0).toFixed(2)}h</td>
+                                        <td style="padding: 10px 12px; color: var(--text-muted);">${dueLabel}</td>
+                                    </tr>`;
+                                }).join('');
+                            }).join('')}
+                        </tbody>
+                    </table>
+                `;
+                if (tableContainer) tableContainer.innerHTML = tableHTML;
+
+            } catch (err) {
+                console.error('❌ Admin data load error:', err);
+                logDebug('❌ Admin data load error:', err.message);
+                if (tableContainer) tableContainer.innerHTML = `<div style="color: var(--priority-high); text-align: center; padding: 40px;">Error loading data: ${err.message}</div>`;
             }
         }
 
