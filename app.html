@@ -15,7 +15,7 @@
             --text-main: #333333;
             --text-muted: #666666;
             --border-color: #dee2e6;
-            --btn-primary: #003d99;
+            --btn-primary: #043b8d;
             --btn-primary-hover: #002266;
             --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
@@ -934,6 +934,7 @@
             </div>
             <div class="bp-user">
                 <span id="bpUserName">👤</span>
+                <button id="btnBpClose" class="btn-bp-logout" onclick="closeBoardPicker()" style="display:none; margin-right: 10px;">Back to Board</button>
                 <button class="btn-bp-logout" onclick="logout()">Logout</button>
             </div>
         </div>
@@ -1220,6 +1221,8 @@
         let pollingInterval = null;       // fallback polling handle
         let lastKnownTaskCount = -1;      // detect unexpected blank board
         let isLoadingTasks = false;       // prevent concurrent fetches
+        let userBoards = [];              // Store user project boards
+        let currentBoardId = localStorage.getItem('lastBoardId') || null; // Selected board ID
 
         // --- Authentication & Initialization ---
         let isInitializing = true;
@@ -1329,9 +1332,9 @@
                         logDebug('🎓 Student user detected — loading Student Worklog');
                         applyStudentLayout();
                         await Promise.all([
+                            fetchBoardsAndInitialize(),
                             checkAndMigrateTasks(),
-                            loadSharedWorkspaces(),
-                            switchWorkspace(sessionUser.id)
+                            loadSharedWorkspaces()
                         ]);
                         finishInit();
                     }
@@ -1351,7 +1354,7 @@
                             await loadAdminData();
                         } else {
                             applyStudentLayout();
-                            await switchWorkspace(sessionUser.id);
+                            await fetchBoardsAndInitialize();
                         }
                         finishInit();
                     } else {
@@ -1493,10 +1496,164 @@
             if (userDisplay) userDisplay.textContent = `🎓 ${name} (Student)`;
         }
 
+        // --- Board Management ---
+        async function fetchBoardsAndInitialize() {
+            await fetchBoards();
+            if (userBoards.length === 0) {
+                showBoardPicker();
+            } else {
+                if (!currentBoardId || !userBoards.find(b => b.id === currentBoardId)) {
+                    currentBoardId = userBoards[0].id;
+                    localStorage.setItem('lastBoardId', currentBoardId);
+                }
+                updateBoardNameDisplay();
+                await switchWorkspace(sessionUser.id);
+            }
+        }
+
+        async function fetchBoards() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('boards')
+                    .select('*')
+                    .eq('user_id', sessionUser.id)
+                    .order('created_at', { ascending: true });
+                if (error) throw error;
+                userBoards = data || [];
+                renderBoards();
+            } catch (err) {
+                console.error("Error fetching boards:", err);
+                showToast("Failed to load project boards", "warning");
+            }
+        }
+
+        function renderBoards() {
+            const grid = document.getElementById('boardPickerGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            if (userBoards.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">You don't have any project boards yet. Create one to get started!</div>`;
+            }
+            
+            userBoards.forEach(board => {
+                const isSelected = board.id === currentBoardId;
+                const card = document.createElement('div');
+                card.className = 'bp-card';
+                card.style.border = isSelected ? '2px solid var(--btn-primary)' : '';
+                card.innerHTML = `
+                    <div class="bp-card-icon">📋</div>
+                    <div class="bp-card-name">${board.name}</div>
+                    <div class="bp-card-meta">Created ${new Date(board.created_at).toLocaleDateString()}</div>
+                    <div class="bp-card-actions">
+                        <button class="bp-card-btn danger" onclick="event.stopPropagation(); deleteBoard('${board.id}')" title="Delete Board">🗑️</button>
+                    </div>
+                    <button class="btn-save" style="margin-top: 10px; width: 100%;" onclick="selectBoard('${board.id}')">${isSelected ? 'Currently Open' : 'Open Board'}</button>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Add New Board Card
+            const newCard = document.createElement('div');
+            newCard.className = 'bp-card bp-new-card';
+            newCard.onclick = createNewBoard;
+            newCard.innerHTML = `
+                <div class="bp-new-card-inner">
+                    <div class="bp-new-icon">+</div>
+                    <div class="bp-new-label">Create New Board</div>
+                </div>
+            `;
+            grid.appendChild(newCard);
+            
+            const closeBtn = document.getElementById('btnBpClose');
+            if (closeBtn) {
+                closeBtn.style.display = userBoards.length > 0 && currentBoardId ? 'inline-block' : 'none';
+            }
+        }
+
+        async function createNewBoard() {
+            const name = prompt("Enter the name for your new project board:");
+            if (!name || !name.trim()) return;
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('boards')
+                    .insert([{ name: name.trim(), user_id: sessionUser.id }])
+                    .select();
+                if (error) throw error;
+                
+                userBoards.push(data[0]);
+                renderBoards();
+                
+                if (userBoards.length === 1) {
+                    selectBoard(data[0].id);
+                } else {
+                    showToast("Board created successfully!", "success");
+                }
+            } catch (err) {
+                console.error("Error creating board:", err);
+                alert("Failed to create board. Please try again.");
+            }
+        }
+
+        async function deleteBoard(id) {
+            if (!confirm("Are you sure you want to delete this board? All tasks in this board will be lost forever.")) return;
+            
+            try {
+                const { error } = await supabaseClient.from('boards').delete().eq('id', id);
+                if (error) throw error;
+                
+                userBoards = userBoards.filter(b => b.id !== id);
+                
+                if (currentBoardId === id) {
+                    currentBoardId = null;
+                    localStorage.removeItem('lastBoardId');
+                    document.getElementById('todo-tasks').innerHTML = '';
+                    document.getElementById('inprogress-tasks').innerHTML = '';
+                    document.getElementById('done-tasks').innerHTML = '';
+                }
+                
+                renderBoards();
+                
+                if (userBoards.length === 0) {
+                    showBoardPicker();
+                } else if (!currentBoardId) {
+                    selectBoard(userBoards[0].id);
+                }
+                
+                showToast("Board deleted.", "success");
+            } catch (err) {
+                console.error("Error deleting board:", err);
+                alert("Failed to delete board.");
+            }
+        }
+
+        async function selectBoard(id) {
+            currentBoardId = id;
+            localStorage.setItem('lastBoardId', id);
+            closeBoardPicker();
+            updateBoardNameDisplay();
+            await switchWorkspace(sessionUser.id);
+        }
+
         function showBoardPicker() {
-            // Show board picker overlay (for students switching boards)
+            renderBoards();
             const overlay = document.getElementById('boardPickerOverlay');
             if (overlay) overlay.classList.add('show');
+        }
+
+        function closeBoardPicker() {
+            const overlay = document.getElementById('boardPickerOverlay');
+            if (overlay) overlay.classList.remove('show');
+        }
+        
+        function updateBoardNameDisplay() {
+            const currentBoard = userBoards.find(b => b.id === currentBoardId);
+            const nameDisplay = document.querySelector('.board-title');
+            if (nameDisplay && currentBoard) {
+                nameDisplay.innerHTML = `${currentBoard.name} <span class="task-count">${userBoards.length} boards</span>`;
+            }
         }
 
         // --- View Management ---
@@ -1905,6 +2062,7 @@
 
             const payload = {
                 user_id: activeWorkspaceOwnerId,
+                board_id: currentBoardId,
                 title: title,
                 description: desc,
                 status: 'todo',
@@ -2075,6 +2233,7 @@
                 if (taskData && taskData.length > 0) {
                     const toInsert = taskData.map(t => ({
                         user_id: sessionUser.id,
+                        board_id: currentBoardId,
                         title: t.title,
                         status: t.column ? t.column.replace('-tasks', '') : 'todo',
                         priority: t.priority || 'Medium',
@@ -2095,11 +2254,17 @@
             isLoadingTasks = true;
 
             try {
-                const { data, error } = await supabaseClient
+                let query = supabaseClient
                     .from('tasks')
                     .select('*')
                     .eq('user_id', activeWorkspaceOwnerId)
                     .order('created_at', { ascending: true });
+                
+                if (currentBoardId) {
+                    query = query.eq('board_id', currentBoardId);
+                }
+                
+                const { data, error } = await query;
                 
                 if (error) throw error;
 
