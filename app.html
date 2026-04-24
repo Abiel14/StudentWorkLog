@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,9 +18,9 @@
             --border-color: #dee2e6;
             --btn-primary: #043b8d;
             --btn-primary-hover: #002266;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
             /* Priority Colors */
             --priority-high: #ff4d4d;
             --priority-high-bg: rgba(255, 77, 77, 0.1);
@@ -41,9 +42,9 @@
             --border-color: #495057;
             --btn-primary: #4da6ff;
             --btn-primary-hover: #1a8cff;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
-            --shadow-lg: 0 10px 25px rgba(0,0,0,0.4);
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.4);
             /* Priority Colors */
             --priority-high: #ff6b6b;
             --priority-high-bg: rgba(255, 107, 107, 0.15);
@@ -82,6 +83,7 @@
             top: 0;
             z-index: 100;
         }
+
         .nav-logo {
             font-size: 24px;
             font-weight: bold;
@@ -89,11 +91,13 @@
             align-items: center;
             gap: 10px;
         }
+
         .nav-controls {
             display: flex;
             align-items: center;
             gap: 20px;
         }
+
         .user-info {
             font-weight: 500;
             font-size: 14px;
@@ -102,19 +106,21 @@
             align-items: center;
             gap: 6px;
         }
+
         .btn-logout {
             background: transparent;
             color: var(--text-nav);
-            border: 1px solid rgba(255,255,255,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             padding: 6px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
         }
+
         .btn-logout:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
-        
+
         /* Dark Mode Toggle */
         .theme-toggle {
             background: transparent;
@@ -129,27 +135,30 @@
             height: 40px;
             border-radius: 50%;
         }
+
         .theme-toggle:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Workspace & Invite */
         .workspace-select {
             background: transparent;
             color: var(--text-nav);
-            border: 1px solid rgba(255,255,255,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             padding: 6px 12px;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 600;
             outline: none;
         }
+
         .workspace-select option {
             color: var(--text-main);
             background: var(--bg-card);
         }
+
         .btn-invite {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             color: var(--text-nav);
             border: none;
             padding: 6px 12px;
@@ -157,8 +166,9 @@
             cursor: pointer;
             font-weight: 600;
         }
+
         .btn-invite:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
         }
 
         /* Chat Widget */
@@ -178,9 +188,11 @@
             transform: translateY(calc(100% - 40px));
             transition: transform 0.3s ease;
         }
+
         #chatWidget.open {
             transform: translateY(0);
         }
+
         .chat-header {
             padding: 10px 15px;
             background: var(--bg-nav);
@@ -191,6 +203,7 @@
             display: flex;
             justify-content: space-between;
         }
+
         .chat-messages {
             flex-grow: 1;
             padding: 15px;
@@ -199,6 +212,7 @@
             flex-direction: column;
             gap: 10px;
         }
+
         .chat-message {
             background: var(--bg-column);
             padding: 8px 12px;
@@ -208,22 +222,26 @@
             max-width: 85%;
             word-break: break-word;
         }
+
         .chat-message.me {
             background: var(--priority-low-bg);
             align-self: flex-end;
         }
+
         .chat-sender {
             font-size: 11px;
             font-weight: bold;
             color: var(--text-muted);
             margin-bottom: 2px;
         }
+
         .chat-input-area {
             padding: 10px;
             border-top: 1px solid var(--border-color);
             display: flex;
             gap: 5px;
         }
+
         .chat-input-area input {
             flex-grow: 1;
             padding: 8px;
@@ -233,6 +251,7 @@
             color: var(--text-main);
             outline: none;
         }
+
         .chat-input-area button {
             background: var(--btn-primary);
             color: white;
@@ -241,7 +260,10 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .chat-input-area button:hover { background: var(--btn-primary-hover); }
+
+        .chat-input-area button:hover {
+            background: var(--btn-primary-hover);
+        }
 
         /* Board Headers */
         .board-header {
@@ -250,10 +272,12 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .board-title {
             font-size: 28px;
             font-weight: 600;
         }
+
         .btn-add-task {
             background: var(--btn-primary);
             color: #fff;
@@ -264,6 +288,7 @@
             cursor: pointer;
             box-shadow: var(--shadow-sm);
         }
+
         .btn-add-task:hover {
             background: var(--btn-primary-hover);
             transform: translateY(-2px);
@@ -277,6 +302,7 @@
             gap: 20px;
             flex-wrap: wrap;
         }
+
         .priority-filters {
             display: flex;
             gap: 5px;
@@ -286,6 +312,7 @@
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--border-color);
         }
+
         .pill-filter {
             background: transparent;
             border: none;
@@ -297,27 +324,33 @@
             cursor: pointer;
             transition: all 0.3s;
         }
+
         .pill-filter:hover {
-            background: rgba(0,0,0,0.05);
+            background: rgba(0, 0, 0, 0.05);
         }
+
         [data-theme="dark"] .pill-filter:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
         }
+
         .pill-filter.active {
             background: var(--btn-primary);
             color: white;
             box-shadow: var(--shadow-sm);
         }
+
         .pill-filter.active.priority-high {
             background: var(--priority-high);
         }
+
         .pill-filter.active.priority-medium {
             background: var(--priority-medium);
         }
+
         .pill-filter.active.priority-low {
             background: var(--priority-low);
         }
-        
+
         .btn-edit-task {
             background: transparent;
             border: none;
@@ -332,6 +365,7 @@
             opacity: 0.6;
             transition: opacity 0.2s, transform 0.2s;
         }
+
         .btn-edit-task:hover {
             opacity: 1;
             transform: scale(1.1);
@@ -370,8 +404,12 @@
         }
 
         .task-count {
-            background: rgba(0,0,0,0.1);
-            [data-theme="dark"] & { background: rgba(255,255,255,0.1); }
+            background: rgba(0, 0, 0, 0.1);
+
+            [data-theme="dark"] & {
+                background: rgba(255, 255, 255, 0.1);
+            }
+
             padding: 3px 10px;
             border-radius: 15px;
             font-size: 13px;
@@ -385,9 +423,11 @@
             flex-grow: 1;
             min-height: 100px;
         }
+
         .tasks-container::-webkit-scrollbar {
             width: 6px;
         }
+
         .tasks-container::-webkit-scrollbar-thumb {
             background: var(--border-color);
             border-radius: 4px;
@@ -405,10 +445,12 @@
             position: relative;
             animation: fadeIn 0.3s ease;
         }
+
         .task-card:active {
             cursor: grabbing;
             transform: scale(0.98);
         }
+
         .task-card:hover {
             box-shadow: var(--shadow-md);
         }
@@ -416,9 +458,11 @@
         .task-card[data-priority="High"] {
             border-left-color: var(--priority-high);
         }
+
         .task-card[data-priority="Medium"] {
             border-left-color: var(--priority-medium);
         }
+
         .task-card[data-priority="Low"] {
             border-left-color: var(--priority-low);
         }
@@ -429,13 +473,14 @@
             align-items: flex-start;
             margin-bottom: 10px;
         }
+
         .task-title {
             font-weight: 600;
             font-size: 16px;
             word-wrap: break-word;
             padding-right: 25px;
         }
-        
+
         .task-priority-badge {
             font-size: 12px;
             padding: 4px 8px;
@@ -443,14 +488,17 @@
             font-weight: 600;
             display: inline-block;
         }
+
         .task-card[data-priority="High"] .task-priority-badge {
             background-color: var(--priority-high-bg);
             color: var(--priority-high);
         }
+
         .task-card[data-priority="Medium"] .task-priority-badge {
             background-color: var(--priority-medium-bg);
             color: var(--priority-medium);
         }
+
         .task-card[data-priority="Low"] .task-priority-badge {
             background-color: var(--priority-low-bg);
             color: var(--priority-low);
@@ -483,19 +531,21 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
-            box-shadow: 0 2px 4px rgba(40,167,69,0.3);
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
             display: flex;
             align-items: center;
             gap: 5px;
         }
+
         .btn-timer.running {
             background: #dc3545;
-            box-shadow: 0 2px 4px rgba(220,53,69,0.3);
+            box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
         }
+
         .btn-timer:hover {
             filter: brightness(1.1);
         }
-        
+
         .btn-delete {
             background: transparent;
             color: var(--text-muted);
@@ -509,25 +559,31 @@
             padding: 2px;
             border-radius: 50%;
         }
+
         .btn-delete:hover {
             color: #dc3545;
-            background: rgba(220,53,69,0.1);
+            background: rgba(220, 53, 69, 0.1);
         }
 
         /* Modal Settings */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.6);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(4px);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
+
         .modal-overlay.show {
             display: flex;
         }
+
         .modal-body {
             background: var(--bg-card);
             padding: 35px;
@@ -537,13 +593,27 @@
             box-shadow: var(--shadow-lg);
             animation: slideDown 0.3s ease;
         }
+
         @keyframes slideDown {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .modal-body h3 {
@@ -551,9 +621,11 @@
             color: var(--text-main);
             font-size: 24px;
         }
+
         .form-group {
             margin-bottom: 18px;
         }
+
         .form-group label {
             display: block;
             margin-bottom: 8px;
@@ -561,7 +633,9 @@
             color: var(--text-main);
             font-size: 14px;
         }
-        .form-group input, .form-group select {
+
+        .form-group input,
+        .form-group select {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid var(--border-color);
@@ -573,16 +647,19 @@
             outline: none;
             transition: border-color 0.2s;
         }
-        .form-group input:focus, .form-group select:focus {
+
+        .form-group input:focus,
+        .form-group select:focus {
             border-color: var(--btn-primary);
         }
-        
+
         .modal-actions {
             display: flex;
             justify-content: flex-end;
             gap: 12px;
             margin-top: 30px;
         }
+
         .btn-cancel {
             background: transparent;
             border: 2px solid var(--border-color);
@@ -592,9 +669,11 @@
             cursor: pointer;
             font-weight: 600;
         }
+
         .btn-cancel:hover {
             background: var(--border-color);
         }
+
         .btn-save {
             background: var(--btn-primary);
             color: white;
@@ -605,6 +684,7 @@
             font-weight: bold;
             box-shadow: var(--shadow-sm);
         }
+
         .btn-save:hover {
             background: var(--btn-primary-hover);
             transform: translateY(-1px);
@@ -613,25 +693,31 @@
         .column.drag-over {
             border-color: var(--btn-primary);
             background-color: rgba(0, 61, 153, 0.05);
+
             [data-theme="dark"] & {
                 background-color: rgba(102, 179, 255, 0.05);
             }
         }
-        
+
         @media (max-width: 768px) {
             .board {
                 flex-direction: column;
                 align-items: center;
             }
+
             .column {
                 width: 100%;
                 max-width: 400px;
             }
         }
+
         .auth-overlay {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.85);
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(8px);
             z-index: 9999;
             display: none;
@@ -640,18 +726,36 @@
             color: white;
             text-align: center;
         }
-        .auth-overlay.show { display: flex; }
+
+        .auth-overlay.show {
+            display: flex;
+        }
+
         .auth-card {
             background: var(--bg-card);
             padding: 40px;
             border-radius: 20px;
             max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             color: var(--text-main);
         }
-        .auth-card h2 { margin-bottom: 15px; font-size: 24px; }
-        .auth-card p { margin-bottom: 25px; opacity: 0.8; }
-        .auth-card .btn-row { display: flex; gap: 15px; justify-content: center; }
+
+        .auth-card h2 {
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .auth-card p {
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+
+        .auth-card .btn-row {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
         .auth-card .btn-retry {
             background: var(--btn-primary);
             color: white;
@@ -661,6 +765,7 @@
             font-weight: 600;
             cursor: pointer;
         }
+
         .auth-card .btn-home {
             background: transparent;
             border: 2px solid var(--border-color);
@@ -668,10 +773,14 @@
             padding: 10px 20px;
             border-radius: 8px;
         }
+
         /* Global Initial Loader */
         .init-loader {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: var(--bg-body);
             z-index: 10000;
             display: flex;
@@ -680,10 +789,12 @@
             align-items: center;
             transition: opacity 0.5s ease;
         }
+
         .init-loader.hide {
             opacity: 0;
             pointer-events: none;
         }
+
         .loader-spinner {
             width: 50px;
             height: 50px;
@@ -692,9 +803,15 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* ===== BOARD PICKER ===== */
@@ -707,7 +824,10 @@
             flex-direction: column;
             overflow-y: auto;
         }
-        #boardPickerOverlay.show { display: flex; }
+
+        #boardPickerOverlay.show {
+            display: flex;
+        }
 
         .board-picker-header {
             padding: 28px 40px 0;
@@ -717,16 +837,19 @@
             flex-wrap: wrap;
             gap: 12px;
         }
+
         .board-picker-header h2 {
             font-size: 28px;
             font-weight: 700;
             color: var(--text-main);
         }
+
         .board-picker-header p {
             font-size: 14px;
             color: var(--text-muted);
             margin-top: 4px;
         }
+
         .board-picker-header .bp-user {
             font-size: 14px;
             color: var(--text-muted);
@@ -734,6 +857,7 @@
             align-items: center;
             gap: 10px;
         }
+
         .board-picker-header .btn-bp-logout {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -743,7 +867,11 @@
             cursor: pointer;
             font-size: 13px;
         }
-        .board-picker-header .btn-bp-logout:hover { color: var(--text-main); border-color: var(--text-main); }
+
+        .board-picker-header .btn-bp-logout:hover {
+            color: var(--text-main);
+            border-color: var(--text-main);
+        }
 
         .board-picker-grid {
             display: grid;
@@ -766,27 +894,42 @@
             position: relative;
             animation: fadeInCard 0.3s ease both;
         }
+
         @keyframes fadeInCard {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .bp-card:hover {
             border-color: var(--btn-primary);
             box-shadow: var(--shadow-md);
             transform: translateY(-3px);
         }
-        .bp-card-icon { font-size: 32px; }
+
+        .bp-card-icon {
+            font-size: 32px;
+        }
+
         .bp-card-name {
             font-size: 17px;
             font-weight: 700;
             color: var(--text-main);
             word-break: break-word;
         }
+
         .bp-card-meta {
             font-size: 12px;
             color: var(--text-muted);
             margin-top: auto;
         }
+
         .bp-card-actions {
             position: absolute;
             top: 12px;
@@ -796,7 +939,11 @@
             opacity: 0;
             transition: opacity 0.15s;
         }
-        .bp-card:hover .bp-card-actions { opacity: 1; }
+
+        .bp-card:hover .bp-card-actions {
+            opacity: 1;
+        }
+
         .bp-card-btn {
             background: var(--bg-body);
             border: 1px solid var(--border-color);
@@ -811,8 +958,17 @@
             justify-content: center;
             transition: all 0.15s;
         }
-        .bp-card-btn:hover { background: var(--bg-column); color: var(--text-main); }
-        .bp-card-btn.danger:hover { background: rgba(220,53,69,0.1); color: #dc3545; border-color: #dc3545; }
+
+        .bp-card-btn:hover {
+            background: var(--bg-column);
+            color: var(--text-main);
+        }
+
+        .bp-card-btn.danger:hover {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border-color: #dc3545;
+        }
 
         .bp-new-card {
             border-style: dashed;
@@ -821,17 +977,20 @@
             justify-content: center;
             color: var(--text-muted);
         }
+
         .bp-new-card:hover {
             border-color: var(--btn-primary);
             color: var(--btn-primary);
             background: transparent;
         }
+
         .bp-new-card-inner {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 8px;
         }
+
         .bp-new-icon {
             width: 48px;
             height: 48px;
@@ -842,7 +1001,11 @@
             justify-content: center;
             font-size: 22px;
         }
-        .bp-new-label { font-size: 14px; font-weight: 600; }
+
+        .bp-new-label {
+            font-size: 14px;
+            font-weight: 600;
+        }
 
         /* Board name badge in app header */
         .board-name-badge {
@@ -850,6 +1013,7 @@
             align-items: center;
             gap: 8px;
         }
+
         .btn-switch-board {
             background: transparent;
             border: 1.5px solid var(--border-color);
@@ -862,6 +1026,7 @@
             transition: all 0.2s;
             white-space: nowrap;
         }
+
         .btn-switch-board:hover {
             border-color: var(--btn-primary);
             color: var(--btn-primary);
@@ -870,6 +1035,7 @@
         /* Rename modal reuses existing .modal-overlay / .modal-body */
     </style>
 </head>
+
 <body>
 
     <div id="initLoader" class="init-loader">
@@ -880,13 +1046,18 @@
     <div id="authOverlay" class="auth-overlay">
         <div class="auth-card">
             <h2>Session Not Found</h2>
-            <div id="authOverlayMessage" style="margin-bottom: 20px;">We couldn't verify your login. This might be due to a slow connection or a temporary error.</div>
+            <div id="authOverlayMessage" style="margin-bottom: 20px;">We couldn't verify your login. This might be due
+                to a slow connection or a temporary error.</div>
             <div class="btn-row">
                 <button class="btn-retry" onclick="location.reload()">🔄 Retry</button>
                 <button class="btn-home" onclick="hardReset()">🧹 Hard Reset & Restart</button>
             </div>
-            <button onclick="toggleDebugInfo()" style="margin-top: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 12px;">Troubleshoot / Show Details</button>
-            <div id="debugInfo" style="display: none; margin-top: 15px; text-align: left; background: #000; color: #0f0; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 11px; max-height: 200px; overflow: auto; border: 1px solid #333;"></div>
+            <button onclick="toggleDebugInfo()"
+                style="margin-top: 20px; background: none; border: none; color: var(--text-muted); cursor: pointer; text-decoration: underline; font-size: 12px;">Troubleshoot
+                / Show Details</button>
+            <div id="debugInfo"
+                style="display: none; margin-top: 15px; text-align: left; background: #000; color: #0f0; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 11px; max-height: 200px; overflow: auto; border: 1px solid #333;">
+            </div>
         </div>
     </div>
 
@@ -899,7 +1070,7 @@
                 const slug = url.hostname.split('.')[0];
                 const storageKey = `sb-${slug}-auth-token`;
                 const storageVal = localStorage.getItem(storageKey);
-                
+
                 const stats = {
                     localStorageSupported: (typeof Storage !== 'undefined'),
                     storageKey: storageKey,
@@ -934,7 +1105,8 @@
             </div>
             <div class="bp-user">
                 <span id="bpUserName">👤</span>
-                <button id="btnBpClose" class="btn-bp-logout" onclick="closeBoardPicker()" style="display:none; margin-right: 10px;">Back to Board</button>
+                <button id="btnBpClose" class="btn-bp-logout" onclick="closeBoardPicker()"
+                    style="display:none; margin-right: 10px;">Back to Board</button>
                 <button class="btn-bp-logout" onclick="logout()">Logout</button>
             </div>
         </div>
@@ -951,7 +1123,8 @@
             </select>
             <button class="btn-invite" onclick="openInviteModal()">+ Invite</button>
             <span class="user-info" id="user-display">👤 Logged out</span>
-            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button>
+            <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()"
+                title="Toggle Dark Mode">🌙</button>
             <button class="btn-logout" onclick="logout()">Logout</button>
         </div>
     </nav>
@@ -962,7 +1135,8 @@
                 <h1 class="board-title" id="boardTitleDisplay">Project Board</h1>
                 <button class="btn-switch-board" onclick="showBoardPicker()">⇄ Switch</button>
             </div>
-            <div class="view-toggles" style="display: flex; gap: 10px; margin-left: 15px; background: var(--bg-card); padding: 5px; border-radius: 10px; border: 1px solid var(--border-color);">
+            <div class="view-toggles"
+                style="display: flex; gap: 10px; margin-left: 15px; background: var(--bg-card); padding: 5px; border-radius: 10px; border: 1px solid var(--border-color);">
                 <button id="btnViewBoard" class="pill-filter active" onclick="setView('board')">📋 Board</button>
                 <button id="btnViewDashboard" class="pill-filter" onclick="setView('dashboard')">📊 Dashboard</button>
             </div>
@@ -979,27 +1153,40 @@
     <!-- ===== ADMIN DASHBOARD VIEW ===== -->
     <div id="adminDashboardView" style="display: none; padding: 30px 40px; flex-grow: 1; overflow-y: auto;">
         <div style="margin-bottom: 30px;">
-            <h2 style="font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">🛡️ Admin Dashboard</h2>
+            <h2 style="font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">🛡️ Admin
+                Dashboard</h2>
             <p style="color: var(--text-muted); font-size: 14px;">Overview of all students and their work logs.</p>
         </div>
 
         <!-- Admin Stats -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
             <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
-                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Total Students</h4>
-                <div id="adminStatStudents" style="font-size: 36px; font-weight: bold; color: var(--btn-primary);">—</div>
+                <h4
+                    style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Total Students</h4>
+                <div id="adminStatStudents" style="font-size: 36px; font-weight: bold; color: var(--btn-primary);">—
+                </div>
             </div>
             <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
-                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Total Tasks</h4>
+                <h4
+                    style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Total Tasks</h4>
                 <div id="adminStatTasks" style="font-size: 36px; font-weight: bold; color: #28a745;">—</div>
             </div>
             <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
-                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Tasks Completed</h4>
-                <div id="adminStatDone" style="font-size: 36px; font-weight: bold; color: var(--priority-medium);">—</div>
+                <h4
+                    style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Tasks Completed</h4>
+                <div id="adminStatDone" style="font-size: 36px; font-weight: bold; color: var(--priority-medium);">—
+                </div>
             </div>
             <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
-                <h4 style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Total Hours</h4>
-                <div id="adminStatHours" style="font-size: 36px; font-weight: bold; color: var(--priority-high);">—</div>
+                <h4
+                    style="margin-bottom: 10px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Total Hours</h4>
+                <div id="adminStatHours" style="font-size: 36px; font-weight: bold; color: var(--priority-high);">—
+                </div>
             </div>
         </div>
 
@@ -1007,7 +1194,8 @@
         <div class="column" style="padding: 25px; height: auto; overflow-x: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                 <h3 style="font-size: 18px;">📋 Student Work Logs</h3>
-                <button class="btn-add-task" onclick="loadAdminData()" style="padding: 8px 16px; font-size: 13px;">🔄 Refresh</button>
+                <button class="btn-add-task" onclick="loadAdminData()" style="padding: 8px 16px; font-size: 13px;">🔄
+                    Refresh</button>
             </div>
             <div id="adminStudentTable">
                 <div style="color: var(--text-muted); text-align: center; padding: 40px;">Loading student data...</div>
@@ -1017,7 +1205,8 @@
 
     <!-- Dashboard View [NEW] -->
     <div id="dashboardView" style="display: none; padding: 20px 40px; flex-grow: 1; overflow-y: auto;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
             <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
                 <h4 style="margin-bottom: 10px; color: var(--text-muted);">Total Tasks</h4>
                 <div id="statTotalTasks" style="font-size: 36px; font-weight: bold; color: var(--btn-primary);">0</div>
@@ -1028,33 +1217,42 @@
             </div>
             <div class="column" style="padding: 20px; text-align: center; height: auto; min-width: unset;">
                 <h4 style="margin-bottom: 10px; color: var(--text-muted);">Completion Rate</h4>
-                <div id="statCompletionRate" style="font-size: 36px; font-weight: bold; color: var(--priority-medium);">0%</div>
+                <div id="statCompletionRate" style="font-size: 36px; font-weight: bold; color: var(--priority-medium);">
+                    0%</div>
             </div>
         </div>
-        
+
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px;">
             <div class="column" style="padding: 25px; height: auto;">
                 <h3 style="margin-bottom: 20px;">Task Distribution</h3>
-                <div id="distributionChart" style="display: flex; align-items: flex-end; gap: 20px; height: 200px; padding: 20px 0;">
+                <div id="distributionChart"
+                    style="display: flex; align-items: flex-end; gap: 20px; height: 200px; padding: 20px 0;">
                     <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
-                        <div id="barTodo" style="width: 100%; background: var(--border-color); border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;"></div>
+                        <div id="barTodo"
+                            style="width: 100%; background: var(--border-color); border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;">
+                        </div>
                         <span style="font-size: 12px; margin-top: 5px;">To Do</span>
                     </div>
                     <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
-                        <div id="barInProgress" style="width: 100%; background: var(--priority-medium); border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;"></div>
+                        <div id="barInProgress"
+                            style="width: 100%; background: var(--priority-medium); border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;">
+                        </div>
                         <span style="font-size: 12px; margin-top: 5px;">In Progress</span>
                     </div>
                     <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
-                        <div id="barDone" style="width: 100%; background: #28a745; border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;"></div>
+                        <div id="barDone"
+                            style="width: 100%; background: #28a745; border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;">
+                        </div>
                         <span style="font-size: 12px; margin-top: 5px;">Done</span>
                     </div>
                 </div>
             </div>
-            
+
             <div class="column" style="padding: 25px; height: auto;">
                 <h3 style="margin-bottom: 20px;">Upcoming Deadlines</h3>
                 <div id="upcomingTasks" style="display: flex; flex-direction: column; gap: 10px;">
-                    <div style="color: var(--text-muted); text-align: center; padding: 20px;">No upcoming deadlines found.</div>
+                    <div style="color: var(--text-muted); text-align: center; padding: 20px;">No upcoming deadlines
+                        found.</div>
                 </div>
             </div>
         </div>
@@ -1070,7 +1268,8 @@
             <div class="tasks-container" id="todo-tasks"></div>
         </div>
 
-        <div class="column" id="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+        <div class="column" id="inprogress" ondrop="drop(event)" ondragover="allowDrop(event)"
+            ondragleave="dragLeave(event)">
             <div class="column-header">
                 <span>In Progress</span>
                 <span class="task-count" id="inprogress-count">0</span>
@@ -1112,7 +1311,9 @@
             </div>
             <div class="form-group">
                 <label>Task Description</label>
-                <textarea id="taskDescInput" style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-family: inherit; font-size: 14px; outline: none; height: 80px; resize: none;" placeholder="Provide some context..."></textarea>
+                <textarea id="taskDescInput"
+                    style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-family: inherit; font-size: 14px; outline: none; height: 80px; resize: none;"
+                    placeholder="Provide some context..."></textarea>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-group">
@@ -1146,11 +1347,14 @@
             <input type="hidden" id="editTaskIdInput">
             <div class="form-group">
                 <label>Task Title</label>
-                <input type="text" id="editTaskTitleInput" placeholder="e.g. Write Introduction Section" autocomplete="off">
+                <input type="text" id="editTaskTitleInput" placeholder="e.g. Write Introduction Section"
+                    autocomplete="off">
             </div>
             <div class="form-group">
                 <label>Task Description</label>
-                <textarea id="editTaskDescInput" style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-family: inherit; font-size: 14px; outline: none; height: 80px; resize: none;" placeholder="Provide some context..."></textarea>
+                <textarea id="editTaskDescInput"
+                    style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; background: var(--bg-body); color: var(--text-main); font-family: inherit; font-size: 14px; outline: none; height: 80px; resize: none;"
+                    placeholder="Provide some context..."></textarea>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                 <div class="form-group">
@@ -1180,7 +1384,8 @@
             <input type="hidden" id="renameBoardIdInput">
             <div class="form-group">
                 <label>Board Name</label>
-                <input type="text" id="renameBoardNameInput" placeholder="e.g. CS Project" autocomplete="off" maxlength="60">
+                <input type="text" id="renameBoardNameInput" placeholder="e.g. CS Project" autocomplete="off"
+                    maxlength="60">
             </div>
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeRenameBoardModal()">Cancel</button>
@@ -1197,7 +1402,8 @@
         </div>
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input-area">
-            <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <input type="text" id="chatInput" placeholder="Type a message..."
+                onkeypress="if(event.key === 'Enter') sendChatMessage()">
             <button onclick="sendChatMessage()">Send</button>
         </div>
     </div>
@@ -1214,7 +1420,7 @@
                 detectSessionInUrl: true
             }
         });
-        
+
         let sessionUser = null;
         let activeWorkspaceOwnerId = null;
         let realtimeChannel = null;
@@ -1226,7 +1432,7 @@
 
         // --- Authentication & Initialization ---
         let isInitializing = true;
-        
+
         function logDebug(msg, data = null) {
             const time = new Date().toLocaleTimeString();
             const logEntry = `[${time}] ${msg} ${data ? JSON.stringify(data) : ''}`;
@@ -1248,7 +1454,7 @@
                     const name = sessionUser.user_metadata?.name || 'User';
                     const userDisplay = document.getElementById('user-display');
                     if (userDisplay) userDisplay.textContent = `👤 ${name}`;
-                    
+
                     // If we get a session while NOT initializing (e.g., token refresh), refresh the view
                     if (!isInitializing) {
                         logDebug("Re-syncing workspace due to auth change...");
@@ -1283,11 +1489,11 @@
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
             }
-            
+
             try {
                 // 1. Check for existing session
                 const { data: { user }, error } = await supabaseClient.auth.getUser();
-                
+
                 if (user) {
                     logDebug("✅ Session found for:", user.email);
                     // Check if email is confirmed
@@ -1375,7 +1581,7 @@
             } catch (err) {
                 console.error("Initialization failed:", err);
                 logDebug("❌ Initialization Error:", err.message);
-                
+
                 if (err.message === "AUTHENTICATION_REQUIRED") {
                     window.location.href = "index.html";
                 } else {
@@ -1424,10 +1630,10 @@
                 .from('shared_worklogs')
                 .select('*')
                 .eq('guest_email', sessionUser.email);
-            
+
             const selectTarget = document.getElementById('workspaceSelect');
             selectTarget.innerHTML = `<option value="me">My Workspace</option>`;
-            
+
             if (data && data.length > 0) {
                 // Populate the drop down
                 data.forEach(share => {
@@ -1456,7 +1662,7 @@
             document.getElementById('done-tasks').innerHTML = '';
             document.getElementById('chatMessages').innerHTML = '';
             stopPolling();
-            
+
             await loadTasks();
             await loadMessages();
             setupRealtime(); // Reconnect listeners to new workspace tasks
@@ -1530,13 +1736,13 @@
         function renderBoards() {
             const grid = document.getElementById('boardPickerGrid');
             if (!grid) return;
-            
+
             grid.innerHTML = '';
-            
+
             if (userBoards.length === 0) {
                 grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 40px;">You don't have any project boards yet. Create one to get started!</div>`;
             }
-            
+
             userBoards.forEach(board => {
                 const isSelected = board.id === currentBoardId;
                 const card = document.createElement('div');
@@ -1565,7 +1771,7 @@
                 </div>
             `;
             grid.appendChild(newCard);
-            
+
             const closeBtn = document.getElementById('btnBpClose');
             if (closeBtn) {
                 closeBtn.style.display = userBoards.length > 0 && currentBoardId ? 'inline-block' : 'none';
@@ -1575,17 +1781,17 @@
         async function createNewBoard() {
             const name = prompt("Enter the name for your new project board:");
             if (!name || !name.trim()) return;
-            
+
             try {
                 const { data, error } = await supabaseClient
                     .from('boards')
                     .insert([{ name: name.trim(), user_id: sessionUser.id }])
                     .select();
                 if (error) throw error;
-                
+
                 userBoards.push(data[0]);
                 renderBoards();
-                
+
                 if (userBoards.length === 1) {
                     selectBoard(data[0].id);
                 } else {
@@ -1599,13 +1805,13 @@
 
         async function deleteBoard(id) {
             if (!confirm("Are you sure you want to delete this board? All tasks in this board will be lost forever.")) return;
-            
+
             try {
                 const { error } = await supabaseClient.from('boards').delete().eq('id', id);
                 if (error) throw error;
-                
+
                 userBoards = userBoards.filter(b => b.id !== id);
-                
+
                 if (currentBoardId === id) {
                     currentBoardId = null;
                     localStorage.removeItem('lastBoardId');
@@ -1613,15 +1819,15 @@
                     document.getElementById('inprogress-tasks').innerHTML = '';
                     document.getElementById('done-tasks').innerHTML = '';
                 }
-                
+
                 renderBoards();
-                
+
                 if (userBoards.length === 0) {
                     showBoardPicker();
                 } else if (!currentBoardId) {
                     selectBoard(userBoards[0].id);
                 }
-                
+
                 showToast("Board deleted.", "success");
             } catch (err) {
                 console.error("Error deleting board:", err);
@@ -1647,7 +1853,7 @@
             const overlay = document.getElementById('boardPickerOverlay');
             if (overlay) overlay.classList.remove('show');
         }
-        
+
         function updateBoardNameDisplay() {
             const currentBoard = userBoards.find(b => b.id === currentBoardId);
             const nameDisplay = document.querySelector('.board-title');
@@ -1707,7 +1913,7 @@
             // Chart
             const todoTasks = tasks.filter(t => t.status === 'todo').length;
             const inProgressTasks = tasks.filter(t => t.status === 'inprogress').length;
-            
+
             const maxVal = Math.max(todoTasks, inProgressTasks, doneTasks, 1);
             document.getElementById('barTodo').style.height = (todoTasks / maxVal * 100) + '%';
             document.getElementById('barInProgress').style.height = (inProgressTasks / maxVal * 100) + '%';
@@ -1930,7 +2136,7 @@
                 .select('*')
                 .eq('worklog_owner_id', activeWorkspaceOwnerId)
                 .order('created_at', { ascending: true });
-                
+
             if (data) {
                 data.forEach(msg => appendChatMessage(msg));
             }
@@ -1954,18 +2160,18 @@
             const input = document.getElementById('chatInput');
             const content = input.value.trim();
             if (!content) return;
-            
+
             input.value = '';
-            
+
             // Immediately show optimistic UI message if we want, but realtime takes care of it so fast
-            
+
             const payload = {
                 worklog_owner_id: activeWorkspaceOwnerId,
                 sender_id: sessionUser.id,
                 sender_name: sessionUser.user_metadata?.name || 'User',
                 content: content
             };
-            
+
             await supabaseClient.from('messages').insert([payload]);
         }
 
@@ -1999,11 +2205,11 @@
             target.classList.remove('drag-over');
             const data = ev.dataTransfer.getData("text");
             const taskElement = document.getElementById(data);
-            
+
             if (target && taskElement) {
                 const targetColumn = target.id;
                 const taskList = target.querySelector('.tasks-container');
-                if(taskList) {
+                if (taskList) {
                     taskList.appendChild(taskElement);
                     updateCounts();
                     const { error } = await supabaseClient.from('tasks').update({ status: targetColumn }).eq('id', data);
@@ -2012,28 +2218,28 @@
         }
 
         // --- Task System ---
-        let timers = {}; 
+        let timers = {};
 
         async function toggleTimer(taskId) {
             const btn = document.querySelector(`#${taskId} .btn-timer`);
             const display = document.querySelector(`#${taskId} .time-display-val`);
-            
+
             if (timers[taskId]) {
                 clearInterval(timers[taskId].interval);
                 delete timers[taskId];
                 btn.innerHTML = "▶ Start";
                 btn.classList.remove('running');
-                
+
                 const finalHours = parseFloat(display.getAttribute('data-hours'));
                 await supabaseClient.from('tasks').update({ hours: finalHours }).eq('id', taskId);
             } else {
                 btn.innerHTML = "⏸ Stop";
                 btn.classList.add('running');
-                
+
                 timers[taskId] = {
                     interval: setInterval(() => {
                         let currentTotal = parseFloat(display.getAttribute('data-hours')) || 0;
-                        currentTotal += (1/3600); 
+                        currentTotal += (1 / 3600);
                         display.setAttribute('data-hours', currentTotal);
                         display.textContent = currentTotal.toFixed(2) + "h";
                     }, 1000)
@@ -2054,10 +2260,10 @@
             const title = document.getElementById('taskTitleInput').value.trim();
             const desc = document.getElementById('taskDescInput').value.trim();
             const priorityInput = document.getElementById('taskPriorityInput').value;
-            const priority = priorityInput.replace(/[^a-zA-Z]/g, '').trim(); 
+            const priority = priorityInput.replace(/[^a-zA-Z]/g, '').trim();
             const dueDate = document.getElementById('taskDueDateInput').value;
             const assigneeEmail = document.getElementById('taskAssigneeInput').value.trim();
-            
+
             if (!title) { alert("Please enter a task title"); return; }
 
             const payload = {
@@ -2071,7 +2277,7 @@
                 hours: 0,
                 assignee_email: assigneeEmail || null
             };
-            
+
             const { data, error } = await supabaseClient.from('tasks').insert([payload]);
             if (!error) {
                 closeTaskModal();
@@ -2083,8 +2289,8 @@
         }
 
         function createTaskElement(title, columnId, taskId, priority, hours = 0, dueDate = null, description = '', assignee = '') {
-            if(document.getElementById(taskId)) document.getElementById(taskId).remove();
-            
+            if (document.getElementById(taskId)) document.getElementById(taskId).remove();
+
             const card = document.createElement('div');
             card.className = 'task-card';
             card.id = taskId;
@@ -2094,7 +2300,7 @@
             if (dueDate) card.setAttribute('data-due', dueDate);
             if (description) card.setAttribute('data-desc', description);
             if (assignee) card.setAttribute('data-assignee', assignee);
-            
+
             let deadlineHtml = '';
             if (dueDate) {
                 const dateObj = new Date(dueDate);
@@ -2124,10 +2330,10 @@
         }
 
         async function deleteTask(taskId) {
-            if(confirm("Are you sure you want to delete this task?")) {
-                if(timers[taskId]){ clearInterval(timers[taskId].interval); delete timers[taskId]; }
+            if (confirm("Are you sure you want to delete this task?")) {
+                if (timers[taskId]) { clearInterval(timers[taskId].interval); delete timers[taskId]; }
                 const el = document.getElementById(taskId);
-                if(el) el.remove();
+                if (el) el.remove();
                 await supabaseClient.from('tasks').delete().eq('id', taskId);
                 updateCounts();
             }
@@ -2197,13 +2403,13 @@
                         </thead>
                         <tbody>
                             ${Object.entries(byUser).map(([uid, userTasks], idx) => {
-                                const isOwn = uid === sessionUser.id;
-                                return userTasks.map((t, ti) => {
-                                    const statusLabel = t.status === 'todo' ? '📝 To Do' : t.status === 'inprogress' ? '⏳ In Progress' : '✅ Done';
-                                    const priorityColor = t.priority === 'High' ? 'var(--priority-high)' : t.priority === 'Low' ? 'var(--priority-low)' : 'var(--priority-medium)';
-                                    const dueLabel = t.due_date ? new Date(t.due_date).toLocaleDateString() : '—';
-                                    const userLabel = isOwn ? '🛡️ You (Admin)' : `👤 ${uid.slice(0, 8)}...`;
-                                    return `<tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;" onmouseover="this.style.background='var(--bg-column)'" onmouseout="this.style.background='transparent'">
+                    const isOwn = uid === sessionUser.id;
+                    return userTasks.map((t, ti) => {
+                        const statusLabel = t.status === 'todo' ? '📝 To Do' : t.status === 'inprogress' ? '⏳ In Progress' : '✅ Done';
+                        const priorityColor = t.priority === 'High' ? 'var(--priority-high)' : t.priority === 'Low' ? 'var(--priority-low)' : 'var(--priority-medium)';
+                        const dueLabel = t.due_date ? new Date(t.due_date).toLocaleDateString() : '—';
+                        const userLabel = isOwn ? '🛡️ You (Admin)' : `👤 ${uid.slice(0, 8)}...`;
+                        return `<tr style="border-bottom: 1px solid var(--border-color); transition: background 0.2s;" onmouseover="this.style.background='var(--bg-column)'" onmouseout="this.style.background='transparent'">
                                         <td style="padding: 10px 12px; font-weight: ${ti === 0 ? '700' : '400'}; color: var(--text-muted); font-size: 12px;">${ti === 0 ? userLabel : ''}</td>
                                         <td style="padding: 10px 12px; font-weight: 600;">${t.title}</td>
                                         <td style="padding: 10px 12px;"><span style="color: ${priorityColor}; font-weight: 700; font-size: 12px;">${t.priority || '—'}</span></td>
@@ -2211,8 +2417,8 @@
                                         <td style="padding: 10px 12px; font-weight: 600;">${parseFloat(t.hours || 0).toFixed(2)}h</td>
                                         <td style="padding: 10px 12px; color: var(--text-muted);">${dueLabel}</td>
                                     </tr>`;
-                                }).join('');
-                            }).join('')}
+                    }).join('');
+                }).join('')}
                         </tbody>
                     </table>
                 `;
@@ -2240,7 +2446,7 @@
                         hours: t.hours ? parseFloat(t.hours) : 0
                     }));
                     const { error } = await supabaseClient.from('tasks').insert(toInsert);
-                    if(!error) {
+                    if (!error) {
                         localStorage.removeItem('worklog_tasks_v3');
                         localStorage.removeItem('worklog_tasks_v2');
                     }
@@ -2259,13 +2465,13 @@
                     .select('*')
                     .eq('user_id', activeWorkspaceOwnerId)
                     .order('created_at', { ascending: true });
-                
+
                 if (currentBoardId) {
                     query = query.eq('board_id', currentBoardId);
                 }
-                
+
                 const { data, error } = await query;
-                
+
                 if (error) throw error;
 
                 // ✅ Only wipe the board AFTER a successful fetch — never on error
@@ -2275,7 +2481,7 @@
                 document.getElementById('todo-tasks').innerHTML = '';
                 document.getElementById('inprogress-tasks').innerHTML = '';
                 document.getElementById('done-tasks').innerHTML = '';
-                
+
                 if (data) {
                     data.forEach(task => {
                         // If a timer is running for this task, don't reset its hours display
@@ -2332,7 +2538,7 @@
                 document.body.appendChild(toast);
             }
             const colors = {
-                info:    { bg: '#1e40af', fg: '#fff' },
+                info: { bg: '#1e40af', fg: '#fff' },
                 warning: { bg: '#92400e', fg: '#fff' },
                 success: { bg: '#065f46', fg: '#fff' }
             };
@@ -2351,10 +2557,10 @@
         function filterByPriority(priority, btnElement) {
             currentFilterPriority = priority;
             document.querySelectorAll('.pill-filter').forEach(btn => btn.classList.remove('active'));
-            if(btnElement) btnElement.classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
             applyCurrentFilter();
         }
-        
+
         function applyCurrentFilter() {
             document.querySelectorAll('.task-card').forEach(card => {
                 if (currentFilterPriority === 'All' || card.getAttribute('data-priority') === currentFilterPriority) {
@@ -2373,13 +2579,13 @@
             const priority = card.getAttribute('data-priority');
             const description = card.getAttribute('data-desc') || '';
             const dueDate = card.getAttribute('data-due') || '';
-            
+
             document.getElementById('editTaskIdInput').value = taskId;
             document.getElementById('editTaskTitleInput').value = title;
             document.getElementById('editTaskDescInput').value = description;
             document.getElementById('editTaskPriorityInput').value = priority;
             document.getElementById('editTaskDueDateInput').value = dueDate;
-            
+
             document.getElementById('editTaskModal').classList.add('show');
             document.getElementById('editTaskTitleInput').focus();
         }
@@ -2393,15 +2599,15 @@
                 const taskId = document.getElementById('editTaskIdInput').value;
                 const title = document.getElementById('editTaskTitleInput').value.trim();
                 const desc = document.getElementById('editTaskDescInput').value.trim();
-                const priority = document.getElementById('editTaskPriorityInput').value.replace(/[^a-zA-Z]/g, '').trim(); 
+                const priority = document.getElementById('editTaskPriorityInput').value.replace(/[^a-zA-Z]/g, '').trim();
                 const dueDate = document.getElementById('editTaskDueDateInput').value;
-                
+
                 if (!title) { alert("Please enter a task title"); return; }
-                
+
                 closeEditTaskModal();
-                
-                const { error } = await supabaseClient.from('tasks').update({ 
-                    title: title, 
+
+                const { error } = await supabaseClient.from('tasks').update({
+                    title: title,
                     description: desc,
                     priority: priority,
                     due_date: dueDate || null
@@ -2418,9 +2624,9 @@
 
         function updateCounts() {
             let td = 0, ip = 0, d = 0;
-            document.querySelectorAll('#todo-tasks .task-card').forEach(c => { if(c.style.display !== 'none') td++; });
-            document.querySelectorAll('#inprogress-tasks .task-card').forEach(c => { if(c.style.display !== 'none') ip++; });
-            document.querySelectorAll('#done-tasks .task-card').forEach(c => { if(c.style.display !== 'none') d++; });
+            document.querySelectorAll('#todo-tasks .task-card').forEach(c => { if (c.style.display !== 'none') td++; });
+            document.querySelectorAll('#inprogress-tasks .task-card').forEach(c => { if (c.style.display !== 'none') ip++; });
+            document.querySelectorAll('#done-tasks .task-card').forEach(c => { if (c.style.display !== 'none') d++; });
             document.getElementById('todo-count').textContent = td;
             document.getElementById('inprogress-count').textContent = ip;
             document.getElementById('done-count').textContent = d;
@@ -2429,5 +2635,5 @@
         window.addEventListener('load', initializeApp);
     </script>
 </body>
-</html>
 
+</html>
