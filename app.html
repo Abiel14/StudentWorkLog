@@ -894,6 +894,173 @@
             color: var(--btn-primary);
         }
 
+        /* Settings Panel Overlay */
+        .settings-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .settings-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            z-index: 1001;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .settings-panel.open {
+            transform: translateX(0);
+        }
+        .settings-header {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-nav);
+            color: var(--text-nav);
+        }
+        .settings-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .btn-close-settings {
+            background: transparent;
+            border: none;
+            color: var(--text-nav);
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+            opacity: 0.8;
+        }
+        .btn-close-settings:hover {
+            opacity: 1;
+        }
+        
+        .settings-body {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .settings-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .settings-section h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 5px;
+        }
+
+        /* Workspace Members List */
+        .member-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .member-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .member-item:hover {
+            border-color: var(--btn-primary);
+        }
+        .member-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .member-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--btn-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .member-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .member-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        .member-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .btn-remove-member {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid transparent;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .btn-remove-member:hover {
+            color: #dc3545;
+            background: rgba(220,53,69,0.1);
+            border-color: #dc3545;
+        }
+        
+        .btn-settings {
+            background: transparent;
+            border: none;
+            color: var(--text-nav);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .btn-settings:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
         /* Rename modal reuses existing .modal-overlay / .modal-body */
     </style>
 </head>
@@ -973,15 +1140,54 @@
     <nav class="navbar">
         <div class="nav-logo">📋 Student Work Log</div>
         <div class="nav-controls">
-            <select id="workspaceSelect" class="workspace-select" onchange="changeWorkspace()">
-                <option value="me">My Workspace</option>
-            </select>
-            <button class="btn-invite" onclick="openInviteModal()">+ Invite</button>
-            <span class="user-info" id="user-display">👤 Logged out</span>
             <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button>
-            <button class="btn-logout" onclick="logout()">Logout</button>
+            <button id="settingsBtn" class="btn-settings" onclick="toggleSettingsPanel()" title="Settings">⚙️</button>
         </div>
     </nav>
+
+    <!-- Settings Panel & Overlay -->
+    <div id="settingsOverlay" class="settings-overlay" onclick="closeSettingsPanel()"></div>
+    <div id="settingsPanel" class="settings-panel">
+        <div class="settings-header">
+            <h2>Settings</h2>
+            <button class="btn-close-settings" onclick="closeSettingsPanel()">×</button>
+        </div>
+        <div class="settings-body">
+            <div class="settings-section">
+                <h3>My Profile</h3>
+                <span class="user-info" id="user-display" style="padding: 10px; background: var(--bg-body); border-radius: 8px; border: 1px solid var(--border-color); font-size: 16px;">👤 Logged out</span>
+                <button class="btn-save" style="background: var(--priority-high);" onclick="logout()">Logout</button>
+            </div>
+            
+            <div class="settings-section">
+                <h3>Current Workspace</h3>
+                <select id="workspaceSelect" class="workspace-select" onchange="changeWorkspace()" style="color: var(--text-main); background: var(--bg-body); border-color: var(--border-color); width: 100%;">
+                    <option value="me">My Workspace</option>
+                </select>
+                <button class="btn-invite" style="background: var(--btn-primary); color: white;" onclick="openInviteModal()">+ Invite Users</button>
+            </div>
+
+            <div class="settings-section">
+                <h3>Workspace Members</h3>
+                <ul id="workspaceMembersList" class="member-list">
+                    <!-- Members rendered by JS -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remove Member Modal -->
+    <div class="modal-overlay" id="removeMemberModal">
+        <div class="modal-body" style="max-width: 380px; text-align: center;">
+            <h3 style="margin-bottom: 15px;">Remove Member?</h3>
+            <p id="removeMemberText" style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;"></p>
+            <input type="hidden" id="removeMemberIdInput">
+            <div class="modal-actions" style="justify-content: center; gap: 15px;">
+                <button class="btn-save" style="background: var(--priority-high);" onclick="confirmRemoveMember()">Yes, Remove</button>
+                <button class="btn-cancel" onclick="closeRemoveMemberModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <div class="board-header">
         <div class="header-left">
@@ -2524,6 +2730,96 @@
         }
 
         window.addEventListener('load', initializeApp);
+        // --- Settings Panel ---
+        function toggleSettingsPanel() {
+            document.getElementById('settingsPanel').classList.add('open');
+            document.getElementById('settingsOverlay').classList.add('show');
+            initWorkspaceMembers();
+        }
+
+        function closeSettingsPanel() {
+            document.getElementById('settingsPanel').classList.remove('open');
+            document.getElementById('settingsOverlay').classList.remove('show');
+        }
+
+        // --- Workspace Members Management (Simulated via localStorage) ---
+        const LS_MEMBERS_KEY = 'swl_workspace_members';
+
+        function initWorkspaceMembers() {
+            let members = localStorage.getItem(LS_MEMBERS_KEY);
+            if (!members) {
+                // Seed with dummy data
+                members = [
+                    { id: 'u1', name: 'Alice Smith', role: 'Collaborator' },
+                    { id: 'u2', name: 'Bob Johnson', role: 'Viewer' }
+                ];
+                localStorage.setItem(LS_MEMBERS_KEY, JSON.stringify(members));
+            }
+            renderWorkspaceMembers();
+        }
+
+        function renderWorkspaceMembers() {
+            const membersList = document.getElementById('workspaceMembersList');
+            const membersJson = localStorage.getItem(LS_MEMBERS_KEY);
+            let members = [];
+            
+            try {
+                members = JSON.parse(membersJson) || [];
+            } catch (e) { members = []; }
+            
+            membersList.innerHTML = '';
+            
+            if (members.length === 0) {
+                membersList.innerHTML = '<li style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 10px;">No members added yet.</li>';
+                return;
+            }
+
+            members.forEach(member => {
+                const li = document.createElement('li');
+                li.className = 'member-item';
+                
+                // create initials for avatar
+                const initials = member.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                
+                li.innerHTML = `
+                    <div class="member-info">
+                        <div class="member-avatar">${initials}</div>
+                        <div class="member-details">
+                            <span class="member-name">${member.name}</span>
+                            <span class="member-role">${member.role || 'Member'}</span>
+                        </div>
+                    </div>
+                    <button class="btn-remove-member" onclick="promptRemoveMember('${member.id}', '${member.name}')">Remove</button>
+                `;
+                membersList.appendChild(li);
+            });
+        }
+
+        function promptRemoveMember(id, name) {
+            document.getElementById('removeMemberIdInput').value = id;
+            document.getElementById('removeMemberText').textContent = `Are you sure you want to remove ${name} from this workspace?`;
+            document.getElementById('removeMemberModal').classList.add('show');
+        }
+
+        function closeRemoveMemberModal() {
+            document.getElementById('removeMemberModal').classList.remove('show');
+        }
+
+        function confirmRemoveMember() {
+            const id = document.getElementById('removeMemberIdInput').value;
+            let membersJson = localStorage.getItem(LS_MEMBERS_KEY);
+            let members = [];
+            try {
+                members = JSON.parse(membersJson) || [];
+            } catch (e) {}
+            
+            members = members.filter(m => m.id !== id);
+            localStorage.setItem(LS_MEMBERS_KEY, JSON.stringify(members));
+            
+            renderWorkspaceMembers();
+            closeRemoveMemberModal();
+        }
     </script>
 </body>
 </html>
+
