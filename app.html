@@ -77,7 +77,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 10px;
             box-shadow: var(--shadow-md);
             position: sticky;
@@ -90,12 +90,14 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            white-space: nowrap;
         }
         .nav-controls {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: clamp(10px, 2vw, 20px);
+            flex-shrink: 0;
         }
         .user-info {
             font-weight: 500;
@@ -411,6 +413,7 @@
             border-left: 4px solid transparent;
             position: relative;
             animation: fadeIn 0.3s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
         }
         .task-card:active {
             cursor: grabbing;
@@ -428,6 +431,18 @@
         }
         .task-card[data-priority="Low"] {
             border-left-color: var(--priority-low);
+        }
+
+        .task-card[data-status="inprogress"] {
+            box-shadow: 0 8px 22px rgba(40,167,69,0.18);
+            outline: 1px solid rgba(40,167,69,0.3);
+        }
+        .task-card[data-status="paused"] {
+            box-shadow: 0 8px 22px rgba(255,166,77,0.16);
+            outline: 1px solid rgba(255,166,77,0.28);
+        }
+        .task-card[data-status="done"] {
+            opacity: 0.88;
         }
 
         .task-header {
@@ -463,13 +478,114 @@
             color: var(--priority-low);
         }
 
+        .task-meta-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .task-status-badge {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0,0,0,0.08);
+            color: var(--text-muted);
+        }
+        .task-status-badge.status-inprogress {
+            background: rgba(40,167,69,0.12);
+            color: #1f7a3a;
+        }
+        .task-status-badge.status-paused {
+            background: var(--priority-medium-bg);
+            color: var(--priority-medium);
+        }
+        .task-status-badge.status-done {
+            background: rgba(40,167,69,0.12);
+            color: #1f7a3a;
+        }
+        .task-started-indicator {
+            display: none;
+            font-size: 11px;
+            color: #1f7a3a;
+            font-weight: 700;
+        }
+        .task-card[data-status="inprogress"] .task-started-indicator {
+            display: inline-flex;
+        }
+        .task-progress {
+            height: 5px;
+            width: 100%;
+            border-radius: 999px;
+            background: var(--border-color);
+            overflow: hidden;
+            margin-top: 12px;
+        }
+        .task-progress-bar {
+            height: 100%;
+            width: 0%;
+            border-radius: inherit;
+            background: var(--btn-primary);
+            transition: width 0.25s ease;
+        }
+        .task-card[data-status="inprogress"] .task-progress-bar {
+            width: 55%;
+            background: #28a745;
+        }
+        .task-card[data-status="paused"] .task-progress-bar {
+            width: 35%;
+            background: var(--priority-medium);
+        }
+        .task-card[data-status="done"] .task-progress-bar {
+            width: 100%;
+            background: #28a745;
+        }
+
         .task-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 12px;
             margin-top: 15px;
             padding-top: 12px;
             border-top: 1px solid var(--border-color);
+        }
+
+        .task-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .btn-task-action {
+            border: none;
+            padding: 7px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            background: var(--btn-primary);
+            box-shadow: var(--shadow-sm);
+        }
+        .btn-task-action:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+        .btn-task-action.secondary {
+            background: var(--text-muted);
+        }
+        .btn-task-action.success {
+            background: #28a745;
+        }
+        .btn-task-action.warning {
+            background: var(--priority-medium);
         }
 
         .time-display {
@@ -534,6 +650,9 @@
         }
         .modal-overlay.show {
             display: flex;
+        }
+        .modal-overlay.settings-confirm-modal {
+            z-index: 1100;
         }
         .modal-body {
             background: var(--bg-card);
@@ -647,13 +766,30 @@
                 width: 100%;
                 text-align: center;
             }
-            .navbar {
-                flex-direction: column;
+            .task-controls {
                 align-items: stretch;
+                flex-direction: column;
             }
-            .nav-controls {
-                justify-content: center;
+            .task-actions {
+                justify-content: stretch;
             }
+            .btn-task-action {
+                flex: 1 1 120px;
+            }
+            .settings-panel {
+                max-width: 100%;
+            }
+            .settings-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+            .btn-save-settings {
+                width: 100%;
+            }
+            .member-edit-grid {
+                grid-template-columns: 1fr;
+            }
+            /* Navbar kept horizontal */
         }
         .auth-overlay {
             position: fixed;
@@ -961,6 +1097,8 @@
             display: flex;
             flex-direction: column;
             gap: 25px;
+            overflow-y: auto;
+            flex: 1;
         }
         
         .settings-section {
@@ -978,12 +1116,136 @@
             margin-bottom: 5px;
         }
 
+        .settings-field {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+        .settings-field label,
+        .settings-toggle span {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        .settings-field input,
+        .settings-field select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+        .settings-field input:focus,
+        .settings-field select:focus {
+            border-color: var(--btn-primary);
+            box-shadow: 0 0 0 3px rgba(0, 61, 153, 0.12);
+        }
+        .settings-hint {
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .settings-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-body);
+        }
+        .settings-toggle input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--btn-primary);
+            flex: 0 0 auto;
+        }
+        .settings-actions {
+            position: sticky;
+            bottom: 0;
+            padding: 15px 25px 20px;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -8px 20px rgba(0,0,0,0.06);
+            display: none;
+            gap: 12px;
+            align-items: center;
+            z-index: 2;
+        }
+        .settings-actions.visible {
+            display: flex;
+            animation: saveBarIn 0.24s ease both;
+        }
+        @keyframes saveBarIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .settings-unsaved-message {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            flex: 1;
+        }
+        .btn-save-settings {
+            background: var(--btn-primary);
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 11px 16px;
+            cursor: pointer;
+            font-weight: 800;
+            box-shadow: var(--shadow-md);
+            white-space: nowrap;
+            transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+        }
+        .btn-save-settings:hover {
+            background: var(--btn-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-save-settings:active {
+            transform: translateY(0) scale(0.98);
+        }
+        .settings-error {
+            display: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: rgba(220,53,69,0.1);
+            color: #dc3545;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .settings-success {
+            display: none;
+            padding: 10px 12px;
+            border-radius: 8px;
+            background: rgba(16,185,129,0.13);
+            color: #047857;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
         /* Workspace Members List */
         .member-list {
             list-style: none;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .member-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .member-list::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
         .member-item {
             display: flex;
@@ -1059,6 +1321,58 @@
         }
         .btn-settings:hover {
             background: rgba(255,255,255,0.1);
+        }
+
+        .member-edit-grid {
+            display: grid;
+            grid-template-columns: 1fr 125px;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .member-edit-grid input,
+        .member-edit-grid select {
+            min-width: 0;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            background: var(--bg-card);
+            color: var(--text-main);
+            font-size: 13px;
+            outline: none;
+        }
+        .member-active-toggle {
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .member-active-toggle input {
+            accent-color: var(--btn-primary);
+        }
+        .member-item.pending-inactive {
+            opacity: 0.65;
+        }
+
+        .unsaved-modal-copy {
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 14px;
+            margin: -8px 0 20px;
+        }
+        .btn-discard {
+            background: rgba(220,53,69,0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220,53,69,0.25);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .btn-discard:hover {
+            background: rgba(220,53,69,0.18);
         }
 
         /* Rename modal reuses existing .modal-overlay / .modal-body */
@@ -1156,15 +1470,71 @@
             <div class="settings-section">
                 <h3>My Profile</h3>
                 <span class="user-info" id="user-display" style="padding: 10px; background: var(--bg-body); border-radius: 8px; border: 1px solid var(--border-color); font-size: 16px;">👤 Logged out</span>
+                <div class="settings-field">
+                    <label for="settingsUsernameInput">Username</label>
+                    <input id="settingsUsernameInput" type="text" data-setting="profile.username" autocomplete="name" placeholder="Your display name">
+                </div>
+                <div class="settings-field">
+                    <label for="settingsProfileEmailInput">Profile email</label>
+                    <input id="settingsProfileEmailInput" type="email" data-setting="profile.email" autocomplete="email" placeholder="you@example.com">
+                    <div class="settings-hint">Saved locally for your settings view.</div>
+                </div>
                 <button class="btn-save" style="background: var(--priority-high);" onclick="logout()">Logout</button>
             </div>
             
             <div class="settings-section">
                 <h3>Current Workspace</h3>
-                <select id="workspaceSelect" class="workspace-select" onchange="changeWorkspace()" style="color: var(--text-main); background: var(--bg-body); border-color: var(--border-color); width: 100%;">
+                <div class="settings-field">
+                    <label for="settingsWorkspaceNameInput">Workspace name</label>
+                    <input id="settingsWorkspaceNameInput" type="text" data-setting="workspace.name" placeholder="My Workspace">
+                </div>
+                <div class="settings-field">
+                    <label for="workspaceSelect">Open workspace</label>
+                <select id="workspaceSelect" class="workspace-select" data-setting="workspace.currentWorkspace" style="color: var(--text-main); background: var(--bg-body); border-color: var(--border-color); width: 100%;">
                     <option value="me">My Workspace</option>
                 </select>
+                </div>
+                <label class="settings-toggle">
+                    <span>Allow collaborators to edit tasks</span>
+                    <input id="settingsCollaboratorEditInput" type="checkbox" data-setting="workspace.allowCollaboratorEdits">
+                </label>
                 <button class="btn-invite" style="background: var(--btn-primary); color: white;" onclick="openInviteModal()">+ Invite Users</button>
+            </div>
+
+            <div class="settings-section">
+                <h3>Notifications</h3>
+                <label class="settings-toggle">
+                    <span>Email notifications</span>
+                    <input id="settingsEmailNotificationsInput" type="checkbox" data-setting="notifications.email">
+                </label>
+                <label class="settings-toggle">
+                    <span>Task reminder alerts</span>
+                    <input id="settingsTaskRemindersInput" type="checkbox" data-setting="notifications.taskReminders">
+                </label>
+                <label class="settings-toggle">
+                    <span>Workspace invite alerts</span>
+                    <input id="settingsInviteAlertsInput" type="checkbox" data-setting="notifications.invites">
+                </label>
+            </div>
+
+            <div class="settings-section">
+                <h3>Invite Settings</h3>
+                <div class="settings-field">
+                    <label for="settingsInviteRoleInput">Default invite role</label>
+                    <select id="settingsInviteRoleInput" data-setting="invite.defaultRole">
+                        <option value="Collaborator">Collaborator</option>
+                        <option value="Viewer">Viewer</option>
+                        <option value="Manager">Manager</option>
+                    </select>
+                </div>
+                <label class="settings-toggle">
+                    <span>Require approval before joining</span>
+                    <input id="settingsInviteApprovalInput" type="checkbox" data-setting="invite.requireApproval">
+                </label>
+                <div class="settings-field">
+                    <label for="settingsInviteMessageInput">Default invite message</label>
+                    <input id="settingsInviteMessageInput" type="text" data-setting="invite.message" maxlength="140" placeholder="Join my workspace">
+                </div>
             </div>
 
             <div class="settings-section">
@@ -1173,11 +1543,18 @@
                     <!-- Members rendered by JS -->
                 </ul>
             </div>
+
+            <div id="settingsError" class="settings-error"></div>
+            <div id="settingsSuccess" class="settings-success">Changes saved successfully</div>
+        </div>
+        <div id="settingsActions" class="settings-actions" aria-live="polite">
+            <div class="settings-unsaved-message">You have unsaved changes</div>
+            <button id="settingsSaveButton" class="btn-save-settings" onclick="SettingsManager.save()">Save Changes</button>
         </div>
     </div>
 
     <!-- Remove Member Modal -->
-    <div class="modal-overlay" id="removeMemberModal">
+    <div class="modal-overlay settings-confirm-modal" id="removeMemberModal">
         <div class="modal-body" style="max-width: 380px; text-align: center;">
             <h3 style="margin-bottom: 15px;">Remove Member?</h3>
             <p id="removeMemberText" style="color: var(--text-muted); margin-bottom: 25px; font-size: 14px;"></p>
@@ -1185,6 +1562,18 @@
             <div class="modal-actions" style="justify-content: center; gap: 15px;">
                 <button class="btn-save" style="background: var(--priority-high);" onclick="confirmRemoveMember()">Yes, Remove</button>
                 <button class="btn-cancel" onclick="closeRemoveMemberModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay settings-confirm-modal" id="unsavedSettingsModal">
+        <div class="modal-body" style="max-width: 430px;">
+            <h3>Unsaved changes</h3>
+            <p class="unsaved-modal-copy">You have unsaved changes. Are you sure you want to leave?</p>
+            <div class="modal-actions" style="gap: 10px; flex-wrap: wrap;">
+                <button class="btn-cancel" onclick="SettingsManager.cancelPendingLeave()">Cancel</button>
+                <button class="btn-discard" onclick="SettingsManager.discardPendingLeave()">Discard Changes</button>
+                <button class="btn-save" onclick="SettingsManager.savePendingLeave()">Save Changes</button>
             </div>
         </div>
     </div>
@@ -1277,6 +1666,10 @@
                         <span style="font-size: 12px; margin-top: 5px;">In Progress</span>
                     </div>
                     <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
+                        <div id="barPaused" style="width: 100%; background: var(--text-muted); border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;"></div>
+                        <span style="font-size: 12px; margin-top: 5px;">Paused</span>
+                    </div>
+                    <div style="flex: 1; display: flex; flex-direction: column; align-items: center;">
                         <div id="barDone" style="width: 100%; background: #28a745; border-radius: 5px 5px 0 0; transition: height 0.5s ease; height: 10%;"></div>
                         <span style="font-size: 12px; margin-top: 5px;">Done</span>
                     </div>
@@ -1308,6 +1701,14 @@
                 <span class="task-count" id="inprogress-count">0</span>
             </div>
             <div class="tasks-container" id="inprogress-tasks"></div>
+        </div>
+
+        <div class="column" id="paused" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+            <div class="column-header">
+                <span>Paused</span>
+                <span class="task-count" id="paused-count">0</span>
+            </div>
+            <div class="tasks-container" id="paused-tasks"></div>
         </div>
 
         <div class="column" id="done" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
@@ -1648,6 +2049,9 @@
 
         function finishInit() {
             isInitializing = false;
+            if (window.SettingsManager && sessionUser) {
+                SettingsManager.init();
+            }
             const loader = document.getElementById('initLoader');
             if (loader) {
                 loader.classList.add('hide');
@@ -1656,6 +2060,12 @@
         }
 
         function logout() {
+            if (window.SettingsManager && SettingsManager.hasUnsavedChanges()) {
+                SettingsManager.requestLeave(() => {
+                    document.getElementById('logoutModal').classList.add('show');
+                });
+                return;
+            }
             document.getElementById('logoutModal').classList.add('show');
         }
 
@@ -1728,6 +2138,7 @@
             lastKnownTaskCount = -1; // reset for new workspace
             document.getElementById('todo-tasks').innerHTML = '';
             document.getElementById('inprogress-tasks').innerHTML = '';
+            document.getElementById('paused-tasks').innerHTML = '';
             document.getElementById('done-tasks').innerHTML = '';
             document.getElementById('chatMessages').innerHTML = '';
             stopPolling();
@@ -1886,6 +2297,7 @@
                     localStorage.removeItem('lastBoardId');
                     document.getElementById('todo-tasks').innerHTML = '';
                     document.getElementById('inprogress-tasks').innerHTML = '';
+                    document.getElementById('paused-tasks').innerHTML = '';
                     document.getElementById('done-tasks').innerHTML = '';
                     document.getElementById('chatMessages').innerHTML = '';
                     updateBoardNameDisplay();
@@ -1990,10 +2402,12 @@
             // Chart
             const todoTasks = tasks.filter(t => t.status === 'todo').length;
             const inProgressTasks = tasks.filter(t => t.status === 'inprogress').length;
+            const pausedTasks = tasks.filter(t => t.status === 'paused').length;
             
-            const maxVal = Math.max(todoTasks, inProgressTasks, doneTasks, 1);
+            const maxVal = Math.max(todoTasks, inProgressTasks, pausedTasks, doneTasks, 1);
             document.getElementById('barTodo').style.height = (todoTasks / maxVal * 100) + '%';
             document.getElementById('barInProgress').style.height = (inProgressTasks / maxVal * 100) + '%';
+            document.getElementById('barPaused').style.height = (pausedTasks / maxVal * 100) + '%';
             document.getElementById('barDone').style.height = (doneTasks / maxVal * 100) + '%';
 
             // Deadlines
@@ -2087,6 +2501,9 @@
                 }
                 statusEl.style.display = 'block';
                 sendBtn.textContent = 'Done!';
+
+                // Add to workspace members list
+                addWorkspaceMember(email);
 
                 setTimeout(() => {
                     closeInviteModal();
@@ -2308,40 +2725,266 @@
                 const taskList = target.querySelector('.tasks-container');
                 if(taskList) {
                     taskList.appendChild(taskElement);
-                    updateCounts();
-                    const { error } = await supabaseClient.from('tasks').update({ status: targetColumn }).eq('id', data);
+                    await setTaskStatus(data, targetColumn);
                 }
             }
         }
 
         // --- Task System ---
-        let timers = {}; 
+        let timers = {};
 
-        async function toggleTimer(taskId) {
-            const btn = document.querySelector(`#${taskId} .btn-timer`);
-            const display = document.querySelector(`#${taskId} .time-display-val`);
-            
+        const TASK_STATUS_META = {
+            todo: { label: 'Not Started' },
+            inprogress: { label: 'In Progress' },
+            paused: { label: 'Paused' },
+            done: { label: 'Completed' }
+        };
+
+        function normalizeTaskStatus(status) {
+            const value = String(status || '').toLowerCase().replace(/[\s_-]+/g, '');
+            if (value === 'inprogress' || value === 'active' || value === 'started') return 'inprogress';
+            if (value === 'complete' || value === 'completed' || value === 'done') return 'done';
+            if (value === 'pause' || value === 'paused') return 'paused';
+            return 'todo';
+        }
+
+        function swlEscapeHtml(value) {
+            return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            }[char]));
+        }
+
+        function taskStateStorageKey() {
+            const owner = activeWorkspaceOwnerId || sessionUser?.id || 'local';
+            const board = currentBoardId || 'all';
+            return `swl_task_states_v1:${owner}:${board}`;
+        }
+
+        const TaskStateStore = (() => {
+            function read() {
+                try {
+                    return JSON.parse(localStorage.getItem(taskStateStorageKey()) || '{}') || {};
+                } catch (err) {
+                    console.warn('Could not read saved task states:', err);
+                    return {};
+                }
+            }
+
+            function write(states) {
+                try {
+                    localStorage.setItem(taskStateStorageKey(), JSON.stringify(states));
+                } catch (err) {
+                    console.warn('Could not save task states locally:', err);
+                }
+            }
+
+            return {
+                get(taskId) {
+                    return read()[taskId] || null;
+                },
+                save(taskId, patch) {
+                    const states = read();
+                    const previous = states[taskId] || {};
+                    states[taskId] = {
+                        ...previous,
+                        ...patch,
+                        status: patch.status ? normalizeTaskStatus(patch.status) : previous.status,
+                        updatedAt: new Date().toISOString()
+                    };
+                    write(states);
+                },
+                remove(taskId) {
+                    const states = read();
+                    delete states[taskId];
+                    write(states);
+                }
+            };
+        })();
+
+        function taskActionId(taskId) {
+            return String(taskId).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+        }
+
+        function getTaskContainer(status) {
+            return document.getElementById(`${normalizeTaskStatus(status)}-tasks`) || document.getElementById('todo-tasks');
+        }
+
+        function getTaskHours(taskId, fallback = 0) {
+            if (timers[taskId]) return timers[taskId].hours || 0;
+            const card = document.getElementById(taskId);
+            const display = card?.querySelector('.time-display-val');
+            const saved = TaskStateStore.get(taskId);
+            const value = display?.getAttribute('data-hours') ?? saved?.hours ?? fallback ?? 0;
+            return Number.parseFloat(value) || 0;
+        }
+
+        function setTaskHoursDisplay(taskId, hours) {
+            const card = document.getElementById(taskId);
+            const display = card?.querySelector('.time-display-val');
+            if (!display) return;
+            const safeHours = Number.parseFloat(hours) || 0;
+            display.setAttribute('data-hours', safeHours);
+            display.textContent = `${safeHours.toFixed(2)}h`;
+        }
+
+        function syncTimerUi(taskId, running = !!timers[taskId]) {
+            const card = document.getElementById(taskId);
+            if (!card) return;
+            card.classList.toggle('is-timing', running);
+            card.querySelectorAll('[data-task-running-label]').forEach((label) => {
+                label.textContent = running ? 'Timer running' : '';
+            });
+        }
+
+        function startTaskTimer(taskId) {
+            if (timers[taskId]) return;
+            const initialHours = getTaskHours(taskId);
+            timers[taskId] = {
+                hours: initialHours,
+                ticks: 0,
+                interval: setInterval(() => {
+                    if (!document.getElementById(taskId)) return;
+                    timers[taskId].hours += (1 / 3600);
+                    timers[taskId].ticks += 1;
+                    setTaskHoursDisplay(taskId, timers[taskId].hours);
+                    if (timers[taskId].ticks % 15 === 0) {
+                        TaskStateStore.save(taskId, { hours: timers[taskId].hours });
+                    }
+                }, 1000)
+            };
+            setTaskHoursDisplay(taskId, initialHours);
+            syncTimerUi(taskId, true);
+        }
+
+        async function stopTaskTimer(taskId, persistHours = true) {
+            const finalHours = getTaskHours(taskId);
             if (timers[taskId]) {
                 clearInterval(timers[taskId].interval);
                 delete timers[taskId];
-                btn.innerHTML = "▶ Start";
-                btn.classList.remove('running');
-                
-                const finalHours = parseFloat(display.getAttribute('data-hours'));
-                await supabaseClient.from('tasks').update({ hours: finalHours }).eq('id', taskId);
-            } else {
-                btn.innerHTML = "⏸ Stop";
-                btn.classList.add('running');
-                
-                timers[taskId] = {
-                    interval: setInterval(() => {
-                        let currentTotal = parseFloat(display.getAttribute('data-hours')) || 0;
-                        currentTotal += (1/3600); 
-                        display.setAttribute('data-hours', currentTotal);
-                        display.textContent = currentTotal.toFixed(2) + "h";
-                    }, 1000)
-                };
             }
+            setTaskHoursDisplay(taskId, finalHours);
+            syncTimerUi(taskId, false);
+            if (persistHours) {
+                await persistTaskPatch(taskId, { hours: finalHours }, { quiet: true });
+            }
+            return finalHours;
+        }
+
+        function renderTaskActions(status, taskId) {
+            const id = taskActionId(taskId);
+            const safeStatus = normalizeTaskStatus(status);
+            if (safeStatus === 'done') {
+                return `<button type="button" class="btn-task-action secondary" onclick="TaskActions.continue('${id}')">Continue Task</button>`;
+            }
+            if (safeStatus === 'inprogress') {
+                return `
+                    <button type="button" class="btn-task-action" onclick="TaskActions.continue('${id}')">Continue Task</button>
+                    <button type="button" class="btn-task-action warning" onclick="TaskActions.pause('${id}')">Pause Task</button>
+                    <button type="button" class="btn-task-action success" onclick="TaskActions.complete('${id}')">Mark Complete</button>
+                `;
+            }
+            if (safeStatus === 'paused') {
+                return `
+                    <button type="button" class="btn-task-action" onclick="TaskActions.continue('${id}')">Continue Task</button>
+                    <button type="button" class="btn-task-action success" onclick="TaskActions.complete('${id}')">Mark Complete</button>
+                `;
+            }
+            return `
+                <button type="button" class="btn-task-action" onclick="TaskActions.start('${id}')">Start Task</button>
+                <button type="button" class="btn-task-action success" onclick="TaskActions.complete('${id}')">Mark Complete</button>
+            `;
+        }
+
+        function renderTaskStatusUi(card) {
+            const status = normalizeTaskStatus(card.dataset.status);
+            const meta = TASK_STATUS_META[status];
+            card.dataset.status = status;
+
+            const statusBadge = card.querySelector('.task-status-badge');
+            if (statusBadge) {
+                statusBadge.className = `task-status-badge status-${status}`;
+                statusBadge.textContent = meta.label;
+            }
+
+            const actions = card.querySelector('.task-actions');
+            if (actions) actions.innerHTML = renderTaskActions(status, card.id);
+            syncTimerUi(card.id);
+        }
+
+        function applyTaskStatus(taskId, status) {
+            const card = document.getElementById(taskId);
+            if (!card) return null;
+
+            const normalizedStatus = normalizeTaskStatus(status);
+            card.dataset.status = normalizedStatus;
+            const container = getTaskContainer(normalizedStatus);
+            if (container && card.parentElement !== container) {
+                container.appendChild(card);
+            }
+            renderTaskStatusUi(card);
+            return normalizedStatus;
+        }
+
+        async function persistTaskPatch(taskId, patch, options = {}) {
+            const normalizedPatch = { ...patch };
+            if (normalizedPatch.status) normalizedPatch.status = normalizeTaskStatus(normalizedPatch.status);
+            TaskStateStore.save(taskId, normalizedPatch);
+
+            try {
+                const { error } = await supabaseClient.from('tasks').update(normalizedPatch).eq('id', taskId);
+                if (error) throw error;
+                return true;
+            } catch (err) {
+                console.error('Task state sync failed:', err);
+                if (!options.quiet) {
+                    showToast('Task updated locally. Sync will retry when the connection allows it.', 'warning');
+                }
+                return false;
+            }
+        }
+
+        async function setTaskStatus(taskId, status, options = {}) {
+            const normalizedStatus = applyTaskStatus(taskId, status);
+            if (!normalizedStatus) return false;
+
+            if (normalizedStatus === 'inprogress' && options.startTimer) {
+                startTaskTimer(taskId);
+            }
+            if (normalizedStatus === 'paused' || normalizedStatus === 'done') {
+                await stopTaskTimer(taskId, true);
+            }
+
+            await persistTaskPatch(taskId, { status: normalizedStatus });
+            applyCurrentFilter();
+            if (document.getElementById('dashboardView').style.display === 'block') {
+                updateDashboard();
+            }
+            return true;
+        }
+
+        const TaskActions = {
+            start(taskId) {
+                return setTaskStatus(taskId, 'inprogress', { startTimer: true });
+            },
+            continue(taskId) {
+                return setTaskStatus(taskId, 'inprogress', { startTimer: true });
+            },
+            pause(taskId) {
+                return setTaskStatus(taskId, 'paused');
+            },
+            complete(taskId) {
+                return setTaskStatus(taskId, 'done');
+            }
+        };
+        window.TaskActions = TaskActions;
+
+        async function toggleTimer(taskId) {
+            if (timers[taskId]) return TaskActions.pause(taskId);
+            return TaskActions.start(taskId);
         }
 
         function openTaskModal() {
@@ -2387,13 +3030,19 @@
 
         function createTaskElement(title, columnId, taskId, priority, hours = 0, dueDate = null, description = '', assignee = '') {
             if(document.getElementById(taskId)) document.getElementById(taskId).remove();
+
+            const savedState = TaskStateStore.get(taskId);
+            const effectiveStatus = normalizeTaskStatus(savedState?.status || columnId);
+            const effectiveHours = getTaskHours(taskId, savedState?.hours ?? hours);
+            const actionId = taskActionId(taskId);
             
             const card = document.createElement('div');
             card.className = 'task-card';
             card.id = taskId;
             card.draggable = true;
             card.ondragstart = drag;
-            card.setAttribute('data-priority', priority);
+            card.setAttribute('data-priority', priority || 'Medium');
+            card.setAttribute('data-status', effectiveStatus);
             if (dueDate) card.setAttribute('data-due', dueDate);
             if (description) card.setAttribute('data-desc', description);
             if (assignee) card.setAttribute('data-assignee', assignee);
@@ -2401,34 +3050,45 @@
             let deadlineHtml = '';
             if (dueDate) {
                 const dateObj = new Date(dueDate);
-                const isOverdue = dateObj < new Date() && columnId !== 'done';
+                const isOverdue = dateObj < new Date() && effectiveStatus !== 'done';
                 deadlineHtml = `<div style="font-size: 11px; margin-top: 5px; color: ${isOverdue ? 'var(--priority-high)' : 'var(--text-muted)'}; font-weight: bold;">
                     📅 Due: ${dateObj.toLocaleDateString()}
                 </div>`;
             }
 
             card.innerHTML = `
-                <button class="btn-edit-task" onclick="openEditTaskModal('${taskId}')" title="Edit Task">✏️</button>
-                <button class="btn-delete" onclick="deleteTask('${taskId}')" title="Delete Task">×</button>
-                <div class="task-header"><div class="task-title">${title}</div></div>
-                <div><span class="task-priority-badge">${priority}</span></div>
+                <button class="btn-edit-task" onclick="openEditTaskModal('${actionId}')" title="Edit Task">✏️</button>
+                <button class="btn-delete" onclick="deleteTask('${actionId}')" title="Delete Task">×</button>
+                <div class="task-header"><div class="task-title">${swlEscapeHtml(title)}</div></div>
+                <div class="task-meta-row">
+                    <span class="task-priority-badge">${swlEscapeHtml(priority || 'Medium')}</span>
+                    <span class="task-status-badge"></span>
+                    <span class="task-started-indicator">Started</span>
+                    <span data-task-running-label style="font-size: 11px; color: var(--text-muted); font-weight: 700;"></span>
+                </div>
                 ${deadlineHtml}
-                ${assignee ? `<div style="font-size: 11px; margin-top: 4px; color: var(--text-muted);">👤 ${assignee}</div>` : ''}
+                ${assignee ? `<div style="font-size: 11px; margin-top: 4px; color: var(--text-muted);">👤 ${swlEscapeHtml(assignee)}</div>` : ''}
+                <div class="task-progress" aria-hidden="true"><div class="task-progress-bar"></div></div>
                 <div class="task-controls">
                     <div class="time-display">
                         <span class="timer-icon">⏱️</span>
-                        <span class="time-display-val" data-hours="${hours}">${parseFloat(hours).toFixed(2)}h</span>
+                        <span class="time-display-val" data-hours="${effectiveHours}">${effectiveHours.toFixed(2)}h</span>
                     </div>
-                    <button class="btn-timer" onclick="toggleTimer('${taskId}')">▶ Start</button>
+                    <div class="task-actions"></div>
                 </div>
             `;
-            const container = document.getElementById(columnId + '-tasks');
-            if (container) container.appendChild(card);
+            renderTaskStatusUi(card);
+            const container = getTaskContainer(effectiveStatus);
+            if (container) {
+                container.appendChild(card);
+                syncTimerUi(card.id);
+            }
         }
 
         async function deleteTask(taskId) {
             if(confirm("Are you sure you want to delete this task?")) {
                 if(timers[taskId]){ clearInterval(timers[taskId].interval); delete timers[taskId]; }
+                TaskStateStore.remove(taskId);
                 const el = document.getElementById(taskId);
                 if(el) el.remove();
                 await supabaseClient.from('tasks').delete().eq('id', taskId);
@@ -2502,7 +3162,7 @@
                             ${Object.entries(byUser).map(([uid, userTasks], idx) => {
                                 const isOwn = uid === sessionUser.id;
                                 return userTasks.map((t, ti) => {
-                                    const statusLabel = t.status === 'todo' ? '📝 To Do' : t.status === 'inprogress' ? '⏳ In Progress' : '✅ Done';
+                                    const statusLabel = t.status === 'todo' ? '📝 To Do' : t.status === 'inprogress' ? '⏳ In Progress' : t.status === 'paused' ? '⏸ Paused' : '✅ Done';
                                     const priorityColor = t.priority === 'High' ? 'var(--priority-high)' : t.priority === 'Low' ? 'var(--priority-low)' : 'var(--priority-medium)';
                                     const dueLabel = t.due_date ? new Date(t.due_date).toLocaleDateString() : '—';
                                     const userLabel = isOwn ? '🛡️ You (Admin)' : `👤 ${uid.slice(0, 8)}...`;
@@ -2577,6 +3237,7 @@
 
                 document.getElementById('todo-tasks').innerHTML = '';
                 document.getElementById('inprogress-tasks').innerHTML = '';
+                document.getElementById('paused-tasks').innerHTML = '';
                 document.getElementById('done-tasks').innerHTML = '';
                 
                 if (data) {
@@ -2585,14 +3246,10 @@
                         const isTimerRunning = runningTimers.includes(task.id);
                         createTaskElement(
                             task.title, task.status, task.id, task.priority,
-                            isTimerRunning ? null : task.hours,  // keep live hours if timer running
+                            isTimerRunning ? getTaskHours(task.id, task.hours) : task.hours,
                             task.due_date, task.description, task.assignee_email
                         );
-                        // Re-apply running timer state to restored card
-                        if (isTimerRunning) {
-                            const btn = document.querySelector(`#${task.id} .btn-timer`);
-                            if (btn) { btn.innerHTML = '⏸ Stop'; btn.classList.add('running'); }
-                        }
+                        if (isTimerRunning) syncTimerUi(task.id, true);
                     });
                     lastKnownTaskCount = data.length;
                 }
@@ -2720,79 +3377,547 @@
         }
 
         function updateCounts() {
-            let td = 0, ip = 0, d = 0;
+            let td = 0, ip = 0, p = 0, d = 0;
             document.querySelectorAll('#todo-tasks .task-card').forEach(c => { if(c.style.display !== 'none') td++; });
             document.querySelectorAll('#inprogress-tasks .task-card').forEach(c => { if(c.style.display !== 'none') ip++; });
+            document.querySelectorAll('#paused-tasks .task-card').forEach(c => { if(c.style.display !== 'none') p++; });
             document.querySelectorAll('#done-tasks .task-card').forEach(c => { if(c.style.display !== 'none') d++; });
             document.getElementById('todo-count').textContent = td;
             document.getElementById('inprogress-count').textContent = ip;
+            document.getElementById('paused-count').textContent = p;
             document.getElementById('done-count').textContent = d;
         }
 
         window.addEventListener('load', initializeApp);
+
+        const SETTINGS_STORAGE_BASE_KEY = 'swl_settings_v1';
+        const LS_MEMBERS_KEY = 'swl_workspace_members';
+
+        const SettingsManager = (() => {
+            let savedState = null;
+            let draftState = null;
+            let pendingLeaveAction = null;
+            let listenersBound = false;
+            let successTimer = null;
+
+            const clone = (value) => JSON.parse(JSON.stringify(value));
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            function storageKey() {
+                return sessionUser && sessionUser.id
+                    ? `${SETTINGS_STORAGE_BASE_KEY}_${sessionUser.id}`
+                    : SETTINGS_STORAGE_BASE_KEY;
+            }
+
+            function readStoredMembers() {
+                try {
+                    const members = JSON.parse(localStorage.getItem(LS_MEMBERS_KEY) || '[]');
+                    return Array.isArray(members) ? members : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            function sanitizeMember(member) {
+                const email = (member.email || '').trim();
+                const fallbackName = email ? email.split('@')[0] : 'Member';
+                return {
+                    id: member.id || `u_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+                    name: (member.name || fallbackName).trim(),
+                    email,
+                    role: member.role || 'Collaborator',
+                    active: member.active !== false
+                };
+            }
+
+            function defaultSettings() {
+                const userName = sessionUser?.user_metadata?.name
+                    || sessionUser?.email?.split('@')[0]
+                    || 'User';
+
+                return {
+                    profile: {
+                        username: userName,
+                        email: sessionUser?.email || ''
+                    },
+                    workspace: {
+                        name: 'My Workspace',
+                        currentWorkspace: activeWorkspaceOwnerId && activeWorkspaceOwnerId !== sessionUser?.id
+                            ? activeWorkspaceOwnerId
+                            : 'me',
+                        allowCollaboratorEdits: true
+                    },
+                    notifications: {
+                        email: true,
+                        taskReminders: true,
+                        invites: true
+                    },
+                    invite: {
+                        defaultRole: 'Collaborator',
+                        requireApproval: false,
+                        message: 'Join my workspace'
+                    },
+                    members: readStoredMembers().map(sanitizeMember)
+                };
+            }
+
+            function mergeSettings(base, override) {
+                const merged = clone(base);
+                Object.keys(override || {}).forEach((key) => {
+                    const value = override[key];
+                    if (value && typeof value === 'object' && !Array.isArray(value) && merged[key]) {
+                        merged[key] = mergeSettings(merged[key], value);
+                    } else {
+                        merged[key] = value;
+                    }
+                });
+                return merged;
+            }
+
+            function normalizeSettings(settings) {
+                const normalized = mergeSettings(defaultSettings(), settings || {});
+                normalized.profile.username = (normalized.profile.username || '').trim();
+                normalized.profile.email = (normalized.profile.email || '').trim();
+                normalized.workspace.name = (normalized.workspace.name || 'My Workspace').trim();
+                normalized.workspace.currentWorkspace = normalized.workspace.currentWorkspace || 'me';
+                normalized.workspace.allowCollaboratorEdits = !!normalized.workspace.allowCollaboratorEdits;
+                normalized.notifications.email = !!normalized.notifications.email;
+                normalized.notifications.taskReminders = !!normalized.notifications.taskReminders;
+                normalized.notifications.invites = !!normalized.notifications.invites;
+                normalized.invite.defaultRole = normalized.invite.defaultRole || 'Collaborator';
+                normalized.invite.requireApproval = !!normalized.invite.requireApproval;
+                normalized.invite.message = (normalized.invite.message || '').trim();
+                normalized.members = Array.isArray(normalized.members)
+                    ? normalized.members.map(sanitizeMember)
+                    : [];
+                return normalized;
+            }
+
+            function loadSavedState() {
+                let stored = {};
+                try {
+                    stored = JSON.parse(localStorage.getItem(storageKey()) || '{}');
+                } catch (e) {
+                    stored = {};
+                }
+
+                const merged = normalizeSettings(mergeSettings(defaultSettings(), stored));
+                if (!Array.isArray(stored.members)) {
+                    merged.members = readStoredMembers().map(sanitizeMember);
+                }
+                return merged;
+            }
+
+            function getPathValue(path) {
+                return path.split('.').reduce((cursor, key) => cursor?.[key], draftState);
+            }
+
+            function setPathValue(path, value) {
+                const keys = path.split('.');
+                let cursor = draftState;
+                keys.slice(0, -1).forEach((key) => {
+                    if (!cursor[key]) cursor[key] = {};
+                    cursor = cursor[key];
+                });
+                cursor[keys[keys.length - 1]] = value;
+            }
+
+            function setMessage(id, message) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.textContent = message || '';
+                el.style.display = message ? 'block' : 'none';
+            }
+
+            function clearFeedback() {
+                setMessage('settingsError', '');
+                setMessage('settingsSuccess', '');
+                if (successTimer) clearTimeout(successTimer);
+            }
+
+            function isSettingsPanelOpen() {
+                return document.getElementById('settingsPanel')?.classList.contains('open');
+            }
+
+            function hasUnsavedChanges() {
+                if (!savedState || !draftState) return false;
+                return JSON.stringify(savedState) !== JSON.stringify(draftState);
+            }
+
+            function updateSaveUi() {
+                const actions = document.getElementById('settingsActions');
+                const hasChanges = hasUnsavedChanges();
+                if (actions) actions.classList.toggle('visible', hasChanges);
+            }
+
+            function bindListeners() {
+                if (listenersBound) return;
+                listenersBound = true;
+
+                const panel = document.getElementById('settingsPanel');
+                if (panel) {
+                    panel.addEventListener('input', handleFieldEvent);
+                    panel.addEventListener('change', handleFieldEvent);
+                }
+
+                document.addEventListener('click', (event) => {
+                    const link = event.target.closest('a[href]');
+                    if (!link || !hasUnsavedChanges()) return;
+
+                    const href = link.getAttribute('href');
+                    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+
+                    event.preventDefault();
+                    requestLeave(() => {
+                        window.location.href = link.href;
+                    });
+                });
+            }
+
+            function handleFieldEvent(event) {
+                if (!draftState) return;
+
+                const target = event.target;
+                if (target.dataset.setting) {
+                    const value = target.type === 'checkbox' ? target.checked : target.value;
+                    setPathValue(target.dataset.setting, value);
+                    clearFeedback();
+                    updateSaveUi();
+                    return;
+                }
+
+                if (target.dataset.memberId && target.dataset.memberField) {
+                    const member = draftState.members.find((item) => item.id === target.dataset.memberId);
+                    if (!member) return;
+                    member[target.dataset.memberField] = target.type === 'checkbox' ? target.checked : target.value;
+                    clearFeedback();
+                    updateSaveUi();
+                    if (target.dataset.memberField === 'active') {
+                        target.closest('.member-item')?.classList.toggle('pending-inactive', !target.checked);
+                    }
+                }
+            }
+
+            function renderForm() {
+                if (!draftState) return;
+                const panel = document.getElementById('settingsPanel');
+                if (!panel) return;
+
+                panel.querySelectorAll('[data-setting]').forEach((input) => {
+                    const value = getPathValue(input.dataset.setting);
+                    if (input.type === 'checkbox') {
+                        input.checked = !!value;
+                    } else {
+                        input.value = value ?? '';
+                    }
+                });
+            }
+
+            function escapeHtml(value) {
+                return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                }[char]));
+            }
+
+            function renderMembers() {
+                if (!draftState) return;
+                const membersList = document.getElementById('workspaceMembersList');
+                if (!membersList) return;
+
+                membersList.innerHTML = '';
+                if (draftState.members.length === 0) {
+                    membersList.innerHTML = '<li style="text-align: center; color: var(--text-muted); font-size: 14px; padding: 20px;">No members exist yet.</li>';
+                    return;
+                }
+
+                draftState.members.forEach((member) => {
+                    const li = document.createElement('li');
+                    li.className = `member-item${member.active === false ? ' pending-inactive' : ''}`;
+                    li.style.animation = 'fadeIn 0.3s ease';
+
+                    const nameForInitials = member.name || member.email || '?';
+                    const initials = nameForInitials
+                        .split(/[\s@]+/)
+                        .map((part) => part[0])
+                        .join('')
+                        .substring(0, 2)
+                        .toUpperCase();
+
+                    li.innerHTML = `
+                        <div style="width: 100%; min-width: 0;">
+                            <div class="member-info">
+                                <div class="member-avatar">${escapeHtml(initials)}</div>
+                                <div class="member-details" style="min-width: 0;">
+                                    <span class="member-name">${escapeHtml(member.name)}</span>
+                                    ${member.email ? `<span style="font-size: 12px; color: var(--text-muted); margin-top: 2px; word-break: break-word;">${escapeHtml(member.email)}</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="member-edit-grid">
+                                <input type="text" value="${escapeHtml(member.name)}" data-member-id="${escapeHtml(member.id)}" data-member-field="name" aria-label="Member name">
+                                <select data-member-id="${escapeHtml(member.id)}" data-member-field="role" aria-label="Member role">
+                                    <option value="Collaborator"${member.role === 'Collaborator' ? ' selected' : ''}>Collaborator</option>
+                                    <option value="Viewer"${member.role === 'Viewer' ? ' selected' : ''}>Viewer</option>
+                                    <option value="Manager"${member.role === 'Manager' ? ' selected' : ''}>Manager</option>
+                                </select>
+                            </div>
+                            <label class="member-active-toggle">
+                                <input type="checkbox" data-member-id="${escapeHtml(member.id)}" data-member-field="active"${member.active !== false ? ' checked' : ''}>
+                                Active member
+                            </label>
+                        </div>
+                        <button class="btn-remove-member" type="button">Remove</button>
+                    `;
+
+                    li.querySelector('.btn-remove-member').addEventListener('click', () => {
+                        promptRemoveMember(member.id, member.name);
+                    });
+                    membersList.appendChild(li);
+                });
+            }
+
+            function validate() {
+                const state = normalizeSettings(draftState);
+                if (!state.profile.username) return 'Username is required.';
+                if (state.profile.email && !emailPattern.test(state.profile.email)) return 'Enter a valid profile email.';
+                if (!state.workspace.name) return 'Workspace name is required.';
+                if (state.invite.message.length > 140) return 'Invite message must be 140 characters or fewer.';
+
+                for (const member of state.members) {
+                    if (!member.name) return 'Every workspace member needs a name.';
+                    if (member.email && !emailPattern.test(member.email)) return `Enter a valid email for ${member.name}.`;
+                }
+
+                draftState = state;
+                return '';
+            }
+
+            async function applyWorkspaceSelection(nextWorkspace) {
+                const select = document.getElementById('workspaceSelect');
+                if (!select) return;
+
+                const optionExists = Array.from(select.options).some((option) => option.value === nextWorkspace);
+                if (!optionExists) return;
+
+                select.value = nextWorkspace;
+                if (sessionUser && typeof changeWorkspace === 'function') {
+                    await changeWorkspace();
+                }
+            }
+
+            function applySavedStateToUi() {
+                const userDisplay = document.getElementById('user-display');
+                if (userDisplay && savedState) {
+                    const role = (sessionUser?.user_metadata?.role || 'student').toLowerCase();
+                    const roleLabel = role === 'admin' ? 'Admin' : 'Student';
+                    userDisplay.textContent = `${savedState.profile.username || 'User'} (${roleLabel})`;
+                }
+                renderForm();
+                renderMembers();
+            }
+
+            function ensureState() {
+                if (!savedState || !draftState) {
+                    savedState = loadSavedState();
+                    draftState = clone(savedState);
+                }
+                bindListeners();
+            }
+
+            function init() {
+                savedState = loadSavedState();
+                draftState = clone(savedState);
+                bindListeners();
+                applySavedStateToUi();
+                updateSaveUi();
+
+                const activeWorkspaceValue = activeWorkspaceOwnerId && activeWorkspaceOwnerId !== sessionUser?.id
+                    ? activeWorkspaceOwnerId
+                    : 'me';
+                if (savedState.workspace.currentWorkspace !== activeWorkspaceValue) {
+                    applyWorkspaceSelection(savedState.workspace.currentWorkspace);
+                }
+            }
+
+            function open() {
+                ensureState();
+                if (!hasUnsavedChanges()) {
+                    savedState = loadSavedState();
+                    draftState = clone(savedState);
+                }
+                clearFeedback();
+                renderForm();
+                renderMembers();
+                updateSaveUi();
+            }
+
+            async function save() {
+                ensureState();
+                clearFeedback();
+
+                const validationError = validate();
+                if (validationError) {
+                    setMessage('settingsError', validationError);
+                    return false;
+                }
+
+                const previousWorkspace = savedState.workspace.currentWorkspace || 'me';
+                localStorage.setItem(storageKey(), JSON.stringify(draftState));
+                localStorage.setItem(LS_MEMBERS_KEY, JSON.stringify(draftState.members));
+
+                savedState = clone(draftState);
+                applySavedStateToUi();
+                updateSaveUi();
+
+                setMessage('settingsSuccess', 'Changes saved successfully');
+                if (typeof showToast === 'function') showToast('Changes saved successfully', 'success');
+                successTimer = setTimeout(() => setMessage('settingsSuccess', ''), 2800);
+
+                const nextWorkspace = savedState.workspace.currentWorkspace || 'me';
+                if (nextWorkspace !== previousWorkspace) {
+                    await applyWorkspaceSelection(nextWorkspace);
+                }
+
+                return true;
+            }
+
+            function discardChanges() {
+                ensureState();
+                draftState = clone(savedState);
+                clearFeedback();
+                renderForm();
+                renderMembers();
+                updateSaveUi();
+            }
+
+            function requestLeave(action) {
+                ensureState();
+                if (!hasUnsavedChanges()) {
+                    action();
+                    return;
+                }
+                pendingLeaveAction = action;
+                document.getElementById('unsavedSettingsModal')?.classList.add('show');
+            }
+
+            function cancelPendingLeave() {
+                pendingLeaveAction = null;
+                document.getElementById('unsavedSettingsModal')?.classList.remove('show');
+            }
+
+            function discardPendingLeave() {
+                const action = pendingLeaveAction;
+                pendingLeaveAction = null;
+                document.getElementById('unsavedSettingsModal')?.classList.remove('show');
+                discardChanges();
+                if (action) action();
+            }
+
+            async function savePendingLeave() {
+                const action = pendingLeaveAction;
+                const didSave = await save();
+                if (!didSave) return;
+                pendingLeaveAction = null;
+                document.getElementById('unsavedSettingsModal')?.classList.remove('show');
+                if (action) action();
+            }
+
+            function addMemberToState(member) {
+                ensureState();
+                const normalized = sanitizeMember(member);
+                if (!savedState.members.some((item) => item.email === normalized.email)) {
+                    savedState.members.push(normalized);
+                    localStorage.setItem(LS_MEMBERS_KEY, JSON.stringify(savedState.members));
+                    localStorage.setItem(storageKey(), JSON.stringify(savedState));
+                }
+                if (!draftState.members.some((item) => item.email === normalized.email)) {
+                    draftState.members.push(clone(normalized));
+                }
+                renderMembers();
+                updateSaveUi();
+            }
+
+            function removeMemberFromDraft(id) {
+                ensureState();
+                draftState.members = draftState.members.filter((member) => member.id !== id);
+                clearFeedback();
+                renderMembers();
+                updateSaveUi();
+            }
+
+            function getDefaultInviteRole() {
+                ensureState();
+                return draftState.invite.defaultRole || savedState.invite.defaultRole || 'Collaborator';
+            }
+
+            return {
+                init,
+                open,
+                save,
+                requestLeave,
+                cancelPendingLeave,
+                discardPendingLeave,
+                savePendingLeave,
+                hasUnsavedChanges,
+                renderMembers,
+                addMemberToState,
+                removeMemberFromDraft,
+                getDefaultInviteRole,
+                isSettingsPanelOpen
+            };
+        })();
+
+        window.SettingsManager = SettingsManager;
+
+        window.addEventListener('beforeunload', (event) => {
+            if (!SettingsManager.hasUnsavedChanges()) return;
+            event.preventDefault();
+            event.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+            return event.returnValue;
+        });
+
         // --- Settings Panel ---
         function toggleSettingsPanel() {
             document.getElementById('settingsPanel').classList.add('open');
             document.getElementById('settingsOverlay').classList.add('show');
             initWorkspaceMembers();
+            SettingsManager.open();
         }
 
         function closeSettingsPanel() {
-            document.getElementById('settingsPanel').classList.remove('open');
-            document.getElementById('settingsOverlay').classList.remove('show');
+            SettingsManager.requestLeave(() => {
+                document.getElementById('settingsPanel').classList.remove('open');
+                document.getElementById('settingsOverlay').classList.remove('show');
+            });
         }
 
         // --- Workspace Members Management (Simulated via localStorage) ---
-        const LS_MEMBERS_KEY = 'swl_workspace_members';
-
         function initWorkspaceMembers() {
-            let members = localStorage.getItem(LS_MEMBERS_KEY);
-            if (!members) {
-                // Seed with dummy data
-                members = [
-                    { id: 'u1', name: 'Alice Smith', role: 'Collaborator' },
-                    { id: 'u2', name: 'Bob Johnson', role: 'Viewer' }
-                ];
-                localStorage.setItem(LS_MEMBERS_KEY, JSON.stringify(members));
+            if (!localStorage.getItem(LS_MEMBERS_KEY)) {
+                localStorage.setItem(LS_MEMBERS_KEY, JSON.stringify([]));
             }
             renderWorkspaceMembers();
         }
 
-        function renderWorkspaceMembers() {
-            const membersList = document.getElementById('workspaceMembersList');
-            const membersJson = localStorage.getItem(LS_MEMBERS_KEY);
-            let members = [];
-            
-            try {
-                members = JSON.parse(membersJson) || [];
-            } catch (e) { members = []; }
-            
-            membersList.innerHTML = '';
-            
-            if (members.length === 0) {
-                membersList.innerHTML = '<li style="text-align: center; color: var(--text-muted); font-size: 13px; padding: 10px;">No members added yet.</li>';
-                return;
-            }
+        function addWorkspaceMember(email) {
+            const cleanEmail = (email || '').trim();
+            if (!cleanEmail) return;
 
-            members.forEach(member => {
-                const li = document.createElement('li');
-                li.className = 'member-item';
-                
-                // create initials for avatar
-                const initials = member.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                
-                li.innerHTML = `
-                    <div class="member-info">
-                        <div class="member-avatar">${initials}</div>
-                        <div class="member-details">
-                            <span class="member-name">${member.name}</span>
-                            <span class="member-role">${member.role || 'Member'}</span>
-                        </div>
-                    </div>
-                    <button class="btn-remove-member" onclick="promptRemoveMember('${member.id}', '${member.name}')">Remove</button>
-                `;
-                membersList.appendChild(li);
+            const displayName = cleanEmail.split('@')[0];
+            SettingsManager.addMemberToState({
+                id: 'u_' + Date.now(),
+                name: displayName,
+                email: cleanEmail,
+                role: SettingsManager.getDefaultInviteRole(),
+                active: true
             });
+        }
+
+        function renderWorkspaceMembers() {
+            SettingsManager.renderMembers();
         }
 
         function promptRemoveMember(id, name) {
@@ -2807,19 +3932,9 @@
 
         function confirmRemoveMember() {
             const id = document.getElementById('removeMemberIdInput').value;
-            let membersJson = localStorage.getItem(LS_MEMBERS_KEY);
-            let members = [];
-            try {
-                members = JSON.parse(membersJson) || [];
-            } catch (e) {}
-            
-            members = members.filter(m => m.id !== id);
-            localStorage.setItem(LS_MEMBERS_KEY, JSON.stringify(members));
-            
-            renderWorkspaceMembers();
+            SettingsManager.removeMemberFromDraft(id);
             closeRemoveMemberModal();
         }
     </script>
 </body>
 </html>
-
