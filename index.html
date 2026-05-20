@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="loP_Am0UzIMM104B_HMEQRRMNLTiHMK__mkGSyyqYuY" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Work Log - Collaborative Task Management</title>
+    <title>SWL - Collaborative Task Management</title>
     
     <style>
 * {
@@ -14,9 +13,9 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #ffffff;
-    color: #001a4d;
+    color: #001f3f;
     line-height: 1.6;
 }
 
@@ -31,7 +30,7 @@ a {
 
 /* ===== NAVBAR ===== */
 .navbar {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
     color: white;
     padding: 1rem 2rem;
     position: sticky;
@@ -82,12 +81,13 @@ a {
 
 .btn-launch {
     background: white !important;
-    color: #003d99 !important;
+    color: #003366 !important;
     padding: 10px 20px !important;
-    border-radius: 5px !important;
+    border-radius: 8px !important;
     font-weight: 600 !important;
     border: none !important;
     cursor: pointer !important;
+    transition: all 0.3s;
 }
 
 .btn-launch:hover {
@@ -107,18 +107,19 @@ a {
 
 .btn-login:hover {
     background: white !important;
-    color: #003d99 !important;
+    color: #003366 !important;
     transform: translateY(-2px);
 }
 
 .btn-signup {
     background: white !important;
-    color: #003d99 !important;
+    color: #003366 !important;
     padding: 10px 20px !important;
-    border-radius: 5px !important;
+    border-radius: 8px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
     border: none !important;
+    transition: all 0.3s;
 }
 
 .btn-signup:hover {
@@ -134,10 +135,12 @@ a {
 }
 
 .hero h1 {
-    font-size: 48px;
+    font-size: 54px;
+    font-weight: 800;
     line-height: 1.2;
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 20px;
+    letter-spacing: -0.5px;
 }
 
 .hero-subtitle {
@@ -165,7 +168,7 @@ a {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
     color: white;
 }
 
@@ -176,8 +179,8 @@ a {
 
 .btn-secondary {
     background: white;
-    color: #003d99;
-    border: 2px solid #003d99;
+    color: #003366;
+    border: 2px solid #003366;
 }
 
 .btn-secondary:hover {
@@ -205,7 +208,7 @@ a {
 .features h2 {
     font-size: 42px;
     text-align: center;
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 10px;
 }
 
@@ -243,7 +246,7 @@ a {
 
 .feature-card h3 {
     font-size: 20px;
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 12px;
 }
 
@@ -261,7 +264,7 @@ a {
 .how-it-works h2 {
     font-size: 42px;
     text-align: center;
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 50px;
 }
 
@@ -283,7 +286,7 @@ a {
     display: inline-flex;
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
     color: white;
     border-radius: 50%;
     align-items: center;
@@ -299,7 +302,7 @@ a {
 }
 
 .step h3 {
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 10px;
     font-size: 20px;
 }
@@ -317,7 +320,7 @@ a {
 .feedback h2 {
     font-size: 42px;
     text-align: center;
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 15px;
 }
 
@@ -338,7 +341,7 @@ a {
 .feedback-group label {
     display: block;
     margin-bottom: 8px;
-    color: #001a4d;
+    color: #001f3f;
     font-weight: 600;
 }
 
@@ -355,7 +358,7 @@ a {
 .feedback-group input:focus,
 .feedback-group textarea:focus {
     outline: none;
-    border-color: #003d99;
+    border-color: #003366;
     background-color: white;
 }
 
@@ -365,7 +368,7 @@ a {
 }
 
 .btn-submit-feedback {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
     color: white;
     padding: 12px 25px;
     border: none;
@@ -384,7 +387,7 @@ a {
 
 /* ===== CTA ===== */
 .cta {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
     color: white;
     padding: 80px 20px;
     text-align: center;
@@ -497,11 +500,11 @@ a {
 }
 
 .auth-modal-close:hover {
-    color: #001a4d;
+    color: #001f3f;
 }
 
 .auth-modal h2 {
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 25px;
     font-size: 24px;
     text-align: center;
@@ -519,7 +522,7 @@ a {
 }
 
 .auth-modal-form-group label {
-    color: #001a4d;
+    color: #001f3f;
     font-weight: 600;
     margin-bottom: 8px;
     font-size: 14px;
@@ -530,19 +533,19 @@ a {
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     background-color: #f8f9fa;
-    color: #001a4d;
+    color: #001f3f;
     font-family: inherit;
     font-size: 14px;
 }
 
 .auth-modal-form-group input:focus {
     outline: none;
-    border-color: #003d99;
+    border-color: #003366;
     background-color: white;
 }
 
 .auth-modal-submit {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
     color: white;
     padding: 12px;
     border: none;
@@ -566,7 +569,7 @@ a {
 }
 
 .auth-modal-toggle a {
-    color: #003d99;
+    color: #003366;
     font-weight: 600;
     cursor: pointer;
     text-decoration: underline;
@@ -622,7 +625,7 @@ a {
     color: #333;
 }
 .wizard-btn-next {
-    background: linear-gradient(135deg, #001a4d 0%, #003d99 100%);
+    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
     color: white;
     padding: 10px 20px;
     border: none;
@@ -652,14 +655,14 @@ a {
     transition: all 0.3s;
 }
 .role-card:hover {
-    border-color: #003d99;
+    border-color: #003366;
 }
 .role-card.selected {
-    border-color: #003d99;
+    border-color: #003366;
     background: #e7f3ff;
 }
 .role-card h4 {
-    color: #001a4d;
+    color: #001f3f;
     margin-bottom: 5px;
 }
 .role-card p {
@@ -799,7 +802,7 @@ a {
     
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">📋 Student Work Log</div>
+            <div class="nav-logo">📋 SWL</div>
             <ul class="nav-menu">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
@@ -893,11 +896,64 @@ a {
         </div>
     </section>
 
-    <section id="feedback" class="feedback">
+    <section id="benefits" class="features" style="background: #f4f7f6;">
+        <div class="container">
+            <h2>Productivity Benefits</h2>
+            <p class="section-subtitle">Why SWL is the ultimate tool for your team</p>
+            <div class="features-grid">
+                <div class="feature-card" style="background: white;">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Work Faster</h3>
+                    <p>Reduce the time spent organizing and spend more time executing. Our tools are designed for speed.</p>
+                </div>
+                <div class="feature-card" style="background: white;">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Reduce Cognitive Load</h3>
+                    <p>Keep all your tasks, deadlines, and communications in one place so you never have to remember where things are.</p>
+                </div>
+                <div class="feature-card" style="background: white;">
+                    <div class="feature-icon">📈</div>
+                    <h3>Visualize Success</h3>
+                    <p>Clear dashboards and progress tracking help you see your team's momentum and stay motivated.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="feedback">
+        <div class="container">
+            <h2>What Our Users Say</h2>
+            <p class="section-subtitle">Join thousands of productive teams worldwide</p>
+            <div class="features-grid">
+                <div class="feature-card" style="text-align: left;">
+                    <p style="font-style: italic; margin-bottom: 15px;">"SWL has completely transformed how our team manages projects. The intuitive design and powerful features are unmatched."</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; background: #003366; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">JD</div>
+                        <div>
+                            <h4 style="color: #001f3f; margin: 0; font-size: 14px;">Jane Doe</h4>
+                            <p style="margin: 0; font-size: 12px;">Project Manager</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="feature-card" style="text-align: left;">
+                    <p style="font-style: italic; margin-bottom: 15px;">"The best task management platform I've used. It's clean, fast, and has everything we need to stay organized."</p>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 40px; background: #003366; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">JS</div>
+                        <div>
+                            <h4 style="color: #001f3f; margin: 0; font-size: 14px;">John Smith</h4>
+                            <p style="margin: 0; font-size: 12px;">Learning User</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="feedback" class="feedback" style="background: #f4f7f6;">
         <div class="container">
             <h2>We Value Your Feedback</h2>
-            <p class="section-subtitle">Let us know how we can improve Student Work Log for you</p>
-            <form class="feedback-form" onsubmit="handleFeedbackSubmission(event)">
+            <p class="section-subtitle">Let us know how we can improve SWL for you</p>
+            <form class="feedback-form" onsubmit="handleFeedbackSubmission(event)" style="background: white;">
                 <div class="feedback-group">
                     <label for="feedbackName">Full Name</label>
                     <input type="text" id="feedbackName" placeholder="Enter your name" required>
@@ -917,12 +973,23 @@ a {
 
     <section class="cta">
         <h2>Ready to Transform Your Workflow?</h2>
-        <p>Join thousands of students managing their projects better.</p>
-        <a href="#" onclick="goToApp(event)" class="btn btn-primary btn-large">Start Using Student Work Log</a>
+        <p>Join thousands of users managing their projects better.</p>
+        <a href="#" onclick="goToApp(event)" class="btn btn-primary btn-large" style="background: white; color: #001f3f;">Start Using SWL</a>
     </section>
 
     <footer class="footer">
-        <p>&copy; 2026 Student Work Log. All rights reserved.</p>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+            <div>
+                <h3 style="margin-bottom: 10px;">SWL</h3>
+                <p>&copy; 2026 SWL. All rights reserved.</p>
+            </div>
+            <ul style="list-style: none; display: flex; gap: 20px;">
+                <li><a href="#features" style="color: #adb5bd; transition: color 0.3s;">Features</a></li>
+                <li><a href="#benefits" style="color: #adb5bd; transition: color 0.3s;">Benefits</a></li>
+                <li><a href="#testimonials" style="color: #adb5bd; transition: color 0.3s;">Testimonials</a></li>
+                <li><a href="#feedback" style="color: #adb5bd; transition: color 0.3s;">Contact</a></li>
+            </ul>
+        </div>
     </footer>
 
 </div>
@@ -939,7 +1006,13 @@ a {
             </div>
             <div class="auth-modal-form-group">
                 <label>Password</label>
-                <input type="password" id="landingLoginPassword" placeholder="Enter password" required>
+                <div style="position: relative;">
+                    <input type="password" id="landingLoginPassword" placeholder="Enter password" required style="width: 100%; box-sizing: border-box; padding-right: 40px;">
+                    <button type="button" onclick="togglePasswordVisibility('landingLoginPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px;">👁️</button>
+                </div>
+                <div style="text-align: right; margin-top: 5px;">
+                    <a href="#" onclick="showForgotPassword(event)" style="font-size: 12px; color: #003366; text-decoration: underline;">Forgot Password?</a>
+                </div>
             </div>
             <button type="submit" class="auth-modal-submit">Login</button>
         </form>
@@ -971,15 +1044,15 @@ a {
             <!-- Step 2: Role -->
             <div class="wizard-step" id="wizardStep2">
                 <div class="auth-modal-form-group">
-                    <label>Are you a student or admin?</label>
+                    <label>Are you a Learning User or Parent/Admin?</label>
                     <div class="role-cards">
-                        <div class="role-card" id="roleCardStudent" onclick="selectRole('Student')">
-                            <h4>Student</h4>
-                            <p>I'm a student</p>
+                        <div class="role-card" id="roleCardStudent" onclick="selectRole('Learning User')">
+                            <h4>Learning User</h4>
+                            <p>I'm a learner</p>
                         </div>
-                        <div class="role-card" id="roleCardAdmin" onclick="selectRole('Admin')">
-                            <h4>Admin</h4>
-                            <p>Teacher or staff</p>
+                        <div class="role-card" id="roleCardAdmin" onclick="selectRole('Parent/Admin')">
+                            <h4>Parent/Admin</h4>
+                            <p>Parent, teacher or staff</p>
                         </div>
                     </div>
                     <input type="hidden" id="wizardSignupRole">
@@ -1010,11 +1083,17 @@ a {
                 </div>
                 <div class="auth-modal-form-group">
                     <label>Password</label>
-                    <input type="password" id="wizardSignupPassword" placeholder="Create a password">
+                    <div style="position: relative;">
+                        <input type="password" id="wizardSignupPassword" placeholder="Create a password" style="width: 100%; box-sizing: border-box; padding-right: 40px;">
+                        <button type="button" onclick="togglePasswordVisibility('wizardSignupPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px;">👁️</button>
+                    </div>
                 </div>
                 <div class="auth-modal-form-group" style="margin-bottom: 5px;">
                     <label>Confirm Password</label>
-                    <input type="password" id="wizardSignupConfirmPassword" placeholder="Confirm password">
+                    <div style="position: relative;">
+                        <input type="password" id="wizardSignupConfirmPassword" placeholder="Confirm password" style="width: 100%; box-sizing: border-box; padding-right: 40px;">
+                        <button type="button" onclick="togglePasswordVisibility('wizardSignupConfirmPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px;">👁️</button>
+                    </div>
                 </div>
                 <div class="wizard-buttons">
                     <button type="button" class="wizard-btn-back" onclick="prevSignupStep(4)">Back</button>
@@ -1473,6 +1552,38 @@ async function goToApp(e) {
     }
 }
 
+function togglePasswordVisibility(inputId) {
+    const input = document.getElementById(inputId);
+    const btn = input.nextElementSibling;
+    if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+    } else {
+        input.type = 'password';
+        btn.textContent = '👁️';
+    }
+}
+
+function showForgotPassword(e) {
+    if (e) e.preventDefault();
+    const email = document.getElementById('landingLoginEmail').value.trim();
+    if (!email) {
+        alert('Please enter your email address first, then click "Forgot Password?".');
+        return;
+    }
+    
+    // Simulate sending password reset email
+    supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/app.html',
+    }).then(({ data, error }) => {
+        if (error) {
+            alert('Error sending reset email: ' + error.message);
+        } else {
+            alert('✅ Password reset instructions sent to ' + email + '!');
+        }
+    });
+}
+
 // Close modal when clicking outside
 document.addEventListener('click', function(event) {
     const loginModal = document.getElementById('loginModal');
@@ -1491,4 +1602,6 @@ console.log('✅ Website loaded successfully!');
 
 </body>
 </html>
+
+
 
