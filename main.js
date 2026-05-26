@@ -1,14 +1,26 @@
 // Main site JS extracted from index.html
 // Depends on Supabase client and optional config.js (which sets window.SWL_SUPABASE_URL / SWL_SUPABASE_ANON_KEY)
 
-// Load Supabase config from `config.js` (recommended). If not present, fall back to placeholders and warn.
-const SUPABASE_URL = window.SWL_SUPABASE_URL || null;
-const SUPABASE_ANON_KEY = window.SWL_SUPABASE_ANON_KEY || null;
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.warn('Supabase config not found. Create config.js from config.example.js and set SWL_SUPABASE_URL and SWL_SUPABASE_ANON_KEY.');
+// Load Supabase config from `config.js` when present. GitHub Pages will not deploy
+// ignored local files, so keep the public anon config here as the deployment fallback.
+const DEFAULT_SUPABASE_URL = 'https://teclqhxbohgljgcqcljq.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlY2xxaHhib2hnbGpnY3FjbGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzgxMjAsImV4cCI6MjA5MDA1NDEyMH0.B06AiesYThA9Z-4MD8q5DxVmI5fbs2PWpimWDNzkyAk';
+
+const SUPABASE_URL = window.SWL_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+const SUPABASE_ANON_KEY = window.SWL_SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+const hasExternalSupabaseConfig = Boolean(window.SWL_SUPABASE_URL && window.SWL_SUPABASE_ANON_KEY);
+const isPlaceholderSupabaseConfig = /your-project|your-supabase-url/i.test(SUPABASE_URL)
+    || /REPLACE_WITH_ANON_KEY/i.test(SUPABASE_ANON_KEY);
+
+if (!hasExternalSupabaseConfig) {
+    console.info('Optional config.js not found. Using bundled public Supabase anon config for deployment.');
 }
-const supabaseUrl = SUPABASE_URL || 'https://your-supabase-url.supabase.co';
-const supabaseKey = SUPABASE_ANON_KEY || 'REPLACE_WITH_ANON_KEY';
+if (isPlaceholderSupabaseConfig) {
+    console.error('Supabase config is still using placeholder values. Login cannot work until SWL_SUPABASE_URL and SWL_SUPABASE_ANON_KEY are set.');
+}
+
+const supabaseUrl = SUPABASE_URL;
+const supabaseKey = SUPABASE_ANON_KEY;
 const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey, {
     auth: {
         persistSession: true,
@@ -16,6 +28,32 @@ const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey, {
         detectSessionInUrl: true
     }
 });
+
+function getAppRedirectUrl() {
+    return new URL('app.html', window.location.href).href;
+}
+
+function describeAuthError(error) {
+    if (!error) return 'Unknown authentication error';
+    const parts = [
+        error.name,
+        error.status ? `status ${error.status}` : '',
+        error.code ? `code ${error.code}` : '',
+        error.message
+    ].filter(Boolean);
+    return parts.join(' - ') || String(error);
+}
+
+function logAuthFailure(context, error) {
+    console.error(`${context} failed: ${describeAuthError(error)}`, {
+        error,
+        supabaseUrl,
+        hasExternalSupabaseConfig,
+        isPlaceholderSupabaseConfig,
+        origin: window.location.origin,
+        href: window.location.href
+    });
+}
 
 // ===== EMAIL CONFIRMATION HANDLER =====
 (async function handleConfirmationOnLoad() {
@@ -128,6 +166,10 @@ async function handleLandingPageLogin(event) {
     const email = document.getElementById('landingLoginEmail').value.trim();
     const password = document.getElementById('landingLoginPassword').value.trim();
     const errorDiv = document.getElementById('loginModalError');
+    if (errorDiv) {
+        errorDiv.style.display = 'none';
+        errorDiv.textContent = '';
+    }
     
     if (!email || !password) {
         if (errorDiv) {
@@ -137,29 +179,62 @@ async function handleLandingPageLogin(event) {
         return;
     }
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-    });
-    
-    if (error) {
+    if (isPlaceholderSupabaseConfig) {
         if (errorDiv) {
-            console.error("Login error:", error);
-            if (error.message.includes('Email not confirmed')) {
-                errorDiv.innerHTML = `
-                    <strong>Email not confirmed.</strong><br>
-                    Please check your inbox to verify your account.<br>
-                    <button type="button" class="resend-btn" id="resendBtn" onclick="resendConfirmationEmail('${email}')">
-                        Didn't get it? Resend confirmation email
-                    </button>
-                `;
-            } else {
-                errorDiv.textContent = error.message;
+            errorDiv.textContent = 'Authentication is not configured correctly. Check the console for Supabase config details.';
+            errorDiv.style.display = 'block';
+        }
+        logAuthFailure('Login blocked before request', new Error('Supabase URL or anon key is a placeholder'));
+        return;
+    }
+
+    let data;
+    try {
+        const response = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
+        data = response.data;
+
+        if (response.error) {
+            logAuthFailure('Login request', response.error);
+            if (errorDiv) {
+                if (response.error.message.includes('Email not confirmed')) {
+                    errorDiv.innerHTML = `
+                        <strong>Email not confirmed.</strong><br>
+                        Please check your inbox to verify your account.<br>
+                        <button type="button" class="resend-btn" id="resendBtn" onclick="resendConfirmationEmail('${email}')">
+                            Didn't get it? Resend confirmation email
+                        </button>
+                    `;
+                } else {
+                    errorDiv.textContent = response.error.message;
+                }
+                errorDiv.style.display = 'block';
             }
+            return;
+        }
+    } catch (err) {
+        logAuthFailure('Login network request', err);
+        if (errorDiv) {
+            const configHint = !hasExternalSupabaseConfig
+                ? ' The deployed site is using the bundled Supabase config because config.js was not found.'
+                : '';
+            errorDiv.textContent = `Login request failed: ${err.message || 'Network error'}.${configHint}`;
             errorDiv.style.display = 'block';
         }
         return;
     }
+
+    if (!data?.user) {
+        logAuthFailure('Login response', new Error('Supabase returned no user and no explicit error'));
+        if (errorDiv) {
+            errorDiv.textContent = 'Login failed: no user session was returned. Check the console for details.';
+            errorDiv.style.display = 'block';
+        }
+        return;
+    }
+
     
     const userRole = data.user?.role;
     const isConfirmed = data.user?.email_confirmed_at;
@@ -312,7 +387,7 @@ async function handleLandingPageSignup(event) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Signing Up...';
 
-        const redirectTo = window.location.origin + '/app.html';
+        const redirectTo = getAppRedirectUrl();
         console.log('📧 Signup redirect URL:', redirectTo);
 
         const { data, error } = await supabaseClient.auth.signUp({
@@ -325,6 +400,7 @@ async function handleLandingPageSignup(event) {
         });
         
         if (error) {
+            logAuthFailure('Signup request', error);
             if (errorDiv) {
                 if (error.message.includes('rate limit') || error.status === 429) {
                     errorDiv.textContent = 'Too many signup attempts. Please wait a minute before trying again.';
@@ -361,9 +437,9 @@ async function handleLandingPageSignup(event) {
             window.location.href = 'app.html';
         }, 300);
     } catch (err) {
-        console.error("Signup error:", err);
+        logAuthFailure('Signup network request', err);
         if (errorDiv) {
-            errorDiv.textContent = 'An unexpected error occurred. Please try again.';
+            errorDiv.textContent = `Signup request failed: ${err.message || 'Network error'}. Check the console for details.`;
             errorDiv.style.display = 'block';
         }
         submitBtn.disabled = false;
@@ -381,7 +457,7 @@ async function resendConfirmationEmail(email) {
             resendBtn.textContent = 'Sending...';
         }
         
-        const redirectTo = window.location.origin + '/app.html';
+        const redirectTo = getAppRedirectUrl();
         console.log('📧 Resend redirect URL:', redirectTo);
 
         const { error } = await supabaseClient.auth.resend({
@@ -392,7 +468,10 @@ async function resendConfirmationEmail(email) {
             }
         });
         
-        if (error) throw error;
+        if (error) {
+            logAuthFailure('Resend confirmation request', error);
+            throw error;
+        }
         
         if (resendBtn) {
             resendBtn.textContent = '✅ Confirmation email resent!';
@@ -405,7 +484,7 @@ async function resendConfirmationEmail(email) {
         }
         
     } catch (err) {
-        console.error("Resend error:", err);
+        logAuthFailure('Resend confirmation network request', err);
         showToast('Error resending email: ' + (err.message || 'Unknown'), 'error');
         if (resendBtn) {
             resendBtn.textContent = originalText;
@@ -456,11 +535,19 @@ async function handleFeedbackSubmission(event) {
 async function goToApp(e) {
     if (e) e.preventDefault();
     
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    
-    if (session) {
-        window.location.href = 'app.html';
-    } else {
+    try {
+        const { data: { session }, error } = await supabaseClient.auth.getSession();
+        if (error) {
+            logAuthFailure('Session check', error);
+        }
+
+        if (session) {
+            window.location.href = 'app.html';
+        } else {
+            showLoginModal();
+        }
+    } catch (err) {
+        logAuthFailure('Session check network request', err);
         showLoginModal();
     }
 }
@@ -486,7 +573,7 @@ function showForgotPassword(e) {
     }
     
     supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/app.html',
+        redirectTo: getAppRedirectUrl(),
     }).then(({ data, error }) => {
         if (error) {
             showToast('Error sending reset email: ' + (error.message || 'Unknown'), 'error');
