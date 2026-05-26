@@ -1,9 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SWL - Dashboard</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
         <style>
         :root {
             --bg-body: #f8fafc;
@@ -418,18 +419,25 @@
 
         .task-controls { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-top: 18px; }
         .task-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-task-action { padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; color: white; background: var(--btn-primary); box-shadow: 0 8px 24px rgba(26,140,255,0.24); transition: all 0.3s ease; }
-        .btn-task-action:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(26,140,255,0.28); }
-        .btn-task-action.secondary { background: #64748b; }
-        .btn-task-action.success { background: #16a34a; }
-        .btn-task-action.warning { background: var(--priority-medium); }
+        .btn-task-action { display: inline-flex; align-items: center; gap: 6px; padding: 8px 13px; border-radius: 8px; font-size: 12px; font-weight: 700; color: white; background: rgba(31,182,255,0.18); color: var(--btn-primary); border: 1px solid rgba(31,182,255,0.2); box-shadow: none; transition: all 0.22s ease; }
+        .btn-task-action:hover { transform: translateY(-2px); background: rgba(31,182,255,0.28); box-shadow: 0 8px 22px rgba(31,182,255,0.18); }
+        .btn-task-action.secondary { background: rgba(100,116,139,0.18); color: #94a3b8; border-color: rgba(100,116,139,0.2); }
+        .btn-task-action.secondary:hover { background: rgba(100,116,139,0.28); }
+        .btn-task-action.success { background: rgba(22,163,74,0.18); color: #4ade80; border-color: rgba(22,163,74,0.22); }
+        .btn-task-action.success:hover { background: rgba(22,163,74,0.28); box-shadow: 0 8px 22px rgba(22,163,74,0.16); }
+        .btn-task-action.warning { background: rgba(245,158,11,0.18); color: var(--priority-medium); border-color: rgba(245,158,11,0.22); }
+        .btn-task-action.warning:hover { background: rgba(245,158,11,0.28); }
+        .btn-task-action .lucide { width: 13px; height: 13px; stroke-width: 2.4; }
 
         .time-display { display: flex; align-items: center; gap: 8px; color: #64748b; font-weight: 700; font-size: 13px; }
         .btn-timer { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: 14px; background: #16a34a; color: white; font-size: 13px; font-weight: 700; box-shadow: 0 12px 30px rgba(22,163,74,0.22); }
         .btn-timer.running { background: #dc2626; box-shadow: 0 12px 30px rgba(220,53,69,0.22); animation: pulse-timer 2.2s infinite ease-in-out; }
         @keyframes pulse-timer { 0%,100% { box-shadow: 0 12px 30px rgba(220,53,69,0.22); } 50% { box-shadow: 0 16px 35px rgba(220,53,69,0.32); } }
-        .btn-delete { position: absolute; top: 16px; right: 16px; color: #64748b; font-size: 18px; padding: 6px; border-radius: 12px; }
-        .btn-delete:hover { color: #dc2626; }
+        .btn-delete { position: absolute; top: 12px; right: 12px; color: rgba(255,255,255,0.35); width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; transition: all 0.2s ease; }
+        .btn-delete:hover { color: #ff6b6b; background: rgba(255,107,107,0.12); }
+        .btn-edit-task { position: absolute; top: 12px; right: 46px; color: rgba(255,255,255,0.35); width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; transition: all 0.2s ease; }
+        .btn-edit-task:hover { color: var(--btn-primary); background: rgba(31,182,255,0.12); }
+        .btn-delete .lucide, .btn-edit-task .lucide { width: 14px; height: 14px; stroke-width: 2.2; }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(4, 15, 45, 0.72); backdrop-filter: blur(6px); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-overlay.show { display: flex; }
@@ -623,18 +631,26 @@
         }
 
         .nav-link {
-            background: rgba(255,255,255,0.03);
-            color: var(--text-main);
+            background: transparent;
+            color: rgba(255,255,255,0.6);
             border-color: transparent;
-            box-shadow: inset 0 0 0 rgba(255,255,255,0);
+            box-shadow: none;
+            transition: all 0.22s cubic-bezier(0.4,0,0.2,1);
         }
 
-        .nav-link:hover,
+        .nav-link:hover {
+            background: rgba(255,255,255,0.07);
+            color: rgba(255,255,255,0.95);
+            border-color: transparent;
+            box-shadow: none;
+        }
+
         .nav-link.active {
-            background: rgba(31,182,255,0.12);
+            background: linear-gradient(90deg, rgba(31,182,255,0.14) 0%, rgba(31,182,255,0.05) 100%);
             color: #ffffff;
-            border-color: rgba(31,182,255,0.22);
-            box-shadow: 0 12px 30px rgba(31,182,255,0.14);
+            border-left: 3px solid var(--btn-primary);
+            padding-left: 11px;
+            box-shadow: 0 0 18px rgba(31,182,255,0.12), inset 0 0 12px rgba(31,182,255,0.04);
         }
 
         .profile-card, .right-widget, .board-header, .column, .task-card, .modal-body, .settings-panel, .settings-toggle, .member-item, .auth-card {
@@ -1399,6 +1415,133 @@
                 padding: 0 14px;
             }
         }
+
+        /* --- LUCIDE ICON STYLING & PREMIUM HOVER EFFECTS --- */
+        .lucide {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2;
+            transition: all 0.2s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .lucide {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        /* Sidebar & Nav Icons base state */
+        .nav-item .lucide, .nav-link .lucide {
+            width: 17px;
+            height: 17px;
+            stroke-width: 2;
+            flex-shrink: 0;
+            opacity: 0.55;
+            transition: opacity 0.22s ease, filter 0.22s ease, transform 0.22s ease;
+        }
+
+        /* Hover effects */
+        .nav-item:hover .lucide, .nav-link:hover .lucide {
+            opacity: 0.9;
+            transform: scale(1.08);
+        }
+
+        /* Active state */
+        .nav-item.active .lucide, .nav-link.active .lucide {
+            opacity: 1;
+            stroke: var(--btn-primary);
+            filter: drop-shadow(0 0 8px rgba(31,182,255,0.5));
+            transform: scale(1.1);
+        }
+
+        /* Topbar actions and theme toggle */
+        .topbar-actions .lucide, .theme-toggle .lucide, .profile-theme-toggle .lucide {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2;
+        }
+
+        /* Add Task button icon */
+        .btn-add-task .lucide {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.4;
+            flex-shrink: 0;
+        }
+
+        /* Feature card icons */
+        .card-icon .lucide {
+            width: 32px;
+            height: 32px;
+            stroke: var(--btn-primary);
+        }
+
+        /* Modal / Settings button icons */
+        .btn-save .lucide, .btn-cancel .lucide, .btn-discard .lucide,
+        .btn-invite .lucide, .btn-save-settings .lucide {
+            width: 15px;
+            height: 15px;
+            stroke-width: 2.2;
+            flex-shrink: 0;
+        }
+
+        /* Close settings button icon */
+        .btn-close-settings .lucide {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.4;
+        }
+
+        /* Chat send button icon */
+        .chat-input-area button .lucide {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.2;
+        }
+
+        /* Chat header icon */
+        .chat-header .lucide {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2;
+            opacity: 0.8;
+        }
+
+        /* Heading icon (Admin, Calendar, Chat) */
+        .section-heading-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-heading-icon .lucide {
+            width: 22px;
+            height: 22px;
+            stroke-width: 2;
+            opacity: 0.85;
+            vertical-align: middle;
+        }
+
+        /* User info icon in settings */
+        .user-info-panel .lucide {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2;
+            opacity: 0.6;
+            flex-shrink: 0;
+        }
+        .user-info-panel {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Timer icon in task cards */
+        .timer-icon .lucide {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2;
+        }
     </style>
 </head>
 <body>
@@ -1427,11 +1570,11 @@
                 <span>SWL Workspace</span>
             </div>
             <nav>
-                <a class="nav-link active" data-view="dashboard" href="#" onclick="setView('dashboard'); return false;">Dashboard</a>
-                <a class="nav-link" data-view="calendar" href="#" onclick="setView('calendar'); return false;">Calendar</a>
-                <a class="nav-link" data-view="workspace" href="#" onclick="setView('workspace'); return false;">Workspace</a>
-                <a class="nav-link" data-view="messages" href="#" onclick="setView('messages'); return false;">Messages</a>
-                <a class="nav-link" data-view="settings" href="#" onclick="openSettingsFromNav(); return false;">Settings</a>
+                <a class="nav-link active" data-view="dashboard" href="#" onclick="setView('dashboard'); return false;"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+                <a class="nav-link" data-view="calendar" href="#" onclick="setView('calendar'); return false;"><i data-lucide="calendar"></i> Calendar</a>
+                <a class="nav-link" data-view="workspace" href="#" onclick="setView('workspace'); return false;"><i data-lucide="folder"></i> Workspace</a>
+                <a class="nav-link" data-view="messages" href="#" onclick="setView('messages'); return false;"><i data-lucide="message-square"></i> Messages</a>
+                <a class="nav-link" data-view="settings" href="#" onclick="openSettingsFromNav(); return false;"><i data-lucide="settings"></i> Settings</a>
             </nav>
             <div class="sidebar-divider"></div>
             <div class="profile-card">
@@ -1445,7 +1588,7 @@
                 <div class="sidebar-footer">
                     <span>Workspace</span>
                     <span class="sidebar-footer-actions">
-                        <button id="themeToggleBtn" class="profile-theme-toggle" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch to light mode">☀️</button>
+                        <button id="themeToggleBtn" class="profile-theme-toggle" type="button" onclick="toggleTheme()" title="Switch theme" aria-label="Switch to light mode"><i data-lucide="sun"></i></button>
                         <span style="opacity:0.7;font-size:12px;">v1.0</span>
                     </span>
                 </div>
@@ -1462,7 +1605,7 @@
                                 <span>Workspace Overview</span>
                             </div>
                             <div class="topbar-search">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.6"><path d="M21 21l-4.35-4.35" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="11" r="6" stroke="#94a3b8" stroke-width="2"/></svg>
+                                <i data-lucide="search" style="opacity: 0.6; width: 16px; height: 16px;"></i>
                                 <input id="topbarSearchInput" class="search-input" type="search" placeholder="Search tasks, boards, members..." aria-label="Search" oninput="handleTopbarSearch(this.value)" />
                             </div>
                         </div>
@@ -1475,7 +1618,7 @@
                         </div>
 
                         <div class="workspace-card-bottom">
-                            <button class="btn-add-task btn-add-task-inline" onclick="openTaskModal()">+ Add New Task</button>
+                            <button class="btn-add-task btn-add-task-inline" onclick="openTaskModal()"><i data-lucide="plus"></i> Add New Task</button>
                         </div>
                     </div>
                 </div>
@@ -1489,12 +1632,12 @@
     <div id="settingsPanel" class="settings-panel app-view" aria-hidden="true">
         <div class="settings-header">
             <h2>Settings</h2>
-            <button class="btn-close-settings" onclick="closeSettingsPanel()">✖️</button>
+            <button class="btn-close-settings" onclick="closeSettingsPanel()"><i data-lucide="x"></i></button>
         </div>
         <div class="settings-body">
             <div class="settings-section">
                 <h3>My Profile</h3>
-                <span class="user-info user-info-panel" id="user-display">👤 Logged out</span>
+                <span class="user-info user-info-panel" id="user-display"><i data-lucide="user"></i> Logged out</span>
                 <div class="settings-field">
                     <label for="settingsUsernameInput">Username</label>
                     <input id="settingsUsernameInput" type="text" data-setting="profile.username" autocomplete="name" placeholder="Your display name">
@@ -1525,7 +1668,7 @@
                     <span>Allow collaborators to edit tasks</span>
                     <input id="settingsCollaboratorEditInput" type="checkbox" data-setting="workspace.allowCollaboratorEdits">
                 </label>
-                <button class="btn-invite" style="background: var(--btn-primary); color: white;" onclick="openInviteModal()">+ Invite Users</button>
+                <button class="btn-invite" style="background: var(--btn-primary); color: white; display:inline-flex; align-items:center; gap:8px;" onclick="openInviteModal()"><i data-lucide="user-plus"></i> Invite Users</button>
             </div>
 
             <div class="settings-section">
@@ -1590,7 +1733,7 @@
                         <option value="monthly">Monthly</option>
                     </select>
                 </div>
-                <button type="button" class="btn-save" style="background: var(--btn-primary); color: white;" onclick="downloadBackup()">Download Backup</button>
+                <button type="button" class="btn-save" style="background: var(--btn-primary); color: white; display:inline-flex; align-items:center; gap:8px;" onclick="downloadBackup()"><i data-lucide="download"></i> Download Backup</button>
             </div>
 
             <div class="settings-section">
@@ -1625,7 +1768,7 @@
         </div>
         <div id="settingsActions" class="settings-actions" aria-live="polite">
             <div class="settings-unsaved-message">You have unsaved changes</div>
-            <button id="settingsSaveButton" class="btn-save-settings" onclick="SettingsManager.save()">Save Changes</button>
+            <button id="settingsSaveButton" class="btn-save-settings" style="display:inline-flex; align-items:center; gap:8px;" onclick="SettingsManager.save()"><i data-lucide="save"></i> Save Changes</button>
         </div>
     </div>
 
@@ -1659,7 +1802,7 @@
     <!-- ===== ADMIN DASHBOARD VIEW ===== -->
     <div id="adminDashboardView" class="app-view" style="display: none; padding: 30px 40px; flex-grow: 1; overflow-y: auto;" aria-hidden="true">
         <div style="margin-bottom: 30px;">
-            <h2 style="font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 6px;">🛡️ Admin Dashboard</h2>
+            <h2 style="font-size: 26px; font-weight: 700; color: var(--text-main); margin-bottom: 6px;" class="section-heading-icon"><i data-lucide="shield"></i> Admin Dashboard</h2>
             <p style="color: var(--text-muted); font-size: 14px;">Overview of all students and their work logs.</p>
         </div>
 
@@ -1686,8 +1829,8 @@
         <!-- Student Table -->
         <div class="column widget" style="padding: 25px; height: auto; overflow-x: auto;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="font-size: 18px;">📋 SWLs</h3>
-                    <button class="btn-add-task" onclick="loadAdminData()" style="padding: 8px 16px; font-size: 13px;">🔄 Refresh</button>
+                <h3 style="font-size: 18px; display:inline-flex; align-items:center; gap:8px;"><i data-lucide="clipboard-list" style="width:18px;height:18px;"></i> SWLs</h3>
+                    <button class="btn-add-task" onclick="loadAdminData()" style="padding: 8px 16px; font-size: 13px; display:inline-flex; align-items:center; gap:6px;"><i data-lucide="refresh-cw"></i> Refresh</button>
             </div>
             <div id="adminStudentTable">
                 <div style="color: var(--text-muted); text-align: center; padding: 40px;">Loading student data...</div>
@@ -1781,7 +1924,7 @@
         <!-- Calendar View -->
         <div id="calendarView" class="app-view" style="display:none; padding: 30px 40px; flex-grow:1; overflow-y: auto;" aria-hidden="true">
             <div class="calendar-page-heading" style="margin-bottom:20px;">
-                <h2 style="font-size:22px; color:var(--text-main);">📅 Calendar</h2>
+                <h2 style="font-size:22px; color:var(--text-main);" class="section-heading-icon"><i data-lucide="calendar"></i> Calendar</h2>
                 <p style="color:var(--text-muted);">Monthly view showing tasks and events. Click a date to add or view items.</p>
             </div>
             <div id="calendarContainer" class="column widget" style="padding:20px;">
@@ -1801,13 +1944,13 @@
                 <div class="chat-panel">
                     <div id="chatWidget">
                         <div class="chat-header">
-                            <span>💬 Team Chat <span id="chatBoardName" style="font-size: 11px; opacity: 0.8; margin-left: 5px;"></span></span>
-                            <span id="chatToggleIcon">▾</span>
+                            <span style="display:inline-flex; align-items:center; gap:8px;"><i data-lucide="message-square"></i> Team Chat <span id="chatBoardName" style="font-size: 11px; opacity: 0.8; margin-left: 5px;"></span></span>
+                            <span id="chatToggleIcon" style="display:inline-flex; align-items:center;"><i data-lucide="chevron-down"></i></span>
                         </div>
                         <div class="chat-messages" id="chatMessages"></div>
                         <div class="chat-input-area">
                             <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
-                            <button onclick="sendChatMessage()">Send</button>
+                            <button onclick="sendChatMessage()" style="display:inline-flex; align-items:center; gap:6px;"><i data-lucide="send"></i> Send</button>
                         </div>
                     </div>
                 </div>
@@ -1849,9 +1992,9 @@
                 <div class="form-group">
                     <label>Priority</label>
                     <select id="taskPriorityInput">
-                        <option value="High">High 🔥</option>
-                        <option value="Medium" selected>Medium ⚠️</option>
-                        <option value="Low">Low ⬇️</option>
+                        <option value="High">High</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Low">Low</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1887,9 +2030,9 @@
                 <div class="form-group">
                     <label>Priority</label>
                     <select id="editTaskPriorityInput">
-                        <option value="High">High 🔥</option>
-                        <option value="Medium">Medium ⚠️</option>
-                        <option value="Low">Low ⬇️</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1907,7 +2050,7 @@
     <!-- Rename Board Modal -->
     <div class="modal-overlay" id="renameBoardModal">
         <div class="modal-body" style="max-width: 380px;">
-            <h3>âœï¸ Rename Board</h3>
+            <h3 style="display:inline-flex; align-items:center; gap:8px;"><i data-lucide="pencil" style="width:18px;height:18px;"></i> Rename Board</h3>
             <input type="hidden" id="renameBoardIdInput">
             <div class="form-group">
                 <label>Board Name</label>
@@ -2737,7 +2880,7 @@
                 }
 
                 // Step 2: Send a magic-link email so the invitee is actually notified
-                const redirectTo = window.location.origin + '/app.html';
+                const redirectTo = new URL('app.html', window.location.href).href;
                 console.log('Sending invite email to:', email, '| Redirect:', redirectTo);
                 const { error: otpError } = await supabaseClient.auth.signInWithOtp({
                     email: email,
@@ -4250,6 +4393,11 @@
             const id = document.getElementById('removeMemberIdInput').value;
             SettingsManager.removeMemberFromDraft(id);
             closeRemoveMemberModal();
+        }
+    </script>
+    <script>
+        if (window.lucide) {
+            lucide.createIcons();
         }
     </script>
 </body>
