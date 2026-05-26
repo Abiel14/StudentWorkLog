@@ -64,7 +64,7 @@ function logAuthFailure(context, error) {
                   || search.includes('confirmation_token');
     
     if (hasToken) {
-        console.log('🔑 Confirmation token detected on index.html, exchanging session...');
+        console.log('<i class="fi fi-rr-key"></i> Confirmation token detected on index.html, exchanging session...');
         await new Promise(r => setTimeout(r, 800));
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (session) {
