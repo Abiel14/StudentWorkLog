@@ -88,7 +88,7 @@ function toggleTheme() {
 
 function updateThemeIcon(theme) {
     const btn = document.getElementById('themeToggleBtn');
-    if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    if(btn) btn.textContent = theme === 'dark' ? '<i class="fi fi-rr-brightness"></i>' : '<i class="fi fi-rc-moon"></i>';
 }
 
 const savedTheme = localStorage.getItem('studentLogTheme') || 'dark';
