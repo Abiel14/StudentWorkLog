@@ -4,797 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SWL - Collaborative Task Management</title>
-    
-    <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-body {
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #ffffff;
-    color: #001f3f;
-    line-height: 1.6;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* ===== NAVBAR ===== */
-.navbar {
-    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-    color: white;
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.nav-container {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-.nav-logo {
-    font-size: 24px;
-    font-weight: bold;
-    white-space: nowrap;
-    color: white;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 20px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.nav-menu a {
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 500;
-    cursor: pointer;
-    padding: 8px 12px;
-    transition: all 0.3s;
-    border-radius: 5px;
-    display: inline-block;
-}
-
-.nav-menu a:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.btn-launch {
-    background: white !important;
-    color: #003366 !important;
-    padding: 10px 20px !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    border: none !important;
-    cursor: pointer !important;
-    transition: all 0.3s;
-}
-
-.btn-launch:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
-}
-
-.btn-login {
-    background: transparent !important;
-    color: white !important;
-    padding: 8px 16px !important;
-    border: 2px solid white !important;
-    border-radius: 5px !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-}
-
-.btn-login:hover {
-    background: white !important;
-    color: #003366 !important;
-    transform: translateY(-2px);
-}
-
-.btn-signup {
-    background: white !important;
-    color: #003366 !important;
-    padding: 10px 20px !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    cursor: pointer !important;
-    border: none !important;
-    transition: all 0.3s;
-}
-
-.btn-signup:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
-}
-
-/* ===== HERO ===== */
-.hero {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e8eaed 100%);
-    padding: 80px 20px;
-    text-align: center;
-}
-
-.hero h1 {
-    font-size: 54px;
-    font-weight: 800;
-    line-height: 1.2;
-    color: #001f3f;
-    margin-bottom: 20px;
-    letter-spacing: -0.5px;
-}
-
-.hero-subtitle {
-    font-size: 18px;
-    color: #666;
-    margin-bottom: 30px;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.btn {
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: inline-block;
-    border: none;
-    text-align: center;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 61, 153, 0.3);
-}
-
-.btn-secondary {
-    background: white;
-    color: #003366;
-    border: 2px solid #003366;
-}
-
-.btn-secondary:hover {
-    background: #f8f9fa;
-}
-
-.btn-large {
-    padding: 15px 40px;
-    font-size: 16px;
-}
-
-/* ===== CONTAINER ===== */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* ===== FEATURES ===== */
-.features {
-    padding: 80px 20px;
-    background: white;
-}
-
-.features h2 {
-    font-size: 42px;
-    text-align: center;
-    color: #001f3f;
-    margin-bottom: 10px;
-}
-
-.section-subtitle {
-    text-align: center;
-    color: #666;
-    font-size: 18px;
-    margin-bottom: 50px;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.feature-card {
-    background: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    transition: all 0.3s;
-}
-
-.feature-card:hover {
-    background: white;
-    box-shadow: 0 10px 30px rgba(0, 26, 77, 0.1);
-    transform: translateY(-5px);
-}
-
-.feature-icon {
-    font-size: 48px;
-    margin-bottom: 15px;
-}
-
-.feature-card h3 {
-    font-size: 20px;
-    color: #001f3f;
-    margin-bottom: 12px;
-}
-
-.feature-card p {
-    color: #666;
-    line-height: 1.6;
-}
-
-/* ===== HOW IT WORKS ===== */
-.how-it-works {
-    padding: 80px 20px;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e8eaed 100%);
-}
-
-.how-it-works h2 {
-    font-size: 42px;
-    text-align: center;
-    color: #001f3f;
-    margin-bottom: 50px;
-}
-
-.steps-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-}
-
-.step {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.step-number {
-    display: inline-flex;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-    color: white;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 24px;
-    margin-bottom: 15px;
-}
-
-.step-icon {
-    font-size: 42px;
-    margin: 15px 0;
-}
-
-.step h3 {
-    color: #001f3f;
-    margin-bottom: 10px;
-    font-size: 20px;
-}
-
-.step p {
-    color: #666;
-}
-
-/* ===== FEEDBACK ===== */
-.feedback {
-    padding: 80px 20px;
-    background: white;
-}
-
-.feedback h2 {
-    font-size: 42px;
-    text-align: center;
-    color: #001f3f;
-    margin-bottom: 15px;
-}
-
-.feedback-form {
-    max-width: 600px;
-    margin: 0 auto;
-    background: #f8f9fa;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-}
-
-.feedback-group {
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.feedback-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #001f3f;
-    font-weight: 600;
-}
-
-.feedback-group input,
-.feedback-group textarea {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-.feedback-group input:focus,
-.feedback-group textarea:focus {
-    outline: none;
-    border-color: #003366;
-    background-color: white;
-}
-
-.feedback-group textarea {
-    resize: vertical;
-    height: 120px;
-}
-
-.btn-submit-feedback {
-    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: all 0.3s;
-    font-size: 16px;
-}
-
-.btn-submit-feedback:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 61, 153, 0.3);
-}
-
-/* ===== CTA ===== */
-.cta {
-    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-    color: white;
-    padding: 80px 20px;
-    text-align: center;
-}
-
-.cta h2 {
-    font-size: 42px;
-    margin-bottom: 15px;
-    color: white;
-}
-
-.cta p {
-    font-size: 18px;
-    margin-bottom: 30px;
-    opacity: 0.9;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-    background: #0a1433;
-    color: white;
-    padding: 30px 20px;
-    text-align: center;
-}
-
-/* ===== MODALS ===== */
-.auth-modal {
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 26, 77, 0.7);
-    display: none !important;
-    justify-content: center;
-    align-items: center;
-}
-
-.auth-modal.show {
-    display: flex !important;
-}
-
-.auth-modal-content {
-    background: white;
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
-    position: relative;
-    animation: slideUp 0.3s ease-in-out;
-}
-
-.verification-notice {
-    background: #e7f3ff;
-    color: #005a9e;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-size: 14px;
-    line-height: 1.6;
-    border-left: 4px solid #0078d4;
-    display: none;
-}
-
-.resend-btn {
-    background: none;
-    border: none;
-    color: #0078d4;
-    text-decoration: underline;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 0;
-    margin-top: 10px;
-    font-weight: 600;
-}
-
-.resend-btn:hover {
-    color: #005a9e;
-}
-
-.resend-btn:disabled {
-    color: #999;
-    cursor: not-allowed;
-    text-decoration: none;
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.auth-modal-close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    color: #999;
-    cursor: pointer;
-    background: none;
-    border: none;
-    transition: color 0.3s;
-}
-
-.auth-modal-close:hover {
-    color: #001f3f;
-}
-
-.auth-modal h2 {
-    color: #001f3f;
-    margin-bottom: 25px;
-    font-size: 24px;
-    text-align: center;
-}
-
-.auth-modal-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.auth-modal-form-group {
-    display: flex;
-    flex-direction: column;
-}
-
-.auth-modal-form-group label {
-    color: #001f3f;
-    font-weight: 600;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.auth-modal-form-group input {
-    padding: 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    color: #001f3f;
-    font-family: inherit;
-    font-size: 14px;
-}
-
-.auth-modal-form-group input:focus {
-    outline: none;
-    border-color: #003366;
-    background-color: white;
-}
-
-.auth-modal-submit {
-    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.3s;
-    margin-top: 10px;
-}
-
-.auth-modal-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 61, 153, 0.3);
-}
-
-.auth-modal-toggle {
-    text-align: center;
-    margin-top: 15px;
-    color: #666;
-    font-size: 14px;
-}
-
-.auth-modal-toggle a {
-    color: #003366;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.auth-modal-toggle a:hover {
-    color: #002266;
-}
-
-.auth-modal-error {
-    background: #ffebee;
-    color: #c62828;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-bottom: 15px;
-    border-left: 4px solid #c62828;
-}
-
-/* ===== WIZARD ===== */
-.wizard-step {
-    display: none;
-    animation: slideUp 0.3s ease-in-out;
-}
-.wizard-step.active {
-    display: block;
-}
-.wizard-progress {
-    text-align: center;
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-.wizard-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 10px;
-}
-.wizard-btn-back {
-    background: transparent;
-    border: 2px solid #e0e0e0;
-    color: #666;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-.wizard-btn-back:hover {
-    background: #f8f9fa;
-    color: #333;
-}
-.wizard-btn-next {
-    background: linear-gradient(135deg, #001f3f 0%, #003366 100%);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    flex-grow: 1;
-    transition: all 0.3s;
-}
-.wizard-btn-next:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 61, 153, 0.3);
-}
-.role-cards {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-.role-card {
-    flex: 1;
-    border: 2px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 20px 10px;
-    text-align: center;
-    cursor: pointer;
-    background: #f8f9fa;
-    transition: all 0.3s;
-}
-.role-card:hover {
-    border-color: #003366;
-}
-.role-card.selected {
-    border-color: #003366;
-    background: #e7f3ff;
-}
-.role-card h4 {
-    color: #001f3f;
-    margin-bottom: 5px;
-}
-.role-card p {
-    font-size: 12px;
-    color: #666;
-    margin: 0;
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-    .nav-menu {
-        gap: 10px;
-    }
-
-    .btn-launch,
-    .btn-login,
-    .btn-signup {
-        padding: 8px 12px !important;
-        font-size: 12px !important;
-    }
-
-    .hero h1 {
-        font-size: 32px;
-    }
-
-    .features h2,
-    .how-it-works h2,
-    .feedback h2,
-    .cta h2 {
-        font-size: 32px;
-    }
-
-    .features-grid,
-    .steps-grid {
-        grid-template-columns: 1fr;
-    }
-}
-[data-theme="dark"] body {
-    background: #121212;
-    color: #e0e0e0;
-}
-[data-theme="dark"] .navbar {
-    background: linear-gradient(135deg, #1f1f1f 0%, #171717 100%);
-}
-[data-theme="dark"] .hero, [data-theme="dark"] .how-it-works {
-    background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
-}
-[data-theme="dark"] .feedback-form, [data-theme="dark"] .auth-modal-content {
-    background: #212529;
-}
-[data-theme="dark"] .hero h1, [data-theme="dark"] .features h2, [data-theme="dark"] .how-it-works h2, [data-theme="dark"] .feedback h2, [data-theme="dark"] .feature-card h3, [data-theme="dark"] .step h3 {
-    color: #f8f9fa;
-}
-[data-theme="dark"] .features, [data-theme="dark"] .feedback {
-    background: #121212;
-}
-[data-theme="dark"] .feature-card, [data-theme="dark"] .step {
-    background: #2c3034;
-}
-[data-theme="dark"] .feature-card:hover {
-    background: #343a40;
-}
-[data-theme="dark"] .btn-secondary {
-    background: transparent;
-    color: #4da6ff;
-    border-color: #4da6ff;
-}
-[data-theme="dark"] .btn-primary, [data-theme="dark"] .btn-submit-feedback, [data-theme="dark"] .auth-modal-submit, [data-theme="dark"] .step-number, [data-theme="dark"] .cta {
-    background: linear-gradient(135deg, #4da6ff 0%, #1a8cff 100%);
-    color: #fff;
-}
-[data-theme="dark"] .hero-subtitle, [data-theme="dark"] .section-subtitle, [data-theme="dark"] .feature-card p, [data-theme="dark"] .step p {
-    color: #adb5bd;
-}
-[data-theme="dark"] .footer {
-    background: #000000;
-}
-[data-theme="dark"] .feedback-group label, [data-theme="dark"] .auth-modal-form-group label, [data-theme="dark"] .auth-modal h2 {
-    color: #e0e0e0;
-}
-[data-theme="dark"] .feedback-group input, [data-theme="dark"] .feedback-group textarea, [data-theme="dark"] .auth-modal-form-group input {
-    background: #2c3034;
-    border-color: #495057;
-    color: #f8f9fa;
-}
-[data-theme="dark"] .wizard-btn-back {
-    border-color: #495057;
-    color: #adb5bd;
-}
-[data-theme="dark"] .wizard-btn-back:hover {
-    background: #343a40;
-    color: #f8f9fa;
-}
-[data-theme="dark"] .role-card {
-    background: #2c3034;
-    border-color: #495057;
-}
-[data-theme="dark"] .role-card:hover {
-    border-color: #4da6ff;
-}
-[data-theme="dark"] .role-card.selected {
-    border-color: #4da6ff;
-    background: #1a334d;
-}
-[data-theme="dark"] .role-card h4 {
-    color: #f8f9fa;
-}
-[data-theme="dark"] .role-card p {
-    color: #adb5bd;
-}
-[data-theme="dark"] .wizard-progress {
-    color: #adb5bd;
-}
-
-.theme-toggle {
-    background: transparent;
-    border: none;
-    color: white;
-    font-size: 20px;
-    cursor: pointer;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-.theme-toggle:hover {
-    transform: scale(1.1);
-}
-
-* {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-</style>
-
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
@@ -802,60 +13,96 @@ a {
     
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">📋 SWL</div>
+            <div class="nav-logo">SWL</div>
             <ul class="nav-menu">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#feedback">Feedback</a></li>
                 <li><button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button></li>
-                <li><a href="#" onclick="goToApp(event)" class="btn-launch">Launch App</a></li>
-                <li><a href="#" onclick="showLoginModal(event)" class="btn-login">Login</a></li>
-                <li><a href="#" onclick="showSignupModal(event)" class="btn-signup">Sign Up</a></li>
+                <li><a href="#" onclick="showLoginModal(event)" class="btn btn-login">Login</a></li>
+                <li><a href="#" onclick="showSignupModal(event)" class="btn btn-signup">Sign Up</a></li>
+                <li><a href="#" onclick="goToApp(event)" class="btn btn-launch">Launch App</a></li>
             </ul>
         </div>
     </nav>
 
     <section class="hero">
-        <h1>Collaborate on Projects.<br>Track Progress.<br>Achieve Goals.</h1>
-        <p class="hero-subtitle">A modern work log system for student teams. Organize tasks, track time, and boost productivity.</p>
-        <div class="hero-buttons">
-            <a href="#" onclick="goToApp(event)" class="btn btn-primary">Get Started Free</a>
-            <a href="#features" class="btn btn-secondary">Learn More</a>
+        <div class="hero-grid">
+            <div class="hero-copy">
+                <h1>Modern project tracking for <span>teams</span> and educators.</h1>
+                <p class="hero-subtitle">Build organized boards, track time, and keep every team member aligned with an elegant worklog experience.</p>
+                <div class="hero-buttons">
+                    <a href="#" onclick="goToApp(event)" class="btn btn-primary">Start Free</a>
+                    <a href="#features" class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2);">See Features</a>
+                </div>
+            </div>
+            <div class="hero-dashboard">
+                <div class="dashboard-header">
+                    <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+                </div>
+                <div class="dashboard-body">
+                    <div class="dash-row">
+                        <div class="dash-card">
+                            <div class="dash-card-header"></div>
+                            <div class="dash-bar"></div>
+                        </div>
+                        <div class="dash-card">
+                            <div class="dash-card-header" style="width: 40%"></div>
+                            <div style="color: white; font-size: 2rem; font-family: Outfit; font-weight: 700;">84%</div>
+                        </div>
+                    </div>
+                    <div class="dash-kanban">
+                        <div class="k-col">
+                            <div class="k-item"></div>
+                            <div class="k-item primary"></div>
+                        </div>
+                        <div class="k-col">
+                            <div class="k-item"></div>
+                        </div>
+                        <div class="k-col">
+                            <div class="k-item primary"></div>
+                            <div class="k-item"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="features" class="features">
+    <section id="features" class="section">
         <div class="container">
-            <h2>Powerful Features</h2>
-            <p class="section-subtitle">Everything you need to manage group projects effectively</p>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🎯</div>
+            <div class="section-header">
+                <h2>Powerful Features</h2>
+                <p>Everything you need to manage group projects effectively, housed in one beautiful interface.</p>
+            </div>
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-icon">🎯</div>
                     <h3>Kanban Board</h3>
                     <p>Organize tasks into To Do, In Progress, and Done columns. Drag and drop cards to update status instantly.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
+                <div class="card">
+                    <div class="card-icon">📊</div>
                     <h3>Dashboard Analytics</h3>
                     <p>Track your productivity with real-time statistics. Monitor completion rates, hours worked, and project progress.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">👥</div>
+                <div class="card">
+                    <div class="card-icon">👥</div>
                     <h3>Team Collaboration</h3>
                     <p>Share tasks with teammates, assign work, and see boards shared with you. Collaborate seamlessly.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⏱️</div>
+                <div class="card">
+                    <div class="card-icon">⏱️</div>
                     <h3>Time Tracking</h3>
                     <p>Log hours on each task. Track daily productivity and see how long different tasks typically take.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔔</div>
+                <div class="card">
+                    <div class="card-icon">🔔</div>
                     <h3>Priority System</h3>
                     <p>Mark tasks as High, Medium, or Low priority. Stay focused on what matters most.</p>
                 </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌙</div>
+                <div class="card">
+                    <div class="card-icon">🌙</div>
                     <h3>Dark Mode</h3>
                     <p>Switch to dark mode for comfortable work at night. Your preference is automatically saved.</p>
                 </div>
@@ -863,32 +110,30 @@ a {
         </div>
     </section>
 
-    <section id="how-it-works" class="how-it-works">
+    <section id="how-it-works" class="section section-alt">
         <div class="container">
-            <h2>How It Works</h2>
-            <p class="section-subtitle">Get started in 4 simple steps</p>
-            <div class="steps-grid">
-                <div class="step">
+            <div class="section-header">
+                <h2>How It Works</h2>
+                <p>Get started and align your team in 4 simple steps.</p>
+            </div>
+            <div class="grid-4">
+                <div class="card step-card">
                     <div class="step-number">1</div>
-                    <div class="step-icon">📝</div>
                     <h3>Sign Up</h3>
                     <p>Create your account in seconds. No credit card required.</p>
                 </div>
-                <div class="step">
+                <div class="card step-card">
                     <div class="step-number">2</div>
-                    <div class="step-icon">📋</div>
                     <h3>Create Tasks</h3>
                     <p>Add your project tasks with details like hours, priority, and due date.</p>
                 </div>
-                <div class="step">
+                <div class="card step-card">
                     <div class="step-number">3</div>
-                    <div class="step-icon">👥</div>
                     <h3>Share & Assign</h3>
                     <p>Invite teammates and assign tasks to them. Collaborate in real-time.</p>
                 </div>
-                <div class="step">
+                <div class="card step-card">
                     <div class="step-number">4</div>
-                    <div class="step-icon">📊</div>
                     <h3>Track Progress</h3>
                     <p>Watch your dashboard update as tasks progress. Celebrate completed work!</p>
                 </div>
@@ -896,108 +141,133 @@ a {
         </div>
     </section>
 
-    <section id="benefits" class="features" style="background: #f4f7f6;">
+    <section id="feedback" class="section">
         <div class="container">
-            <h2>Productivity Benefits</h2>
-            <p class="section-subtitle">Why SWL is the ultimate tool for your team</p>
-            <div class="features-grid">
-                <div class="feature-card" style="background: white;">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Work Faster</h3>
-                    <p>Reduce the time spent organizing and spend more time executing. Our tools are designed for speed.</p>
-                </div>
-                <div class="feature-card" style="background: white;">
-                    <div class="feature-icon">🧠</div>
-                    <h3>Reduce Cognitive Load</h3>
-                    <p>Keep all your tasks, deadlines, and communications in one place so you never have to remember where things are.</p>
-                </div>
-                <div class="feature-card" style="background: white;">
-                    <div class="feature-icon">📈</div>
-                    <h3>Visualize Success</h3>
-                    <p>Clear dashboards and progress tracking help you see your team's momentum and stay motivated.</p>
-                </div>
+            <div class="section-header">
+                <h2>We Value Your Feedback</h2>
+                <p>Let us know how we can improve SWL for you.</p>
             </div>
-        </div>
-    </section>
-
-    <section id="testimonials" class="feedback">
-        <div class="container">
-            <h2>What Our Users Say</h2>
-            <p class="section-subtitle">Join thousands of productive teams worldwide</p>
-            <div class="features-grid">
-                <div class="feature-card" style="text-align: left;">
-                    <p style="font-style: italic; margin-bottom: 15px;">"SWL has completely transformed how our team manages projects. The intuitive design and powerful features are unmatched."</p>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 40px; height: 40px; background: #003366; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">JD</div>
-                        <div>
-                            <h4 style="color: #001f3f; margin: 0; font-size: 14px;">Jane Doe</h4>
-                            <p style="margin: 0; font-size: 12px;">Project Manager</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="feature-card" style="text-align: left;">
-                    <p style="font-style: italic; margin-bottom: 15px;">"The best task management platform I've used. It's clean, fast, and has everything we need to stay organized."</p>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 40px; height: 40px; background: #003366; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">JS</div>
-                        <div>
-                            <h4 style="color: #001f3f; margin: 0; font-size: 14px;">John Smith</h4>
-                            <p style="margin: 0; font-size: 12px;">Learning User</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="feedback" class="feedback" style="background: #f4f7f6;">
-        <div class="container">
-            <h2>We Value Your Feedback</h2>
-            <p class="section-subtitle">Let us know how we can improve SWL for you</p>
-            <form class="feedback-form" onsubmit="handleFeedbackSubmission(event)" style="background: white;">
-                <div class="feedback-group">
+            <form class="feedback-form" onsubmit="handleFeedbackSubmission(event)">
+                <div class="form-group">
                     <label for="feedbackName">Full Name</label>
                     <input type="text" id="feedbackName" placeholder="Enter your name" required>
                 </div>
-                <div class="feedback-group">
+                <div class="form-group">
                     <label for="feedbackEmail">Email Address</label>
                     <input type="email" id="feedbackEmail" placeholder="your@email.com" required>
                 </div>
-                <div class="feedback-group">
+                <div class="form-group">
                     <label for="feedbackMessage">Your Feedback</label>
                     <textarea id="feedbackMessage" placeholder="Tell us what you love or what we can do better..." required></textarea>
                 </div>
-                <button type="submit" class="btn-submit-feedback">Submit Feedback</button>
+                <button type="submit" class="btn btn-submit-feedback">Submit Feedback</button>
             </form>
         </div>
     </section>
 
-    <section class="cta">
-        <h2>Ready to Transform Your Workflow?</h2>
-        <p>Join thousands of users managing their projects better.</p>
-        <a href="#" onclick="goToApp(event)" class="btn btn-primary btn-large" style="background: white; color: #001f3f;">Start Using SWL</a>
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your Workflow?</h2>
+            <p>Join thousands of users managing their projects better.</p>
+            <a href="#" onclick="goToApp(event)" class="btn btn-large btn-secondary">Start Using SWL</a>
+        </div>
     </section>
 
     <footer class="footer">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div class="footer-content">
             <div>
-                <h3 style="margin-bottom: 10px;">SWL</h3>
+                <div class="footer-logo">SWL</div>
                 <p>&copy; 2026 SWL. All rights reserved.</p>
             </div>
-            <ul style="list-style: none; display: flex; gap: 20px;">
-                <li><a href="#features" style="color: #adb5bd; transition: color 0.3s;">Features</a></li>
-                <li><a href="#benefits" style="color: #adb5bd; transition: color 0.3s;">Benefits</a></li>
-                <li><a href="#testimonials" style="color: #adb5bd; transition: color 0.3s;">Testimonials</a></li>
-                <li><a href="#feedback" style="color: #adb5bd; transition: color 0.3s;">Contact</a></li>
+            <ul class="footer-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#feedback">Contact</a></li>
             </ul>
         </div>
     </footer>
 
 </div>
 
-<div id="loginModal" class="auth-modal">
+<!-- START APP CONTAINER -->
+<div id="appContainer" class="app-container" style="display: none;">
+    <aside class="app-sidebar">
+        <div class="sidebar-brand">SWL</div>
+        <nav class="sidebar-nav">
+            <ul class="nav-list">
+                <li class="nav-item active" onclick="switchView('dashboard')">📊 <span>Dashboard</span></li>
+                <li class="nav-item" onclick="switchView('tasks')">✅ <span>Tasks</span></li>
+                <li class="nav-item">📅 <span>Calendar</span></li>
+                <li class="nav-item">📂 <span>Projects</span></li>
+                <li class="nav-item">🎯 <span>Goals</span></li>
+                <li class="nav-item">📈 <span>Analytics</span></li>
+                <li class="nav-item">📝 <span>Notes</span></li>
+                <li class="nav-item">📁 <span>Files</span></li>
+                <li class="nav-item" onclick="switchView('settings')">⚙️ <span>Settings</span></li>
+                <li class="nav-item" onclick="handleLogout()" style="margin-top: 20px; color: #ef4444;">🚪 <span>Logout</span></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-profile-card">
+                <div class="user-avatar"></div>
+                <div class="user-info">
+                    <h4 id="userDisplayName">User Name</h4>
+                    <p id="userDisplayEmail">user@email.com</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="app-main">
+        <header class="app-topbar">
+            <div class="search-container">
+                🔍 <input type="text" placeholder="Search everything...">
+            </div>
+            <div class="topbar-actions" style="display: flex; gap: 20px; align-items: center;">
+                <button title="Notifications" style="font-size: 1.2rem;">🔔</button>
+                <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+            </div>
+        </header>
+
+        <div id="view-dashboard" class="app-content-view">
+            <div style="padding: 40px;">
+                <h1 style="margin-bottom: 8px;">Welcome back, <span id="welcomeUserName">User</span></h1>
+                <p style="color: var(--text-muted); margin-bottom: 32px;">Here is what's happening with your productivity today.</p>
+                
+                <!-- Analytics Section -->
+                <div class="grid-4" style="margin-bottom: 40px;">
+                    <div class="card analytics-card">
+                        <p>Total Tasks</p>
+                        <h2 id="stat-total-tasks">0</h2>
+                    </div>
+                    <div class="card analytics-card">
+                        <p>Completed</p>
+                        <h2 id="stat-completed-tasks">0</h2>
+                    </div>
+                    <div class="card analytics-card">
+                        <p>Productivity</p>
+                        <h2 id="stat-productivity">0%</h2>
+                    </div>
+                    <div class="card analytics-card">
+                        <p>Focus Time</p>
+                        <h2 id="stat-focus-time">0h</h2>
+                    </div>
+                </div>
+
+                <div id="kanbanBoardContainer">
+                    <!-- Your existing Kanban logic will render the board here -->
+                    <div id="kanbanBoard"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<!-- END APP CONTAINER -->
+
+<div id="loginModal" class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
     <div class="auth-modal-content">
         <button class="auth-modal-close" onclick="closeAuthModal('loginModal')">&times;</button>
-        <h2>Welcome Back</h2>
+        <h2 id="loginModalTitle">Welcome Back</h2>
         <div id="loginModalError" class="auth-modal-error" style="display: none;"></div>
         <form class="auth-modal-form" onsubmit="handleLandingPageLogin(event)">
             <div class="auth-modal-form-group">
@@ -1011,10 +281,10 @@ a {
                     <button type="button" onclick="togglePasswordVisibility('landingLoginPassword')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 16px;">👁️</button>
                 </div>
                 <div style="text-align: right; margin-top: 5px;">
-                    <a href="#" onclick="showForgotPassword(event)" style="font-size: 12px; color: #003366; text-decoration: underline;">Forgot Password?</a>
+                    <a href="#" onclick="showForgotPassword(event)" style="font-size: 12px; color: var(--primary); text-decoration: underline;">Forgot Password?</a>
                 </div>
             </div>
-            <button type="submit" class="auth-modal-submit">Login</button>
+            <button type="submit" class="btn auth-modal-submit">Login</button>
         </form>
         <div class="auth-modal-toggle">
             Don't have an account? <a onclick="toggleToSignup(event)">Sign Up</a>
@@ -1025,7 +295,7 @@ a {
 <div id="signupModal" class="auth-modal">
     <div class="auth-modal-content">
         <button class="auth-modal-close" onclick="closeAuthModal('signupModal')">&times;</button>
-        <h2>Create Account</h2>
+        <h2 id="signupModalTitle">Create Account</h2>
         <div class="wizard-progress" id="wizardProgress">Step 1 of 4</div>
         <div id="signupModalError" class="auth-modal-error" style="display: none;"></div>
         
@@ -1037,7 +307,7 @@ a {
                     <input type="text" id="wizardSignupName" placeholder="John Doe">
                 </div>
                 <div class="wizard-buttons" style="display: flex; justify-content: flex-end;">
-                    <button type="button" class="wizard-btn-next" onclick="nextSignupStep(1)">Next</button>
+                    <button type="button" class="btn wizard-btn-next" onclick="nextSignupStep(1)">Next</button>
                 </div>
             </div>
 
@@ -1058,8 +328,8 @@ a {
                     <input type="hidden" id="wizardSignupRole">
                 </div>
                 <div class="wizard-buttons">
-                    <button type="button" class="wizard-btn-back" onclick="prevSignupStep(2)">Back</button>
-                    <button type="button" class="wizard-btn-next" onclick="nextSignupStep(2)">Next</button>
+                    <button type="button" class="btn wizard-btn-back" onclick="prevSignupStep(2)">Back</button>
+                    <button type="button" class="btn wizard-btn-next" onclick="nextSignupStep(2)">Next</button>
                 </div>
             </div>
 
@@ -1070,8 +340,8 @@ a {
                     <input type="text" id="wizardSignupDistrict" placeholder="e.g., Unified School District">
                 </div>
                 <div class="wizard-buttons">
-                    <button type="button" class="wizard-btn-back" onclick="prevSignupStep(3)">Back</button>
-                    <button type="button" class="wizard-btn-next" onclick="nextSignupStep(3)">Next</button>
+                    <button type="button" class="btn wizard-btn-back" onclick="prevSignupStep(3)">Back</button>
+                    <button type="button" class="btn wizard-btn-next" onclick="nextSignupStep(3)">Next</button>
                 </div>
             </div>
 
@@ -1096,8 +366,8 @@ a {
                     </div>
                 </div>
                 <div class="wizard-buttons">
-                    <button type="button" class="wizard-btn-back" onclick="prevSignupStep(4)">Back</button>
-                    <button type="submit" class="auth-modal-submit" id="wizardSubmitBtn" style="margin-top: 0; flex-grow: 1;">Sign Up</button>
+                    <button type="button" class="btn wizard-btn-back" onclick="prevSignupStep(4)">Back</button>
+                    <button type="submit" class="btn auth-modal-submit" id="wizardSubmitBtn" style="margin-top: 0;">Sign Up</button>
                 </div>
             </div>
         </form>
@@ -1108,500 +378,13 @@ a {
     </div>
 </div>
 
+<!-- Global inline notification -->
+<div id="siteToast" class="site-toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const supabaseUrl = 'https://teclqhxbohgljgcqcljq.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlY2xxaHhib2hnbGpnY3FjbGpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NzgxMjAsImV4cCI6MjA5MDA1NDEyMH0.B06AiesYThA9Z-4MD8q5DxVmI5fbs2PWpimWDNzkyAk';
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey, {
-    auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-    }
-});
-
-// ===== EMAIL CONFIRMATION HANDLER =====
-// If this page is loaded with a confirmation token in the URL hash or query,
-// let Supabase detect and exchange it, then redirect to app.html
-(async function handleConfirmationOnLoad() {
-    const hash = window.location.hash;
-    const search = window.location.search;
-    const hasToken = hash.includes('access_token') || hash.includes('type=signup')
-                  || search.includes('token_hash') || search.includes('type=signup')
-                  || search.includes('confirmation_token');
-    
-    if (hasToken) {
-        console.log('🔑 Confirmation token detected on index.html, exchanging session...');
-        // detectSessionInUrl:true will have already processed it;
-        // just wait briefly then check session
-        await new Promise(r => setTimeout(r, 800));
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (session) {
-            console.log('✅ Session confirmed. Redirecting to app...');
-            window.location.replace('app.html');
-        } else {
-            console.warn('⚠️ Token detected but session not established.');
-        }
-    }
-})();
-
-// ===== THEME FUNCTIONS =====
-function toggleTheme() {
-    const html = document.documentElement;
-    const currentTheme = html.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', newTheme);
-    localStorage.setItem('studentLogTheme', newTheme);
-    updateThemeIcon(newTheme);
-}
-
-function updateThemeIcon(theme) {
-    const btn = document.getElementById('themeToggleBtn');
-    if(btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-}
-
-const savedTheme = localStorage.getItem('studentLogTheme') || 'light';
-document.documentElement.setAttribute('data-theme', savedTheme);
-window.addEventListener('load', () => {
-    updateThemeIcon(savedTheme);
-});
-
-// ===== MODAL FUNCTIONS =====
-
-function showLoginModal(e) {
-    if (e) e.preventDefault();
-    const loginModal = document.getElementById('loginModal');
-    const signupModal = document.getElementById('signupModal');
-    if (loginModal) loginModal.classList.add('show');
-    if (signupModal) signupModal.classList.remove('show');
-}
-
-function showSignupModal(e) {
-    if (e) e.preventDefault();
-    const signupModal = document.getElementById('signupModal');
-    const loginModal = document.getElementById('loginModal');
-    if (signupModal) signupModal.classList.add('show');
-    if (loginModal) loginModal.classList.remove('show');
-    
-    // Reset the wizard to Step 1 each time modal opens
-    if (typeof resetSignupWizard === 'function') resetSignupWizard();
-}
-
-function closeAuthModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.classList.remove('show');
-    }
-}
-
-function toggleToSignup(e) {
-    if (e) e.preventDefault();
-    closeAuthModal('loginModal');
-    showSignupModal();
-}
-
-function toggleToLogin(e) {
-    if (e) e.preventDefault();
-    closeAuthModal('signupModal');
-    showLoginModal();
-}
-
-async function handleLandingPageLogin(event) {
-    event.preventDefault();
-    
-    const email = document.getElementById('landingLoginEmail').value.trim();
-    const password = document.getElementById('landingLoginPassword').value.trim();
-    const errorDiv = document.getElementById('loginModalError');
-    
-    if (!email || !password) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Please fill in all fields';
-            errorDiv.style.display = 'block';
-        }
-        return;
-    }
-
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password
-    });
-    
-    if (error) {
-        if (errorDiv) {
-            console.error("Login error:", error);
-            if (error.message.includes('Email not confirmed')) {
-                errorDiv.innerHTML = `
-                    <strong>Email not confirmed.</strong><br>
-                    Please check your inbox to verify your account.<br>
-                    <button type="button" class="resend-btn" id="resendBtn" onclick="resendConfirmationEmail('${email}')">
-                        Didn't get it? Resend confirmation email
-                    </button>
-                `;
-            } else {
-                errorDiv.textContent = error.message;
-            }
-            errorDiv.style.display = 'block';
-        }
-        return;
-    }
-    
-    const userRole = data.user?.role;
-    const isConfirmed = data.user?.email_confirmed_at;
-
-    if (!isConfirmed && userRole !== 'service_role') {
-        if (errorDiv) {
-            errorDiv.innerHTML = `
-                <strong>Email not confirmed.</strong><br>
-                Please check your inbox to verify your account.<br>
-                <button type="button" class="resend-btn" id="resendBtn" onclick="resendConfirmationEmail('${email}')">
-                    Didn't get it? Resend confirmation email
-                </button>
-            `;
-            errorDiv.style.display = 'block';
-        }
-        return;
-    }
-
-    const userName = data.user.user_metadata?.name || 'User';
-    alert('Logged in successfully!\n\nWelcome back, ' + userName + '!');
-    
-    setTimeout(() => {
-        window.location.href = 'app.html';
-    }, 100);
-}
-
-// ===== WIZARD LOGIC =====
-let currentSignupStep = 1;
-
-function updateSignupView() {
-    for (let i = 1; i <= 4; i++) {
-        const stepDiv = document.getElementById('wizardStep' + i);
-        if (stepDiv) stepDiv.classList.remove('active');
-    }
-    const currentDiv = document.getElementById('wizardStep' + currentSignupStep);
-    if (currentDiv) currentDiv.classList.add('active');
-    
-    const progressEl = document.getElementById('wizardProgress');
-    if (progressEl) progressEl.textContent = `Step ${currentSignupStep} of 4`;
-    
-    const errorDiv = document.getElementById('signupModalError');
-    if (errorDiv) errorDiv.style.display = 'none';
-}
-
-function nextSignupStep(step) {
-    const errorDiv = document.getElementById('signupModalError');
-    errorDiv.style.display = 'none';
-
-    // Validation
-    if (step === 1) {
-        const name = document.getElementById('wizardSignupName').value.trim();
-        if (!name) {
-            errorDiv.textContent = 'Please enter your full name.';
-            errorDiv.style.display = 'block';
-            return;
-        }
-    } else if (step === 2) {
-        const role = document.getElementById('wizardSignupRole').value;
-        if (!role) {
-            errorDiv.textContent = 'Please select a role.';
-            errorDiv.style.display = 'block';
-            return;
-        }
-    } else if (step === 3) {
-        const district = document.getElementById('wizardSignupDistrict').value.trim();
-        if (!district) {
-            errorDiv.textContent = 'Please enter your district.';
-            errorDiv.style.display = 'block';
-            return;
-        }
-    }
-
-    currentSignupStep = step + 1;
-    updateSignupView();
-}
-
-function prevSignupStep(step) {
-    currentSignupStep = step - 1;
-    updateSignupView();
-}
-
-function selectRole(role) {
-    document.getElementById('wizardSignupRole').value = role;
-    document.getElementById('roleCardStudent').classList.remove('selected');
-    document.getElementById('roleCardAdmin').classList.remove('selected');
-    
-    if (role === 'Student') {
-        document.getElementById('roleCardStudent').classList.add('selected');
-    } else {
-        document.getElementById('roleCardAdmin').classList.add('selected');
-    }
-}
-
-function resetSignupWizard() {
-    currentSignupStep = 1;
-    document.getElementById('wizardSignupName').value = '';
-    document.getElementById('wizardSignupRole').value = '';
-    document.getElementById('wizardSignupDistrict').value = '';
-    document.getElementById('wizardSignupEmail').value = '';
-    document.getElementById('wizardSignupPassword').value = '';
-    document.getElementById('wizardSignupConfirmPassword').value = '';
-    
-    document.getElementById('roleCardStudent').classList.remove('selected');
-    document.getElementById('roleCardAdmin').classList.remove('selected');
-    
-    updateSignupView();
-}
-
-async function handleLandingPageSignup(event) {
-    event.preventDefault();
-    
-    const form = event.target;
-    const submitBtn = form.querySelector('button[type="submit"]');
-    const originalBtnText = submitBtn.textContent;
-    const errorDiv = document.getElementById('signupModalError');
-    
-    const name = document.getElementById('wizardSignupName').value.trim();
-    const role = document.getElementById('wizardSignupRole').value;
-    const district = document.getElementById('wizardSignupDistrict').value.trim();
-    const email = document.getElementById('wizardSignupEmail').value.trim();
-    const password = document.getElementById('wizardSignupPassword').value.trim();
-    const confirmPassword = document.getElementById('wizardSignupConfirmPassword').value.trim();
-    
-    if (errorDiv) errorDiv.style.display = 'none';
-    
-    if (!email || !password || !confirmPassword) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Please fill in all email and password fields';
-            errorDiv.style.display = 'block';
-        }
-        return;
-    }
-    
-    if (password !== confirmPassword) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Passwords do not match';
-            errorDiv.style.display = 'block';
-        }
-        return;
-    }
-    
-    if (password.length < 6) {
-        if (errorDiv) {
-            errorDiv.textContent = 'Password must be at least 6 characters';
-            errorDiv.style.display = 'block';
-        }
-        return;
-    }
-
-    try {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Signing Up...';
-
-        const redirectTo = window.location.origin + '/app.html';
-        console.log('📧 Signup redirect URL:', redirectTo);
-
-        const { data, error } = await supabaseClient.auth.signUp({
-            email,
-            password,
-            options: {
-                data: { name, role, district },
-                emailRedirectTo: redirectTo
-            }
-        });
-        
-        if (error) {
-            if (errorDiv) {
-                if (error.message.includes('rate limit') || error.status === 429) {
-                    errorDiv.textContent = 'Too many signup attempts. Please wait a minute before trying again.';
-                } else {
-                    errorDiv.textContent = error.message;
-                }
-                errorDiv.style.display = 'block';
-            }
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalBtnText;
-            return;
-        }
-        
-        if (!data.session) {
-            console.log("Signup successful, confirmation required.");
-            if (errorDiv) {
-                errorDiv.style.background = '#e7f3ff';
-                errorDiv.style.color = '#005a9e';
-                errorDiv.style.borderLeft = '4px solid #0078d4';
-                errorDiv.innerHTML = `
-                    <strong>✅ Account created successfully!</strong><br>
-                    A verification link has been sent to <strong>${email}</strong>.<br>
-                    Please confirm your email before logging in.
-                `;
-                errorDiv.style.display = 'block';
-            }
-            submitBtn.textContent = 'Check Your Email';
-            return;
-        }
-
-        alert('✅ Account created successfully!\n\nWelcome back, ' + name + '!');
-        
-        setTimeout(() => {
-            window.location.href = 'app.html';
-        }, 100);
-    } catch (err) {
-        console.error("Signup error:", err);
-        if (errorDiv) {
-            errorDiv.textContent = 'An unexpected error occurred. Please try again.';
-            errorDiv.style.display = 'block';
-        }
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalBtnText;
-    }
-}
-
-async function resendConfirmationEmail(email) {
-    const resendBtn = document.getElementById('resendBtn');
-    const originalText = resendBtn ? resendBtn.textContent : 'Resend';
-    
-    try {
-        if (resendBtn) {
-            resendBtn.disabled = true;
-            resendBtn.textContent = 'Sending...';
-        }
-        
-        const redirectTo = window.location.origin + '/app.html';
-        console.log('📧 Resend redirect URL:', redirectTo);
-
-        const { error } = await supabaseClient.auth.resend({
-            type: 'signup',
-            email: email,
-            options: {
-                emailRedirectTo: redirectTo
-            }
-        });
-        
-        if (error) throw error;
-        
-        if (resendBtn) {
-            resendBtn.textContent = '✅ Confirmation email resent!';
-            setTimeout(() => {
-                resendBtn.textContent = originalText;
-                resendBtn.disabled = false;
-            }, 5000);
-        } else {
-            alert('✅ Confirmation email resent!');
-        }
-        
-    } catch (err) {
-        console.error("Resend error:", err);
-        alert("Error resending email: " + err.message);
-        if (resendBtn) {
-            resendBtn.textContent = originalText;
-            resendBtn.disabled = false;
-        }
-    }
-}
-
-
-// ===== FEEDBACK FORM FUNCTION =====
-async function handleFeedbackSubmission(event) {
-    event.preventDefault();
-    
-    const name = document.getElementById('feedbackName').value.trim();
-    const email = document.getElementById('feedbackEmail').value.trim();
-    const message = document.getElementById('feedbackMessage').value.trim();
-    const submitBtn = event.target.querySelector('button[type="submit"]');
-
-    if (!name || !email || !message) {
-        alert("Please fill in all fields.");
-        return;
-    }
-
-    try {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
-
-        const { error } = await supabaseClient
-            .from('feedback')
-            .insert([{ name, email, message }]);
-
-        if (error) throw error;
-
-        alert(`✅ Thank you for your feedback, ${name}! Your input has been saved.`);
-        
-        // Clear the form fields
-        document.getElementById('feedbackName').value = '';
-        document.getElementById('feedbackEmail').value = '';
-        document.getElementById('feedbackMessage').value = '';
-    } catch (err) {
-        console.error("Feedback error:", err);
-        alert("❌ Error sending feedback. Your message was not saved, but we'll work on it!");
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit Feedback';
-    }
-}
-
-async function goToApp(e) {
-    if (e) e.preventDefault();
-    
-    // Check if user is logged in first to avoid bounce loop
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    
-    if (session) {
-        window.location.href = 'app.html';
-    } else {
-        showLoginModal();
-    }
-}
-
-function togglePasswordVisibility(inputId) {
-    const input = document.getElementById(inputId);
-    const btn = input.nextElementSibling;
-    if (input.type === 'password') {
-        input.type = 'text';
-        btn.textContent = '🙈';
-    } else {
-        input.type = 'password';
-        btn.textContent = '👁️';
-    }
-}
-
-function showForgotPassword(e) {
-    if (e) e.preventDefault();
-    const email = document.getElementById('landingLoginEmail').value.trim();
-    if (!email) {
-        alert('Please enter your email address first, then click "Forgot Password?".');
-        return;
-    }
-    
-    // Simulate sending password reset email
-    supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/app.html',
-    }).then(({ data, error }) => {
-        if (error) {
-            alert('Error sending reset email: ' + error.message);
-        } else {
-            alert('✅ Password reset instructions sent to ' + email + '!');
-        }
-    });
-}
-
-// Close modal when clicking outside
-document.addEventListener('click', function(event) {
-    const loginModal = document.getElementById('loginModal');
-    const signupModal = document.getElementById('signupModal');
-    
-    if (event.target === loginModal && loginModal) {
-        closeAuthModal('loginModal');
-    }
-    if (event.target === signupModal && signupModal) {
-        closeAuthModal('signupModal');
-    }
-});
-
-console.log('✅ Website loaded successfully!');
-</script>
+<!-- Optional local config: create `config.js` from `config.example.js` to avoid embedding keys -->
+<script src="config.js"></script>
+<script src="main.js"></script>
 
 </body>
 </html>
-
-
-
