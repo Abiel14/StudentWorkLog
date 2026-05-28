@@ -6,6 +6,7 @@
     <title>SWL - Collaborative Task Management</title>
 
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -18,7 +19,7 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#feedback">Feedback</a></li>
-                <li><button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode">🌙</button></li>
+                <li><button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" title="Toggle Dark Mode"><i data-lucide="moon"></i></button></li>
                 <li><a href="#" onclick="showLoginModal(event)" class="btn btn-login">Login</a></li>
                 <li><a href="#" onclick="showSignupModal(event)" class="btn btn-signup">Sign Up</a></li>
                 <li><a href="#" onclick="goToApp(event)" class="btn btn-launch">Launch App</a></li>
@@ -77,32 +78,32 @@
             </div>
             <div class="grid-3">
                 <div class="card">
-                    <div class="card-icon">🎯</div>
+                    <div class="card-icon"><i data-lucide="target"></i></div>
                     <h3>Kanban Board</h3>
                     <p>Organize tasks into To Do, In Progress, and Done columns. Drag and drop cards to update status instantly.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">📊</div>
+                    <div class="card-icon"><i data-lucide="bar-chart-2"></i></div>
                     <h3>Dashboard Analytics</h3>
                     <p>Track your productivity with real-time statistics. Monitor completion rates, hours worked, and project progress.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">👥</div>
+                    <div class="card-icon"><i data-lucide="users"></i></div>
                     <h3>Team Collaboration</h3>
                     <p>Share tasks with teammates, assign work, and see boards shared with you. Collaborate seamlessly.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">⏱️</div>
+                    <div class="card-icon"><i data-lucide="clock"></i></div>
                     <h3>Time Tracking</h3>
                     <p>Log hours on each task. Track daily productivity and see how long different tasks typically take.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">🔔</div>
+                    <div class="card-icon"><i data-lucide="bell"></i></div>
                     <h3>Priority System</h3>
                     <p>Mark tasks as High, Medium, or Low priority. Stay focused on what matters most.</p>
                 </div>
                 <div class="card">
-                    <div class="card-icon">🌙</div>
+                    <div class="card-icon"><i data-lucide="moon"></i></div>
                     <h3>Dark Mode</h3>
                     <p>Switch to dark mode for comfortable work at night. Your preference is automatically saved.</p>
                 </div>
@@ -195,16 +196,16 @@
         <div class="sidebar-brand">SWL</div>
         <nav class="sidebar-nav">
             <ul class="nav-list">
-                <li class="nav-item active" onclick="switchView('dashboard')">📊 <span>Dashboard</span></li>
-                <li class="nav-item" onclick="switchView('tasks')">✅ <span>Tasks</span></li>
-                <li class="nav-item">📅 <span>Calendar</span></li>
-                <li class="nav-item">📂 <span>Projects</span></li>
-                <li class="nav-item">🎯 <span>Goals</span></li>
-                <li class="nav-item">📈 <span>Analytics</span></li>
-                <li class="nav-item">📝 <span>Notes</span></li>
-                <li class="nav-item">📁 <span>Files</span></li>
-                <li class="nav-item" onclick="switchView('settings')">⚙️ <span>Settings</span></li>
-                <li class="nav-item" onclick="handleLogout()" style="margin-top: 20px; color: #ef4444;">🚪 <span>Logout</span></li>
+                <li class="nav-item active" onclick="switchView('dashboard')"><i data-lucide="layout-dashboard"></i> <span>Dashboard</span></li>
+                <li class="nav-item" onclick="switchView('tasks')"><i data-lucide="check-square"></i> <span>Tasks</span></li>
+                <li class="nav-item"><i data-lucide="calendar"></i> <span>Calendar</span></li>
+                <li class="nav-item"><i data-lucide="folder"></i> <span>Projects</span></li>
+                <li class="nav-item"><i data-lucide="target"></i> <span>Goals</span></li>
+                <li class="nav-item"><i data-lucide="bar-chart"></i> <span>Analytics</span></li>
+                <li class="nav-item"><i data-lucide="file-text"></i> <span>Notes</span></li>
+                <li class="nav-item"><i data-lucide="folder-open"></i> <span>Files</span></li>
+                <li class="nav-item" onclick="switchView('settings')"><i data-lucide="settings"></i> <span>Settings</span></li>
+                <li class="nav-item" onclick="handleLogout()" style="margin-top: 20px; color: #ef4444;"><i data-lucide="log-out"></i> <span>Logout</span></li>
             </ul>
         </nav>
         <div class="sidebar-footer">
@@ -221,11 +222,11 @@
     <main class="app-main">
         <header class="app-topbar">
             <div class="search-container">
-                🔍 <input type="text" placeholder="Search everything...">
+                <i data-lucide="search"></i> <input type="text" placeholder="Search everything...">
             </div>
             <div class="topbar-actions" style="display: flex; gap: 20px; align-items: center;">
-                <button title="Notifications" style="font-size: 1.2rem;">🔔</button>
-                <div class="theme-toggle" onclick="toggleTheme()">🌙</div>
+                <button title="Notifications" style="font-size: 1.2rem;"><i data-lucide="bell"></i></button>
+                <div class="theme-toggle" onclick="toggleTheme()"><i data-lucide="moon"></i></div>
             </div>
         </header>
 
@@ -385,6 +386,11 @@
 <!-- Optional local config: create `config.js` from `config.example.js` to avoid embedding keys -->
 <script src="config.js"></script>
 <script src="main.js"></script>
+<script>
+    if (window.lucide) {
+        lucide.createIcons();
+    }
+</script>
 
 </body>
 </html>

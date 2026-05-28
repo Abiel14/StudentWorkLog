@@ -64,7 +64,7 @@ function logAuthFailure(context, error) {
                   || search.includes('confirmation_token');
     
     if (hasToken) {
-        console.log('<i class="fi fi-rr-key"></i> Confirmation token detected on index.html, exchanging session...');
+        console.log('🔑 Confirmation token detected on index.html, exchanging session...');
         await new Promise(r => setTimeout(r, 800));
         const { data: { session } } = await supabaseClient.auth.getSession();
         if (session) {
@@ -87,8 +87,13 @@ function toggleTheme() {
 }
 
 function updateThemeIcon(theme) {
-    const btn = document.getElementById('themeToggleBtn');
-    if(btn) btn.textContent = theme === 'dark' ? '' : '';
+    const btns = document.querySelectorAll('#themeToggleBtn, .theme-toggle');
+    btns.forEach(btn => {
+        btn.innerHTML = theme === 'dark' ? '<i data-lucide="sun"></i>' : '<i data-lucide="moon"></i>';
+    });
+    if (window.lucide) {
+        lucide.createIcons();
+    }
 }
 
 const savedTheme = localStorage.getItem('studentLogTheme') || 'dark';
@@ -557,10 +562,13 @@ function togglePasswordVisibility(inputId) {
     const btn = input.nextElementSibling;
     if (input.type === 'password') {
         input.type = 'text';
-        btn.textContent = '🙈';
+        btn.innerHTML = '<i data-lucide="eye-off" style="width: 20px; height: 20px;"></i>';
     } else {
         input.type = 'password';
-        btn.textContent = '👁️';
+        btn.innerHTML = '<i data-lucide="eye" style="width: 20px; height: 20px;"></i>';
+    }
+    if (window.lucide) {
+        lucide.createIcons();
     }
 }
 
