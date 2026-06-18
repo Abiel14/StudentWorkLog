@@ -6,6 +6,8 @@
     <title>SWL - Dashboard</title>
     <script src="https://unpkg.com/lucide@latest"></script>
         <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
         :root {
             --bg-body: #f8fafc;
             --bg-column: #eff2f7;
@@ -103,7 +105,7 @@
         .btn.primary, .btn-primary { background: linear-gradient(135deg, var(--btn-primary), var(--btn-primary-dark)); color: white; }
         .btn.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.06); color: var(--text-main); }
 
-        h1, h2, h3, h4 { color: var(--text-main); margin: 0 0 8px 0; }
+        h1, h2, h3, h4 { font-family: 'Outfit', 'Inter', 'Segoe UI', sans-serif; color: var(--text-main); margin: 0 0 8px 0; }
         h1 { font-size: 28px; font-weight: 900; }
         h2 { font-size: 20px; font-weight: 800; }
         h3 { font-size: 16px; font-weight: 800; }
@@ -195,11 +197,15 @@
 
         .profile-card {
             margin-top: auto;
-            padding: 18px;
-            border-radius: 24px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px 12px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
             color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0;
         }
 
         .profile-card .profile-top {
@@ -210,24 +216,27 @@
         }
 
         .avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: 18px;
+            width: clamp(40px, 8vw, 52px);
+            height: auto;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
             display: grid;
             place-items: center;
             background: linear-gradient(135deg, var(--btn-primary), var(--btn-primary-dark));
             color: white;
             font-weight: 800;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 2.2vw, 1rem);
+            flex: 0 0 auto;
         }
 
         .profile-details {
             display: grid;
-            gap: 4px;
+            gap: 2px;
+            min-width: 0;
         }
 
-        .profile-name { font-size: 15px; font-weight: 800; }
-        .profile-email { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+        .profile-name { font-size: 14px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .profile-email { font-size: 12px; color: rgba(255,255,255,0.75); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
         .sidebar-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: rgba(255,255,255,0.65); font-size: 12px; }
         .sidebar-footer-actions { display: inline-flex; align-items: center; gap: 10px; }
@@ -242,6 +251,7 @@
             border: 1px solid rgba(255,255,255,0.12);
             box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
             transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            flex: 0 0 auto;
         }
         .profile-theme-toggle:hover {
             transform: translateY(-1px);
@@ -479,14 +489,25 @@
         .settings-field label,
         .settings-toggle span { font-size: 14px; font-weight: 700; color: var(--text-main); }
         .settings-field input,
-        .settings-field select { width: 100%; padding: 14px 16px; border-radius: 16px; border: 1.5px solid rgba(15,23,42,0.12); background: var(--bg-surface); }
+        .settings-field select { width: 100%; padding: 14px 16px; padding-right: 40px; border-radius: 12px; border: 1.5px solid rgba(15,23,42,0.12); background: var(--bg-surface); transition: all .18s ease; }
+        .settings-field select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, rgba(255,255,255,0.12) 50%), linear-gradient(135deg, rgba(255,255,255,0.12) 50%, transparent 50%); background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px); background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; }
         .settings-field input:hover,
         .settings-field select:hover { border-color: rgba(15,23,42,0.22); }
         .settings-field input:focus,
         .settings-field select:focus { border-color: var(--btn-primary); box-shadow: 0 0 0 6px rgba(77,166,255,0.16); background: var(--bg-surface-strong); }
-        .settings-toggle { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px; border-radius: 18px; background: var(--bg-surface); border: 1px solid rgba(15,23,42,0.12); }
-        .settings-toggle:hover { border-color: var(--btn-primary); }
-        .settings-toggle input { width: 20px; height: 20px; accent-color: var(--btn-primary); }
+        .settings-toggle { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 18px; border-radius: 14px; background: var(--bg-surface); border: 1px solid rgba(15,23,42,0.08); transition: all .18s ease; position: relative; }
+        .settings-toggle:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(2,6,23,0.12); border-color: rgba(77,166,255,0.12); }
+
+        /* Custom modern switch using :has to reflect checked state */
+        .settings-toggle input { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 44px; height: 24px; opacity: 0; cursor: pointer; }
+        .settings-toggle::after { content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 44px; height: 24px; border-radius: 999px; background: rgba(255,255,255,0.04); transition: all .18s ease; box-shadow: inset 0 1px 0 rgba(255,255,255,0.02); }
+        .settings-toggle::before { content: ''; position: absolute; right: 24px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.95); transition: all .18s ease; box-shadow: 0 6px 18px rgba(2,6,23,0.35); }
+        .settings-toggle:has(input:checked)::after { background: linear-gradient(90deg, var(--btn-primary), #3a7bd5); }
+        .settings-toggle:has(input:checked)::before { right: 12px; background: #fff; }
+        .settings-toggle:has(input:disabled) { opacity: 0.6; pointer-events: none; }
+
+        /* Fallback simpler checkbox appearance for older browsers */
+        .settings-toggle input.fallback { appearance: auto; width: 20px; height: 20px; accent-color: var(--btn-primary); opacity: 1; position: static; transform: none; }
         .settings-actions { position: sticky; bottom: 0; padding: 18px 28px 26px; background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.95) 20%, var(--bg-surface-strong) 100%); border-top: 1px solid rgba(15,23,42,0.08); display: none; gap: 14px; align-items: center; }
         .settings-actions.visible { display: flex; }
         .settings-unsaved-message { color: var(--text-muted); font-size: 13px; font-weight: 700; flex: 1; }
@@ -859,11 +880,15 @@
 
         @media (max-width: 920px) {
             .app-shell { grid-template-columns: 1fr; }
-            .sidebar { flex-direction: row; align-items: center; overflow-x: auto; min-height: 96px; padding: 16px 16px; gap: 12px; }
+            .sidebar { flex-direction: row; align-items: center; overflow-x: auto; min-height: 96px; padding: 12px 12px; gap: 12px; }
             nav { flex-direction: row; gap: 10px; }
-            .profile-card { display: none; }
-            /* removed topbar responsive padding */
-            .main-content { grid-template-columns: 1fr; padding: 24px 20px 34px; }
+            /* Show a compact profile card on smaller screens */
+            .profile-card { display: flex; flex-direction: row; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; }
+            .profile-card .profile-top { margin-bottom: 0; gap: 10px; }
+            .profile-card .profile-details { overflow: hidden; }
+            .profile-card .profile-name { font-size: 13px; }
+            .profile-card .profile-email { display: none; }
+            .main-content { grid-template-columns: 1fr; padding: 18px 16px 26px; }
             .board { grid-template-columns: 1fr; }
             .column { max-height: none; }
         }
@@ -910,6 +935,65 @@
         .app-shell {
             gap: 0 !important;
             min-width: 0;
+        }
+
+        /* Mobile: show theme toggle in nav and ensure profile card hidden doesn't hide theme control */
+        .theme-toggle-mobile { display: none; }
+        @media (max-width: 920px) {
+            .theme-toggle-mobile { display: inline-flex !important; align-items: center; gap: 8px; }
+            .theme-toggle-mobile .lucide { width: 16px; height: 16px; }
+        }
+
+        /* Light theme overrides to ensure readable, polished light UI even when other rules set dark backgrounds */
+        html[data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --bg-surface-strong: #ffffff;
+            --bg-panel: #ffffff;
+            --bg-card: #ffffff;
+            --text-main: #0f1d48;
+            --text-muted: #64748b;
+            --border: rgba(15,23,42,0.08);
+            --btn-primary: #1a8cff;
+            --btn-primary-dark: #145cc4;
+        }
+
+        html[data-theme="light"] .sidebar {
+            background: linear-gradient(180deg, #ffffff, #fbfbfd);
+            color: var(--text-main);
+            border-right: 1px solid rgba(15,23,42,0.06);
+        }
+
+        html[data-theme="light"] .profile-card,
+        html[data-theme="light"] .widget,
+        html[data-theme="light"] .stats-card,
+        html[data-theme="light"] .column,
+        html[data-theme="light"] .task-card,
+        html[data-theme="light"] .modal-body,
+        html[data-theme="light"] .settings-panel {
+            background: var(--bg-surface) !important;
+            border-color: var(--border) !important;
+            color: var(--text-main) !important;
+            box-shadow: 0 6px 20px rgba(15,23,42,0.06) !important;
+        }
+
+        html[data-theme="light"] .nav-link {
+            color: rgba(15,23,42,0.9);
+            background: transparent;
+        }
+
+        html[data-theme="light"] .nav-link.active {
+            background: linear-gradient(135deg, rgba(26,140,255,0.10), rgba(20,92,196,0.06));
+            color: var(--btn-primary-dark);
+            border-left-color: var(--btn-primary);
+        }
+
+        html[data-theme="light"] .topbar-search,
+        html[data-theme="light"] .topbar-action-btn,
+        html[data-theme="light"] .topbar-action-icon {
+            background: #ffffff;
+            border-color: var(--border);
+            color: var(--text-main);
         }
 
         .app-frame {
@@ -1542,6 +1626,408 @@
             height: 14px;
             stroke-width: 2;
         }
+
+        /* --- DASHBOARD REDESIGN STYLES --- */
+        .dashboard-view {
+            padding: clamp(20px, 3.5vw, 40px) !important;
+            /* display is controlled by .app-view/.is-active to ensure only the
+               active page is visible. Avoid forcing display here. */
+            flex-direction: column;
+            gap: clamp(24px, 4vw, 36px);
+            overflow-y: auto;
+            height: auto;
+            min-height: 100%;
+            background: transparent;
+        }
+
+        .dashboard-welcome {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .welcome-title {
+            font-size: clamp(24px, 3vw, 32px);
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .welcome-subtitle {
+            font-size: clamp(14px, 1.5vw, 16px);
+            color: var(--text-muted);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Analytics Grid - 4 columns */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        @media (max-width: 1024px) {
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .analytics-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.45) 0%, rgba(8, 14, 30, 0.65) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 18px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        [data-theme="light"] .analytics-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 252, 0.95) 100%);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+
+        .analytics-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 0 12px rgba(31, 182, 255, 0.15);
+            border-color: rgba(31, 182, 255, 0.3);
+        }
+
+        [data-theme="light"] .analytics-card:hover {
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08), 0 0 12px rgba(26, 140, 255, 0.1);
+            border-color: rgba(26, 140, 255, 0.3);
+        }
+
+        .analytics-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .analytics-card.total-tasks::before { background: var(--btn-primary); }
+        .analytics-card.hours-logged::before { background: #10b981; }
+        .analytics-card.completion-rate::before { background: #8b5cf6; }
+        .analytics-card.overdue-alerts::before { background: var(--priority-high); }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .card-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .analytics-card:hover .card-icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card-icon-wrapper.blue { background: rgba(31, 182, 255, 0.1); color: var(--btn-primary); }
+        .card-icon-wrapper.green { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .card-icon-wrapper.purple { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .card-icon-wrapper.red { background: rgba(255, 122, 122, 0.1); color: var(--priority-high); }
+
+        .card-metric {
+            font-size: clamp(28px, 2.5vw, 36px);
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1.1;
+            margin-top: 4px;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Dashboard Details Grid (Task Status & Deadlines side by side) */
+        .dashboard-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            width: 100%;
+            align-items: start;
+        }
+
+        @media (max-width: 920px) {
+            .dashboard-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .details-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.45) 0%, rgba(8, 14, 30, 0.65) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 12px 36px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 380px;
+        }
+
+        [data-theme="light"] .details-card {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 36px rgba(15, 23, 42, 0.04);
+        }
+
+        .details-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .details-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0;
+            letter-spacing: -0.01em;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Status Distribution List */
+        .status-distribution-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .distribution-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .distribution-row-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .status-name-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.dot-todo { background: var(--text-muted); }
+        .status-dot.dot-inprogress { background: var(--btn-primary); }
+        .status-dot.dot-paused { background: var(--priority-medium); }
+        .status-dot.dot-completed { background: #10b981; }
+
+        .status-count-label {
+            color: var(--text-main);
+            font-weight: 800;
+        }
+
+        .count-pill {
+            font-size: 12px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        [data-theme="light"] .count-pill {
+            background: rgba(15, 23, 42, 0.04);
+        }
+
+        .progress-bar-track {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        [data-theme="light"] .progress-bar-track {
+            background: rgba(15, 23, 42, 0.06);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .progress-bar-fill.fill-todo { background: var(--text-muted); }
+        .progress-bar-fill.fill-inprogress { background: var(--btn-primary); box-shadow: 0 0 10px rgba(31, 182, 255, 0.5); }
+        .progress-bar-fill.fill-paused { background: var(--priority-medium); box-shadow: 0 0 10px rgba(255, 209, 102, 0.5); }
+        .progress-bar-fill.fill-completed { background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+
+        /* Upcoming Deadlines list */
+        .upcoming-deadlines-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 360px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .upcoming-deadlines-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .upcoming-deadlines-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 999px;
+        }
+
+        .deadline-item-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.22s ease;
+        }
+
+        [data-theme="light"] .deadline-item-card {
+            background: rgba(15, 23, 42, 0.02);
+        }
+
+        .deadline-item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(31, 182, 255, 0.25);
+        }
+
+        [data-theme="light"] .deadline-item-card:hover {
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+            border-color: rgba(26, 140, 255, 0.25);
+        }
+
+        .deadline-card-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .deadline-task-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .deadline-date-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .deadline-calendar-icon {
+            width: 14px;
+            height: 14px;
+            stroke-width: 2.2;
+            color: var(--text-muted);
+        }
+
+        .deadline-card-right {
+            flex-shrink: 0;
+        }
+
+        .deadline-priority-badge {
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            display: inline-block;
+        }
+
+        .deadline-priority-badge.priority-high {
+            background: var(--priority-high-bg);
+            color: var(--priority-high);
+            border: 1px solid rgba(255, 122, 122, 0.2);
+            box-shadow: none;
+        }
+
+        .deadline-priority-badge.priority-medium {
+            background: var(--priority-medium-bg);
+            color: var(--priority-medium);
+            border: 1px solid rgba(255, 209, 102, 0.2);
+            box-shadow: none;
+        }
+
+        .deadline-priority-badge.priority-low {
+            background: var(--priority-low-bg);
+            color: var(--priority-low);
+            border: 1px solid rgba(102, 213, 255, 0.2);
+            box-shadow: none;
+        }
     </style>
 </head>
 <body>
@@ -1559,6 +2045,38 @@
                 <button class="btn-save" style="background: var(--btn-primary); color: white;" onclick="window.location.href='index.html'">Go to Login</button>
             </div>
         </div>
+
+            <!-- Create Workspace Modal -->
+            <div class="modal-overlay" id="createWorkspaceModal">
+                <div class="modal-body">
+                    <h3>Create Workspace</h3>
+                    <div class="form-group">
+                        <label>Workspace Name</label>
+                        <input type="text" id="newWorkspaceName" placeholder="e.g. School Workspace" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label>Workspace Description (optional)</label>
+                        <textarea id="newWorkspaceDescription" style="width:100%;padding:12px;border:1px solid var(--border-color);border-radius:8px;background:var(--bg-body);color:var(--text-main);height:80px;resize:none;"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-cancel" onclick="closeCreateWorkspaceModal()">Cancel</button>
+                        <button class="btn-save" onclick="createWorkspace()">Create Workspace</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manage Workspaces Modal -->
+            <div class="modal-overlay" id="manageWorkspacesModal">
+                <div class="modal-body">
+                    <h3>Manage Workspaces</h3>
+                    <div id="workspacesListContainer" style="max-height: 360px; overflow:auto;">
+                        <!-- populated by JS -->
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn-cancel" onclick="closeManageWorkspacesModal()">Close</button>
+                    </div>
+                </div>
+            </div>
     </div>
 
     <!-- Top banner removed: SWL label, document icon, theme and settings controls removed from UI -->
@@ -1575,6 +2093,9 @@
                 <a class="nav-link" data-view="workspace" href="#" onclick="setView('workspace'); return false;"><i data-lucide="folder"></i> Workspace</a>
                 <a class="nav-link" data-view="messages" href="#" onclick="setView('messages'); return false;"><i data-lucide="message-square"></i> Messages</a>
                 <a class="nav-link" data-view="settings" href="#" onclick="openSettingsFromNav(); return false;"><i data-lucide="settings"></i> Settings</a>
+                <a class="nav-link" href="#" onclick="logout(); return false;" style="color: #ff6b6b;"><i data-lucide="log-out"></i> Logout</a>
+                <!-- Mobile theme toggle: visible only on small screens so users can switch themes after login -->
+                <a class="nav-link theme-toggle theme-toggle-mobile" href="#" onclick="toggleTheme(); return false;" aria-label="Toggle theme"><i data-lucide="sun"></i> Theme</a>
             </nav>
             <div class="sidebar-divider"></div>
             <div class="profile-card">
@@ -1634,142 +2155,291 @@
             <h2>Settings</h2>
             <button class="btn-close-settings" onclick="closeSettingsPanel()"><i data-lucide="x"></i></button>
         </div>
+
+        <style>
+            /* Modern two-column settings layout */
+            .settings-layout { display: flex; gap: 20px; padding: 20px; }
+            .settings-nav { width: 220px; min-width:160px; background: transparent; display:flex; flex-direction:column; gap:8px; }
+            .settings-nav .nav-group { display:block; }
+            .settings-tab { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; color:var(--text-main); cursor:pointer; border:1px solid transparent; transition:all .18s ease; }
+            .settings-tab i { opacity:0.9; }
+            .settings-tab:hover { transform: translateX(4px); box-shadow: 0 6px 18px rgba(6,19,48,0.12); border-color: rgba(255,255,255,0.02); }
+            .settings-tab.active { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-color: rgba(77,166,255,0.12); box-shadow: 0 10px 30px rgba(12,38,80,0.24); }
+            .settings-tab:focus { outline: none; box-shadow: 0 0 0 3px rgba(77,166,255,0.18), 0 8px 24px rgba(6,19,48,0.12); transform: translateX(2px); }
+            .settings-tab[aria-selected="true"] { font-weight:800; }
+            .settings-content { flex:1; display:block; }
+            .settings-panel-main { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); padding: 18px; border-radius: 14px; box-shadow: 0 8px 30px rgba(6,19,48,0.18); border:1px solid rgba(255,255,255,0.02); }
+            .settings-section-card { display:none; gap:16px; }
+            .settings-section-card.active { display:block; }
+            .profile-top { display:flex; gap:16px; align-items:center; }
+            .profile-avatar { width:72px; height:72px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(135deg,var(--btn-primary), #3a7bd5); color:white; font-weight:800; font-size:22px; box-shadow: 0 8px 24px rgba(9,30,66,0.35); }
+            .profile-meta { display:flex; flex-direction:column; gap:6px; }
+            .settings-field { margin-top:8px; }
+            .settings-actions { display:flex; justify-content:flex-end; gap:12px; padding: 16px; }
+            .settings-save-primary { background: var(--btn-primary); color:white; padding:10px 16px; border-radius:12px; }
+
+            /* Member list grid adjustments */
+            .member-item { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border-radius:10px; background:var(--bg-surface); border:1px solid rgba(15,23,42,0.06); }
+
+            @media (max-width: 820px) {
+                .settings-layout { flex-direction:column; }
+                .settings-nav { width:100%; flex-direction:row; overflow:auto; padding-bottom:6px; }
+                .settings-tab { flex:0 0 auto; }
+            }
+        </style>
+
         <div class="settings-body">
-            <div class="settings-section">
-                <h3>My Profile</h3>
-                <span class="user-info user-info-panel" id="user-display"><i data-lucide="user"></i> Logged out</span>
-                <div class="settings-field">
-                    <label for="settingsUsernameInput">Username</label>
-                    <input id="settingsUsernameInput" type="text" data-setting="profile.username" autocomplete="name" placeholder="Your display name">
-                </div>
-                <div class="settings-field">
-                    <label for="settingsProfileEmailInput">Profile email</label>
-                    <input id="settingsProfileEmailInput" type="email" data-setting="profile.email" autocomplete="email" placeholder="you@example.com">
-                    <div class="settings-hint">Saved locally for your settings view.</div>
-                    <div style="margin-top:10px;">
-                        <button onclick="logout()" style="background: linear-gradient(135deg,#ff6b6b,#d73838); color:white; border-radius:12px; padding:10px 14px; font-weight:800;">Logout</button>
+            <div class="settings-layout">
+                <nav class="settings-nav" role="tablist" aria-orientation="vertical">
+                    <div class="nav-group" role="presentation">
+                        <div id="tab-profile" class="settings-tab active" role="tab" tabindex="0" aria-controls="settings-profile" aria-selected="true" data-tab="profile" onclick="switchSettingsTab('profile')"><i data-lucide="user"></i> Profile</div>
+                        <div id="tab-appearance" class="settings-tab" role="tab" tabindex="0" aria-controls="settings-appearance" aria-selected="false" data-tab="appearance" onclick="switchSettingsTab('appearance')"><i data-lucide="monitor"></i> Appearance</div>
+                        <div id="tab-notifications" class="settings-tab" role="tab" tabindex="0" aria-controls="settings-notifications" aria-selected="false" data-tab="notifications" onclick="switchSettingsTab('notifications')"><i data-lucide="bell"></i> Notifications</div>
+                        <div id="tab-security" class="settings-tab" role="tab" tabindex="0" aria-controls="settings-security" aria-selected="false" data-tab="security" onclick="switchSettingsTab('security')"><i data-lucide="shield"></i> Security</div>
+                        <div id="tab-workspace" class="settings-tab" role="tab" tabindex="0" aria-controls="settings-workspace" aria-selected="false" data-tab="workspace" onclick="switchSettingsTab('workspace')"><i data-lucide="folder"></i> Workspace</div>
+                        <div id="tab-preferences" class="settings-tab" role="tab" tabindex="0" aria-controls="settings-preferences" aria-selected="false" data-tab="preferences" onclick="switchSettingsTab('preferences')"><i data-lucide="sliders"></i> Preferences</div>
+                    </div>
+                </nav>
+
+                <div class="settings-content">
+                    <div class="settings-panel-main">
+                        <!-- PROFILE -->
+                        <section id="settings-profile" class="settings-section-card active" role="tabpanel" aria-labelledby="tab-profile">
+                            <div class="profile-top">
+                                <div id="profileAvatar" class="profile-avatar">U</div>
+                                <div class="profile-meta">
+                                    <div style="display:flex;align-items:center;gap:10px;">
+                                        <div style="font-weight:800; font-size:18px; color:var(--text-main);" id="profileFullName">User</div>
+                                        <button class="btn-edit-profile" style="border-radius:10px;padding:6px 10px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--text-main);" onclick="document.getElementById('settingsUsernameInput').focus();">Edit Profile</button>
+                                    </div>
+                                    <div style="color:var(--text-muted); font-size:13px;" id="profileEmail">you@example.com</div>
+                                    <div style="color:var(--text-muted); font-size:13px;" id="profileWorkspace">My Workspace</div>
+                                </div>
+                            </div>
+
+                            <div class="settings-field">
+                                <label for="settingsUsernameInput">Full name</label>
+                                <input id="settingsUsernameInput" type="text" data-setting="profile.username" autocomplete="name" placeholder="Your display name">
+                            </div>
+                            <div class="settings-field">
+                                <label for="settingsProfileEmailInput">Email</label>
+                                <input id="settingsProfileEmailInput" type="email" data-setting="profile.email" autocomplete="email" placeholder="you@example.com">
+                            </div>
+                            <div style="margin-top:14px;">
+                                <button id="settingsLogoutBtn" onclick="handleLogout()" style="border-radius:12px;padding:10px 14px;background:var(--priority-high);color:white;border:none;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,0.2);">Logout</button>
+                            </div>
+                        </section>
+
+                        <!-- APPEARANCE -->
+                        <section id="settings-appearance" class="settings-section-card" role="tabpanel" aria-labelledby="tab-appearance">
+                            <h3 style="margin-top:0;">Theme</h3>
+                            <div style="display:flex;align-items:center;gap:14px;">
+                                <div style="display:flex;flex-direction:column;">
+                                    <strong>Appearance</strong>
+                                    <div style="color:var(--text-muted);font-size:13px;">Switch between light and dark themes</div>
+                                </div>
+                                <div style="margin-left:auto;">
+                                    <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;">
+                                        <span>☀️ Light</span>
+                                        <input id="appearanceThemeToggleInput" type="checkbox" onclick="toggleTheme()" style="width:44px;height:24px;appearance:none;border-radius:999px;background:rgba(255,255,255,0.06);position:relative;outline:none;" />
+                                        <span>🌙 Dark</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- NOTIFICATIONS -->
+                        <section id="settings-notifications" class="settings-section-card" role="tabpanel" aria-labelledby="tab-notifications">
+                            <h3 style="margin-top:0;">Notifications</h3>
+                            <label class="settings-toggle">
+                                <span>Email notifications</span>
+                                <input id="settingsEmailNotificationsInput" type="checkbox" data-setting="notifications.email">
+                            </label>
+                            <label class="settings-toggle">
+                                <span>Task reminder alerts</span>
+                                <input id="settingsTaskRemindersInput" type="checkbox" data-setting="notifications.taskReminders">
+                            </label>
+                            <label class="settings-toggle">
+                                <span>Workspace invite alerts</span>
+                                <input id="settingsInviteAlertsInput" type="checkbox" data-setting="notifications.invites">
+                            </label>
+                        </section>
+
+                        <!-- SECURITY -->
+                        <section id="settings-security" class="settings-section-card" role="tabpanel" aria-labelledby="tab-security">
+                            <h3 style="margin-top:0;">Security</h3>
+                            <label class="settings-toggle">
+                                <span>Two-factor authentication</span>
+                                <input id="settingsTwoFactorInput" type="checkbox" data-setting="security.twoFactor">
+                            </label>
+                            <label class="settings-toggle">
+                                <span>Auto logout after inactivity</span>
+                                <input id="settingsAutoLogoutInput" type="checkbox" data-setting="security.autoLogout">
+                            </label>
+                            <div class="settings-field">
+                                <label for="settingsPasswordHintInput">Password hint</label>
+                                <input id="settingsPasswordHintInput" type="text" data-setting="security.passwordHint" placeholder="Enter a subtle hint">
+                            </div>
+                        </section>
+
+                        <!-- WORKSPACE -->
+                        <section id="settings-workspace" class="settings-section-card" role="tabpanel" aria-labelledby="tab-workspace">
+                            <h3 style="margin-top:0;">Workspace</h3>
+                            <div class="settings-field">
+                                <label for="settingsWorkspaceNameInput">Workspace name</label>
+                                <input id="settingsWorkspaceNameInput" type="text" data-setting="workspace.name" placeholder="My Workspace">
+                            </div>
+                            <div class="settings-field">
+                                <label for="workspaceSelect">Open workspace</label>
+                                <select id="workspaceSelect" class="workspace-select" data-setting="workspace.currentWorkspace" style="color: var(--text-main); background: var(--bg-body); border-color: var(--border-color); width: 100%;">
+                                    <option value="me">My Workspace</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;gap:10px;margin-top:12px;align-items:center;">
+                                <button id="btnCreateWorkspace" class="btn-invite" style="background:linear-gradient(90deg,var(--btn-primary),#3a7bd5);color:white;display:inline-flex;align-items:center;gap:8px;" onclick="openCreateWorkspaceModal()"><i data-lucide="plus-square"></i> Create Workspace</button>
+                                <button id="btnManageWorkspaces" class="btn-invite" style="background:rgba(255,255,255,0.04);color:var(--text-main);border:1px solid rgba(255,255,255,0.04);display:inline-flex;align-items:center;gap:8px;" onclick="openManageWorkspacesModal()"><i data-lucide="settings"></i> Manage Workspaces</button>
+                                <button id="btnSwitchWorkspace" class="btn-invite" style="margin-left:auto;background:var(--btn-primary);color:white;display:inline-flex;align-items:center;gap:8px;" onclick="changeWorkspace()"><i data-lucide="refresh-cw"></i> Switch Workspace</button>
+                            </div>
+                            <label class="settings-toggle">
+                                <span>Allow collaborators to edit tasks</span>
+                                <input id="settingsCollaboratorEditInput" type="checkbox" data-setting="workspace.allowCollaboratorEdits">
+                            </label>
+                            <div style="margin-top:12px; display:flex; gap:10px; align-items:center;">
+                                <button class="btn-invite" style="background: var(--btn-primary); color: white; display:inline-flex; align-items:center; gap:8px;" onclick="openInviteModal()"><i data-lucide="user-plus"></i> Invite Users</button>
+                            </div>
+                        </section>
+
+                        <!-- PREFERENCES (includes integrations & backup & invite settings) -->
+                        <section id="settings-preferences" class="settings-section-card" role="tabpanel" aria-labelledby="tab-preferences">
+                            <h3 style="margin-top:0;">Preferences</h3>
+                            <label class="settings-toggle">
+                                <span>Auto backup workspace</span>
+                                <input id="settingsAutoBackupInput" type="checkbox" data-setting="backup.autoBackup">
+                            </label>
+                            <div class="settings-field">
+                                <label for="settingsBackupFrequencyInput">Backup frequency</label>
+                                <select id="settingsBackupFrequencyInput" data-setting="backup.frequency">
+                                    <option value="daily">Daily</option>
+                                    <option value="weekly" selected>Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
+                            </div>
+                            <div class="settings-field">
+                                <label for="settingsInviteRoleInput">Default invite role</label>
+                                <select id="settingsInviteRoleInput" data-setting="invite.defaultRole">
+                                    <option value="Collaborator">Collaborator</option>
+                                    <option value="Viewer">Viewer</option>
+                                    <option value="Manager">Manager</option>
+                                </select>
+                            </div>
+                            <label class="settings-toggle">
+                                <span>Require approval before joining</span>
+                                <input id="settingsInviteApprovalInput" type="checkbox" data-setting="invite.requireApproval">
+                            </label>
+                            <div class="settings-field">
+                                <label for="settingsInviteMessageInput">Default invite message</label>
+                                <input id="settingsInviteMessageInput" type="text" data-setting="invite.message" maxlength="140" placeholder="Join my workspace">
+                            </div>
+                            <div style="margin-top:12px;">
+                                <label class="settings-toggle">
+                                    <span>Google Calendar sync</span>
+                                    <input id="settingsGoogleCalendarInput" type="checkbox" data-setting="integrations.calendar">
+                                </label>
+                                <label class="settings-toggle">
+                                    <span>Slack notifications</span>
+                                    <input id="settingsSlackInput" type="checkbox" data-setting="integrations.slack">
+                                </label>
+                            </div>
+                        </section>
+
+                        <!-- MEMBERS -->
+                        <section id="settings-members" class="settings-section-card" role="tabpanel" aria-labelledby="tab-workspace">
+                            <h3 style="margin-top:0;">Workspace Members</h3>
+                            <ul id="workspaceMembersList" class="member-list">
+                                <!-- Members rendered by JS -->
+                            </ul>
+                        </section>
+
+                        <div id="settingsError" class="settings-error"></div>
+                        <div id="settingsSuccess" class="settings-success">Changes saved successfully</div>
+
+                        <div id="settingsActions" class="settings-actions" aria-live="polite">
+                            <div class="settings-unsaved-message" style="flex:1;color:var(--text-muted);font-weight:700;">You have unsaved changes</div>
+                            <button id="settingsSaveButton" class="settings-save-primary" onclick="SettingsManager.save()"><i data-lucide="save"></i> Save Changes</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="settings-section">
-                <h3>Current Workspace</h3>
-                <div class="settings-field">
-                    <label for="settingsWorkspaceNameInput">Workspace name</label>
-                    <input id="settingsWorkspaceNameInput" type="text" data-setting="workspace.name" placeholder="My Workspace">
-                </div>
-                <div class="settings-field">
-                    <label for="workspaceSelect">Open workspace</label>
-                <select id="workspaceSelect" class="workspace-select" data-setting="workspace.currentWorkspace" style="color: var(--text-main); background: var(--bg-body); border-color: var(--border-color); width: 100%;">
-                    <option value="me">My Workspace</option>
-                </select>
-                </div>
-                <label class="settings-toggle">
-                    <span>Allow collaborators to edit tasks</span>
-                    <input id="settingsCollaboratorEditInput" type="checkbox" data-setting="workspace.allowCollaboratorEdits">
-                </label>
-                <button class="btn-invite" style="background: var(--btn-primary); color: white; display:inline-flex; align-items:center; gap:8px;" onclick="openInviteModal()"><i data-lucide="user-plus"></i> Invite Users</button>
-            </div>
-
-            <div class="settings-section">
-                <h3>Notifications</h3>
-                <label class="settings-toggle">
-                    <span>Email notifications</span>
-                    <input id="settingsEmailNotificationsInput" type="checkbox" data-setting="notifications.email">
-                </label>
-                <label class="settings-toggle">
-                    <span>Task reminder alerts</span>
-                    <input id="settingsTaskRemindersInput" type="checkbox" data-setting="notifications.taskReminders">
-                </label>
-                <label class="settings-toggle">
-                    <span>Workspace invite alerts</span>
-                    <input id="settingsInviteAlertsInput" type="checkbox" data-setting="notifications.invites">
-                </label>
-            </div>
-
-            <div class="settings-section">
-                <h3>Security</h3>
-                <label class="settings-toggle">
-                    <span>Two-factor authentication</span>
-                    <input id="settingsTwoFactorInput" type="checkbox" data-setting="security.twoFactor">
-                </label>
-                <label class="settings-toggle">
-                    <span>Auto logout after inactivity</span>
-                    <input id="settingsAutoLogoutInput" type="checkbox" data-setting="security.autoLogout">
-                </label>
-                <div class="settings-field">
-                    <label for="settingsPasswordHintInput">Password hint</label>
-                    <input id="settingsPasswordHintInput" type="text" data-setting="security.passwordHint" placeholder="Enter a subtle hint">
-                </div>
-            </div>
-
-            <div class="settings-section">
-                <h3>Integrations</h3>
-                <label class="settings-toggle">
-                    <span>Google Calendar sync</span>
-                    <input id="settingsGoogleCalendarInput" type="checkbox" data-setting="integrations.calendar">
-                </label>
-                <label class="settings-toggle">
-                    <span>Slack notifications</span>
-                    <input id="settingsSlackInput" type="checkbox" data-setting="integrations.slack">
-                </label>
-                <div class="settings-field">
-                    <label for="settingsIntegrationEmailInput">Integration email</label>
-                    <input id="settingsIntegrationEmailInput" type="email" data-setting="integrations.email" placeholder="integration@yourdomain.com">
-                </div>
-            </div>
-
-            <div class="settings-section">
-                <h3>Backup</h3>
-                <label class="settings-toggle">
-                    <span>Auto backup workspace</span>
-                    <input id="settingsAutoBackupInput" type="checkbox" data-setting="backup.autoBackup">
-                </label>
-                <div class="settings-field">
-                    <label for="settingsBackupFrequencyInput">Backup frequency</label>
-                    <select id="settingsBackupFrequencyInput" data-setting="backup.frequency">
-                        <option value="daily">Daily</option>
-                        <option value="weekly" selected>Weekly</option>
-                        <option value="monthly">Monthly</option>
-                    </select>
-                </div>
-                <button type="button" class="btn-save" style="background: var(--btn-primary); color: white; display:inline-flex; align-items:center; gap:8px;" onclick="downloadBackup()"><i data-lucide="download"></i> Download Backup</button>
-            </div>
-
-            <div class="settings-section">
-                <h3>Invite Settings</h3>
-                <div class="settings-field">
-                    <label for="settingsInviteRoleInput">Default invite role</label>
-                    <select id="settingsInviteRoleInput" data-setting="invite.defaultRole">
-                        <option value="Collaborator">Collaborator</option>
-                        <option value="Viewer">Viewer</option>
-                        <option value="Manager">Manager</option>
-                    </select>
-                </div>
-                <label class="settings-toggle">
-                    <span>Require approval before joining</span>
-                    <input id="settingsInviteApprovalInput" type="checkbox" data-setting="invite.requireApproval">
-                </label>
-                <div class="settings-field">
-                    <label for="settingsInviteMessageInput">Default invite message</label>
-                    <input id="settingsInviteMessageInput" type="text" data-setting="invite.message" maxlength="140" placeholder="Join my workspace">
-                </div>
-            </div>
-
-            <div class="settings-section">
-                <h3>Workspace Members</h3>
-                <ul id="workspaceMembersList" class="member-list">
-                    <!-- Members rendered by JS -->
-                </ul>
-            </div>
-
-            <div id="settingsError" class="settings-error"></div>
-            <div id="settingsSuccess" class="settings-success">Changes saved successfully</div>
         </div>
-        <div id="settingsActions" class="settings-actions" aria-live="polite">
-            <div class="settings-unsaved-message">You have unsaved changes</div>
-            <button id="settingsSaveButton" class="btn-save-settings" style="display:inline-flex; align-items:center; gap:8px;" onclick="SettingsManager.save()"><i data-lucide="save"></i> Save Changes</button>
-        </div>
+
+        <script>
+            function switchSettingsTab(tab) {
+                document.querySelectorAll('.settings-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+                document.querySelectorAll('.settings-section-card').forEach(s => s.classList.toggle('active', s.id === 'settings-' + tab));
+                // update header/profile text when switching
+                try { if (window.lucide) lucide.createIcons(); } catch (e) {}
+                    // update aria-selected attributes and focus management
+                    document.querySelectorAll('.settings-tab').forEach(t => {
+                        const selected = t.dataset.tab === tab;
+                        t.setAttribute('aria-selected', selected ? 'true' : 'false');
+                        t.tabIndex = selected ? 0 : -1;
+                    });
+                    // move focus to the active tab for keyboard users
+                    const activeTab = document.querySelector('.settings-tab.active');
+                    if (activeTab) try { activeTab.focus(); } catch (e) {}
+            }
+
+            // initialize theme toggle state
+            (function(){
+                const input = document.getElementById('appearanceThemeToggleInput');
+                if (!input) return;
+                const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+                input.checked = theme === 'dark';
+                // keep in sync when theme changes elsewhere
+                const obs = new MutationObserver(()=>{ input.checked = document.documentElement.getAttribute('data-theme') === 'dark'; });
+                obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+            })();
+
+            // keyboard navigation for settings tabs (ArrowUp/Down, Home/End, Enter/Space)
+            (function(){
+                const nav = document.querySelector('.settings-nav');
+                if (!nav) return;
+                const tabs = Array.from(nav.querySelectorAll('.settings-tab'));
+                nav.addEventListener('keydown', (ev) => {
+                    const activeIndex = tabs.findIndex(t => t.classList.contains('active'));
+                    if (ev.key === 'ArrowDown' || ev.key === 'ArrowRight') {
+                        ev.preventDefault(); const next = tabs[(activeIndex + 1) % tabs.length]; if(next) next.click();
+                    } else if (ev.key === 'ArrowUp' || ev.key === 'ArrowLeft') {
+                        ev.preventDefault(); const prev = tabs[(activeIndex - 1 + tabs.length) % tabs.length]; if(prev) prev.click();
+                    } else if (ev.key === 'Home') { ev.preventDefault(); tabs[0]?.click(); }
+                    else if (ev.key === 'End') { ev.preventDefault(); tabs[tabs.length-1]?.click(); }
+                    else if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); document.activeElement?.click(); }
+                });
+                // make tabs focusable in sequence
+                tabs.forEach((t, i)=>{ t.tabIndex = t.classList.contains('active') ? 0 : -1; t.addEventListener('focus', ()=>{ tabs.forEach(x=>x.classList.toggle('focus-visible', x===t)); }); });
+            })();
+
+            // populate profile header fields when SettingsManager updates
+            function refreshProfileHeader() {
+                try {
+                    const name = (document.getElementById('settingsUsernameInput')?.value) || (sessionUser?.user_metadata?.name) || 'User';
+                    const email = (document.getElementById('settingsProfileEmailInput')?.value) || sessionUser?.email || '';
+                    const ws = (document.getElementById('settingsWorkspaceNameInput')?.value) || 'My Workspace';
+                    document.getElementById('profileFullName').textContent = name;
+                    document.getElementById('profileEmail').textContent = email;
+                    document.getElementById('profileWorkspace').textContent = ws;
+                    const avatarEl = document.getElementById('profileAvatar');
+                    if (avatarEl && typeof getInitials === 'function') avatarEl.textContent = getInitials(name);
+                } catch (e) { /* ignore */ }
+            }
+
+            // keep header in sync after renderForm and after save
+            const origRenderForm = window.SettingsManager?.renderForm || null;
+            if (origRenderForm) {
+                const wrapped = function(){ origRenderForm(); refreshProfileHeader(); };
+                window.SettingsManager.renderForm = wrapped;
+            }
+        </script>
     </div>
 
     <!-- Remove Member Modal -->
@@ -1839,47 +2509,74 @@
     </div>
 
     <div id="dashboardView" class="dashboard-view app-view is-active" aria-hidden="false">
-        <div class="stats-grid">
-            <div class="column stats-card">
-                <h4>Total Tasks</h4>
-                <div id="statTotalTasks" class="stat-value primary">0</div>
-            </div>
-            <div class="column stats-card">
-                <h4>Hours Invested</h4>
-                <div id="statTotalHours" class="stat-value success">0.00h</div>
-            </div>
-            <div class="column stats-card">
-                <h4>Completion Rate</h4>
-                <div id="statCompletionRate" class="stat-value accent">0%</div>
-            </div>
+        <!-- 1. Welcome Section -->
+        <div class="dashboard-welcome">
+            <h1 class="welcome-title">Welcome Back, <span id="dashboardUserNameSpan">User</span> 👋</h1>
+            <p class="welcome-subtitle">Here's your productivity overview</p>
         </div>
-        
-        <div class="widget-grid">
-            <div class="column widget dashboard-widget">
-                <h3>Task Distribution</h3>
-                <div id="distributionChart" class="distribution-chart">
-                    <div class="distribution-item">
-                        <div id="barTodo" class="distribution-bar todo" style="height: 10%;"></div>
-                        <span class="distribution-label">To Do</span>
-                    </div>
-                    <div class="distribution-item">
-                        <div id="barInProgress" class="distribution-bar inprogress" style="height: 10%;"></div>
-                        <span class="distribution-label">In Progress</span>
-                    </div>
-                    <div class="distribution-item">
-                        <div id="barPaused" class="distribution-bar paused" style="height: 10%;"></div>
-                        <span class="distribution-label">Paused</span>
-                    </div>
-                    <div class="distribution-item">
-                        <div id="barDone" class="distribution-bar done" style="height: 10%;"></div>
-                        <span class="distribution-label">Done</span>
+
+        <!-- 2. Analytics Cards -->
+        <div class="analytics-grid">
+            <div class="analytics-card total-tasks">
+                <div class="card-header-row">
+                    <span class="card-title">Total Tasks</span>
+                    <div class="card-icon-wrapper blue">
+                        <i data-lucide="list-todo"></i>
                     </div>
                 </div>
+                <div class="card-metric" id="statTotalTasks">0</div>
+                <div class="card-desc">All tasks in your workspace</div>
             </div>
-            
-            <div class="column widget dashboard-widget">
-                <h3>Upcoming Deadlines</h3>
-                <div id="upcomingTasks" class="upcoming-tasks-list">
+            <div class="analytics-card hours-logged">
+                <div class="card-header-row">
+                    <span class="card-title">Hours Logged</span>
+                    <div class="card-icon-wrapper green">
+                        <i data-lucide="clock"></i>
+                    </div>
+                </div>
+                <div class="card-metric" id="statTotalHours">0.00h</div>
+                <div class="card-desc">Tracked work time</div>
+            </div>
+            <div class="analytics-card completion-rate">
+                <div class="card-header-row">
+                    <span class="card-title">Completion Rate</span>
+                    <div class="card-icon-wrapper purple">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                </div>
+                <div class="card-metric" id="statCompletionRate">0%</div>
+                <div class="card-desc">Tasks marked complete</div>
+            </div>
+            <div class="analytics-card overdue-alerts">
+                <div class="card-header-row">
+                    <span class="card-title">Overdue Alerts</span>
+                    <div class="card-icon-wrapper red">
+                        <i data-lucide="alert-circle"></i>
+                    </div>
+                </div>
+                <div class="card-metric" id="statOverdueAlerts">0</div>
+                <div class="card-desc">Missed deadlines</div>
+            </div>
+        </div>
+
+        <!-- 3. Task Status & 4. Upcoming Deadlines Section -->
+        <div class="dashboard-details-grid">
+            <!-- Task Status Section -->
+            <div class="details-card task-status-section">
+                <div class="details-card-header">
+                    <h3 class="details-card-title">Task Status Distribution</h3>
+                </div>
+                <div class="status-distribution-list" id="statusDistributionContainer">
+                    <!-- Progress bars rendered dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Upcoming Deadlines Section -->
+            <div class="details-card upcoming-deadlines-section">
+                <div class="details-card-header">
+                    <h3 class="details-card-title">Upcoming Milestones & Deadlines</h3>
+                </div>
+                <div class="upcoming-deadlines-list" id="upcomingTasks">
                     <div class="dashboard-empty">No upcoming deadlines found.</div>
                 </div>
             </div>
@@ -2091,6 +2788,24 @@
         
         let sessionUser = null;
         let activeWorkspaceOwnerId = null;
+        let activeWorkspaceId = localStorage.getItem('swl_active_workspace') || null; // new workspace-scoped id
+
+        async function safeInsert(table, payload) {
+            try {
+                const { data, error } = await supabaseClient.from(table).insert([payload]);
+                if (!error) return { data, error: null };
+                // If the error mentions an unknown column (e.g., workspace_id), retry without workspace_id
+                if (error && /workspace_id|column .* does not exist|unrecognized field/i.test(error.message || '')) {
+                    const copy = { ...payload };
+                    delete copy.workspace_id;
+                    try {
+                        const r2 = await supabaseClient.from(table).insert([copy]);
+                        return { data: r2.data, error: r2.error };
+                    } catch (e2) { return { data: null, error: e2 }; }
+                }
+                return { data: null, error };
+            } catch (err) { return { data: null, error: err }; }
+        }
         let realtimeChannel = null;
         let pollingInterval = null;       // fallback polling handle
         let lastKnownTaskCount = -1;      // detect unexpected blank board
@@ -2254,7 +2969,7 @@
                         await Promise.all([
                             fetchBoardsAndInitialize(),
                             checkAndMigrateTasks(),
-                            loadSharedWorkspaces()
+                            loadWorkspaces()
                         ]);
                         finishInit();
                     }
@@ -2323,11 +3038,30 @@
             return null;
         }
 
-        function finishInit() {
+        async function finishInit() {
             isInitializing = false;
             if (window.SettingsManager && sessionUser) {
                 SettingsManager.init();
             }
+            // Load available workspaces (including shared ones) and restore active workspace
+            try { loadWorkspaces().catch(()=>{}); } catch (e) { /* ignore */ }
+            try { loadSharedWorkspaces().catch(()=>{}); } catch (e) { /* ignore */ }
+            try {
+                const saved = localStorage.getItem('swl_active_workspace');
+                if (saved) {
+                    if (saved.startsWith('owner:')) {
+                        const ownerId = saved.replace(/^owner:/, '');
+                        // restore as owner-based workspace
+                        activeWorkspaceId = null;
+                        activeWorkspaceOwnerId = ownerId;
+                        try { const sel = document.getElementById('workspaceSelect'); if (sel) sel.value = ownerId; } catch(e) {}
+                        await switchWorkspace(ownerId);
+                        refreshAppForWorkspace();
+                    } else {
+                        await setActiveWorkspace(saved).catch(()=>{});
+                    }
+                }
+            } catch (e) { /* ignore */ }
             const loader = document.getElementById('initLoader');
             if (loader) {
                 loader.classList.add('hide');
@@ -2335,6 +3069,19 @@
             }
             // Ensure layout is enforced after initialization
             try { if (typeof enforceLayout === 'function') enforceLayout(); } catch (e) { }
+            // Honor hash-based navigation from external pages (e.g. index.html#calendar)
+            try {
+                const rawHash = (window.location.hash || '').replace(/^#/, '').trim();
+                if (rawHash) {
+                    const normalized = rawHash.toLowerCase();
+                    const mapping = { 'board': 'workspace', 'tasks': 'workspace' };
+                    const desired = mapping[normalized] || normalized;
+                    const allowed = ['dashboard','workspace','calendar','messages','settings','admin'];
+                    if (allowed.includes(desired) || allowed.includes(normalized)) {
+                        setView(desired);
+                    }
+                }
+            } catch (e) { /* ignore hash routing errors */ }
         }
 
         function logout() {
@@ -2345,6 +3092,58 @@
                 return;
             }
             document.getElementById('logoutModal').classList.add('show');
+        }
+
+        // Unified programmatic logout: performs the actual sign-out and cleanup.
+        async function performLogout() {
+            try {
+                // Cleanly remove realtime channel and stop polling/timers
+                try { if (realtimeChannel) { supabaseClient.removeChannel(realtimeChannel); realtimeChannel = null; } } catch (e) { console.warn('Failed to remove realtime channel', e); }
+                try { stopPolling(); } catch (e) { /* ignore */ }
+                try { Object.keys(timers||{}).forEach(tid => { clearInterval(timers[tid].interval); }); timers = {}; } catch (e) { /* ignore */ }
+
+                // Call Supabase signOut
+                const { error } = await supabaseClient.auth.signOut();
+                if (error) {
+                    console.error('Supabase signOut error:', error);
+                    return { error };
+                }
+
+                // Remove Supabase auth tokens only (preserve user settings)
+                try {
+                    const urlObj = new URL(supabaseUrl);
+                    const slug = urlObj.hostname.split('.')[0];
+                    for (let i = localStorage.length - 1; i >= 0; i--) {
+                        const key = localStorage.key(i);
+                        if (!key) continue;
+                        if (key.startsWith(`sb-${slug}`) || key === `sb-${slug}-auth-token`) {
+                            localStorage.removeItem(key);
+                        }
+                    }
+                } catch (e) { console.warn('Could not clean Supabase localStorage keys:', e); }
+
+                // Clear sessionStorage (auth-related) and cookies used for auth
+                try { sessionStorage.clear(); } catch (e) { /* ignore */ }
+                try {
+                    document.cookie.split(';').forEach(function(c) { 
+                        document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/'); 
+                    });
+                } catch (e) { /* ignore */ }
+
+                // Update in-memory user state and UI immediately
+                try { sessionUser = null; activeWorkspaceOwnerId = null; } catch (e) { /* ignore */ }
+                try {
+                    const loader = document.getElementById('initLoader');
+                    if (loader) { loader.classList.remove('hide'); loader.style.display = 'flex'; }
+                } catch (e) { /* ignore */ }
+
+                console.log('Logout successful. Redirecting...');
+                window.location.href = 'index.html';
+                return { error: null };
+            } catch (err) {
+                console.error('Unexpected error during logout:', err);
+                return { error: err };
+            }
         }
 
         const PAGE_VIEW_IDS = ['dashboardView', 'calendarView', 'boardView', 'messagesView', 'settingsPanel', 'adminDashboardView'];
@@ -2446,66 +3245,27 @@
             const buttons = Array.from(modal.querySelectorAll('button'));
             const originalTexts = new Map();
             buttons.forEach(btn => { originalTexts.set(btn, btn.textContent); btn.disabled = true; });
-            // Preferively update the primary confirm button text
+            // Preferently update the primary confirm button text
             const confirmBtn = buttons.find(b => b.textContent && b.textContent.toLowerCase().includes('yes')) || buttons[0];
             if (confirmBtn) confirmBtn.textContent = 'Logging out...';
 
-            try {
-                // Cleanly remove realtime channel and stop polling/timers
-                try { if (realtimeChannel) { supabaseClient.removeChannel(realtimeChannel); realtimeChannel = null; } } catch (e) { console.warn('Failed to remove realtime channel', e); }
-                try { stopPolling(); } catch (e) { /* ignore */ }
-                try { Object.keys(timers||{}).forEach(tid => { clearInterval(timers[tid].interval); }); timers = {}; } catch (e) { /* ignore */ }
-
-                // Call Supabase signOut
-                const { error } = await supabaseClient.auth.signOut();
-                if (error) {
-                    console.error('Supabase signOut error:', error);
-                    // Restore buttons and show friendly message
-                    buttons.forEach(btn => { btn.disabled = false; btn.textContent = originalTexts.get(btn) || btn.textContent; });
-                    showToast('Could not sign out: ' + (error.message || 'Unknown error'), 'warning');
-                    return;
-                }
-
-                // Remove Supabase auth tokens only (preserve user settings)
-                try {
-                    const urlObj = new URL(supabaseUrl);
-                    const slug = urlObj.hostname.split('.')[0];
-                    // remove any localStorage keys that belong to Supabase session for this project
-                    for (let i = localStorage.length - 1; i >= 0; i--) {
-                        const key = localStorage.key(i);
-                        if (!key) continue;
-                        if (key.startsWith(`sb-${slug}`) || key === `sb-${slug}-auth-token`) {
-                            localStorage.removeItem(key);
-                        }
-                    }
-                } catch (e) {
-                    console.warn('Could not clean Supabase localStorage keys:', e);
-                }
-
-                // Clear sessionStorage (auth-related) and cookies used for auth
-                try { sessionStorage.clear(); } catch (e) { /* ignore */ }
-                try {
-                    document.cookie.split(';').forEach(function(c) { 
-                        document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/'); 
-                    });
-                } catch (e) { /* ignore */ }
-
-                // Update in-memory user state and UI immediately
-                try { sessionUser = null; activeWorkspaceOwnerId = null; } catch (e) { /* ignore */ }
-                try {
-                    // hide app UI and show a simple signing out message before redirect
-                    const loader = document.getElementById('initLoader');
-                    if (loader) { loader.classList.remove('hide'); loader.style.display = 'flex'; }
-                } catch (e) { /* ignore */ }
-
-                console.log('Logout successful. Redirecting...');
-                window.location.href = 'index.html';
-            } catch (err) {
-                console.error('Unexpected error during logout:', err);
-                // Restore buttons
+            const result = await performLogout();
+            if (result.error) {
+                // Restore buttons and show friendly message
                 buttons.forEach(btn => { btn.disabled = false; btn.textContent = originalTexts.get(btn) || btn.textContent; });
-                showToast('Unexpected error during logout. Please try again.', 'warning');
+                showToast('Could not sign out: ' + (result.error.message || 'Unknown error'), 'warning');
+                return;
             }
+        }
+
+        // Public wrapper: call `handleLogout()` from UI. If called with `true`, performs immediate sign-out.
+        async function handleLogout(force = false) {
+            if (force) {
+                await performLogout();
+                return;
+            }
+            // default: show confirmation modal (matches existing behavior)
+            logout();
         }
 
         // --- Workspaces & Sharing ---
@@ -2513,14 +3273,22 @@
             const { data, error } = await supabaseClient
                 .from('shared_worklogs')
                 .select('*')
-                .eq('guest_email', sessionUser.email);
+                .ilike('guest_email', sessionUser.email);
             
             const selectTarget = document.getElementById('workspaceSelect');
-            selectTarget.innerHTML = `<option value="me">My Workspace</option>`;
-            
+            if (!selectTarget) return;
+            // Ensure a base 'My Workspace' option exists without clobbering server/workspace entries
+            if (!Array.from(selectTarget.options).some(o => o.value === 'me')) {
+                const base = document.createElement('option');
+                base.value = 'me';
+                base.textContent = 'My Workspace';
+                selectTarget.insertBefore(base, selectTarget.firstChild || null);
+            }
+
             if (data && data.length > 0) {
-                // Populate the drop down
+                // Populate the drop down with shared owner entries (avoid duplicates)
                 data.forEach(share => {
+                    if (Array.from(selectTarget.options).some(o => o.value === share.owner_id)) return;
                     const opt = document.createElement('option');
                     opt.value = share.owner_id;
                     opt.textContent = `${share.owner_name || 'Someone'}'s Workspace`;
@@ -2532,10 +3300,228 @@
         async function changeWorkspace() {
             const val = document.getElementById('workspaceSelect').value;
             if (val === 'me') {
-                await switchWorkspace(sessionUser.id);
-            } else {
-                await switchWorkspace(val);
+                // clear activeWorkspaceId and switch to personal owner
+                await setActiveWorkspace(null);
+                return;
             }
+
+            // Try to activate by workspace id first. If that fails, treat the selection
+            // as a shared workspace owner id and switch to that owner's workspace view.
+            await setActiveWorkspace(val);
+            // If setActiveWorkspace couldn't find a workspace with that id it will
+            // leave activeWorkspaceId unchanged (or null). In that case we should
+            // assume the user selected a shared workspace owner and switch by owner.
+            if (!activeWorkspaceId) {
+                try {
+                    // Set the owner id to the selected value and reload workspace data
+                    activeWorkspaceOwnerId = val;
+                    // Persist owner-based selection using a clear prefix so it can be
+                    // distinguished from a workspace id on reload.
+                    localStorage.setItem('swl_active_workspace', 'owner:' + val);
+                    document.getElementById('workspaceSelect').value = val;
+                    await switchWorkspace(val);
+                    refreshAppForWorkspace();
+                } catch (e) {
+                    console.warn('Failed to switch to owner workspace:', e);
+                }
+            }
+        }
+
+        // Workspace manager: create, list, switch, rename, delete
+        async function loadWorkspaces() {
+            // Try server first, fallback to localStorage
+            const container = document.getElementById('workspaceSelect');
+            if (!container) return;
+            container.innerHTML = `<option value="me">My Workspace</option>`;
+
+            let workspaces = [];
+            try {
+                const { data, error } = await supabaseClient.from('workspaces').select('*').eq('owner_id', sessionUser.id).order('created_at', { ascending: true });
+                if (!error && data) {
+                    workspaces = data.map(w => ({ id: w.id, name: w.name, description: w.description, owner_id: w.owner_id, created_at: w.created_at }));
+                }
+            } catch (e) {
+                console.warn('Workspaces: server fetch failed, falling back to local storage', e.message);
+            }
+
+            // Fallback/local entries
+            try {
+                const local = JSON.parse(localStorage.getItem('swl_workspaces') || '[]') || [];
+                // Merge local ones that aren't on server
+                local.forEach(lw => { if (!workspaces.find(w => w.id === lw.id)) workspaces.push(lw); });
+            } catch (e) { /* ignore */ }
+
+            workspaces.forEach(ws => {
+                const opt = document.createElement('option');
+                opt.value = ws.id;
+                opt.textContent = ws.name + (ws.owner_id && ws.owner_id !== sessionUser.id ? ` (${ws.owner_id.slice(0,6)})` : '');
+                container.appendChild(opt);
+            });
+
+            // select active (support owner-prefixed selections)
+            const active = localStorage.getItem('swl_active_workspace');
+            if (active) {
+                if (active.startsWith('owner:')) container.value = active.replace(/^owner:/, '');
+                else container.value = active;
+            } else {
+                container.value = 'me';
+            }
+        }
+
+        async function setActiveWorkspace(workspaceId) {
+            // workspaceId === null => personal workspace
+            if (!workspaceId) {
+                activeWorkspaceId = null;
+                localStorage.removeItem('swl_active_workspace');
+                // revert to personal owner id
+                await switchWorkspace(sessionUser.id);
+                refreshAppForWorkspace();
+                return;
+            }
+
+            // Validate workspace exists locally or server-side
+            try {
+                // try server lookup
+                const { data, error } = await supabaseClient.from('workspaces').select('*').eq('id', workspaceId).single();
+                if (!error && data) {
+                    activeWorkspaceId = data.id;
+                    // set owner id for compatibility
+                    activeWorkspaceOwnerId = data.owner_id || sessionUser.id;
+                    localStorage.setItem('swl_active_workspace', activeWorkspaceId);
+                    // update UI
+                    document.getElementById('workspaceSelect').value = activeWorkspaceId;
+                    await switchWorkspace(activeWorkspaceOwnerId);
+                    refreshAppForWorkspace();
+                    return;
+                }
+            } catch (e) {
+                // ignore
+            }
+
+            // fallback: look in localStorage
+            try {
+                const local = JSON.parse(localStorage.getItem('swl_workspaces') || '[]') || [];
+                const match = local.find(w => w.id === workspaceId);
+                if (match) {
+                    activeWorkspaceId = match.id;
+                    activeWorkspaceOwnerId = sessionUser.id;
+                    localStorage.setItem('swl_active_workspace', activeWorkspaceId);
+                    document.getElementById('workspaceSelect').value = activeWorkspaceId;
+                    await switchWorkspace(activeWorkspaceOwnerId);
+                    refreshAppForWorkspace();
+                    return;
+                }
+            } catch (e) { /* ignore */ }
+
+            console.warn('Requested workspace not found:', workspaceId);
+        }
+
+        function refreshAppForWorkspace() {
+            try {
+                // Update profile workspace label
+                const wsName = (function(){
+                    try { const local = JSON.parse(localStorage.getItem('swl_workspaces')||'[]')||[]; const w = local.find(x=>x.id===activeWorkspaceId); if(w) return w.name; } catch(e){}
+                    return activeWorkspaceId ? 'Workspace' : 'My Workspace';
+                })();
+                const el = document.getElementById('profileWorkspace'); if (el) el.textContent = wsName;
+                // reload application data
+                try { loadTasks(); } catch (e) { console.warn(e); }
+                try { loadMessages(); } catch (e) { console.warn(e); }
+                try { setupRealtime(); } catch (e) { console.warn(e); }
+                try { updateDashboard(); } catch (e) { /* ignore */ }
+            } catch (e) { console.error(e); }
+        }
+
+        function openCreateWorkspaceModal() { document.getElementById('createWorkspaceModal').classList.add('show'); document.getElementById('newWorkspaceName').focus(); }
+        function closeCreateWorkspaceModal() { document.getElementById('createWorkspaceModal').classList.remove('show'); document.getElementById('newWorkspaceName').value=''; document.getElementById('newWorkspaceDescription').value=''; }
+
+        async function createWorkspace() {
+            const name = (document.getElementById('newWorkspaceName').value || '').trim();
+            const desc = (document.getElementById('newWorkspaceDescription').value || '').trim();
+            if (!name) { alert('Workspace name is required'); return; }
+
+            // Create object
+            const workspace = { id: (crypto && crypto.randomUUID) ? crypto.randomUUID() : ('ws_' + Date.now()), name, description: desc, owner_id: sessionUser?.id || 'local', created_at: new Date().toISOString() };
+
+            // Try server insert, fallback to localStorage
+            try {
+                const { data, error } = await supabaseClient.from('workspaces').insert([{ name: workspace.name, description: workspace.description, owner_id: workspace.owner_id }]).select().single();
+                if (!error && data) {
+                    workspace.id = data.id;
+                    workspace.created_at = data.created_at;
+                } else if (error) {
+                    console.warn('Supabase insert workspace failed, falling back to localStorage', error.message);
+                }
+            } catch (e) { console.warn('Workspace create server error', e.message); }
+
+            // Save locally
+            try {
+                const local = JSON.parse(localStorage.getItem('swl_workspaces') || '[]') || [];
+                local.push(workspace);
+                localStorage.setItem('swl_workspaces', JSON.stringify(local));
+            } catch (e) { console.warn('Could not save workspace locally', e); }
+
+            closeCreateWorkspaceModal();
+            await loadWorkspaces();
+            // Auto-switch to new workspace
+            await setActiveWorkspace(workspace.id);
+        }
+
+        function openManageWorkspacesModal() { document.getElementById('manageWorkspacesModal').classList.add('show'); renderWorkspacesList(); }
+        function closeManageWorkspacesModal() { document.getElementById('manageWorkspacesModal').classList.remove('show'); }
+
+        function renderWorkspacesList() {
+            const container = document.getElementById('workspacesListContainer');
+            if (!container) return;
+            container.innerHTML = '<div style="color:var(--text-muted);padding:8px 0 12px;">Loading...</div>';
+            let workspaces = [];
+            try { workspaces = JSON.parse(localStorage.getItem('swl_workspaces') || '[]') || []; } catch (e) { workspaces = []; }
+            // Build list
+            container.innerHTML = '';
+            if (workspaces.length === 0) container.innerHTML = '<div style="color:var(--text-muted);padding:12px;">No workspaces yet.</div>';
+            workspaces.forEach(ws => {
+                const row = document.createElement('div');
+                row.style.display = 'flex'; row.style.alignItems='center'; row.style.justifyContent='space-between'; row.style.padding='10px 6px'; row.style.borderBottom='1px solid rgba(15,23,42,0.04)';
+                row.innerHTML = `<div style="display:flex;align-items:center;gap:12px;min-width:0;">
+                    <div style="width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,var(--btn-primary),#3a7bd5);display:grid;place-items:center;color:white;font-weight:800;">${(ws.name||'W').split(' ').map(s=>s[0]).slice(0,2).join('')}</div>
+                    <div style="min-width:0;">
+                        <div style="font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;">${swlEscapeHtml(ws.name)}</div>
+                        <div style="font-size:12px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;">${swlEscapeHtml(ws.description||'')}</div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <button class="btn-task-action" onclick="setActiveWorkspace('${ws.id}')">Switch</button>
+                    <button class="btn-task-action secondary" onclick="(async ()=>{ const newName = prompt('Rename workspace', '${swlEscapeHtml(ws.name)}'); if(newName) { await renameWorkspace('${ws.id}', newName); renderWorkspacesList(); loadWorkspaces(); } })()">Rename</button>
+                    <button class="btn-task-action warning" onclick="(async ()=>{ if(confirm('Delete this workspace? This cannot be undone.')) { await deleteWorkspace('${ws.id}'); renderWorkspacesList(); loadWorkspaces(); } })()">Delete</button>
+                </div>`;
+                container.appendChild(row);
+            });
+        }
+
+        async function renameWorkspace(id, newName) {
+            try {
+                const { data, error } = await supabaseClient.from('workspaces').update({ name: newName }).eq('id', id);
+                if (error) throw error;
+            } catch (e) { /* ignore server errors */ }
+            try {
+                const local = JSON.parse(localStorage.getItem('swl_workspaces') || '[]') || [];
+                const idx = local.findIndex(x=>x.id===id);
+                if (idx !== -1) { local[idx].name = newName; localStorage.setItem('swl_workspaces', JSON.stringify(local)); }
+            } catch (e) {}
+        }
+
+        async function deleteWorkspace(id) {
+            try {
+                const { error } = await supabaseClient.from('workspaces').delete().eq('id', id);
+                if (error) console.warn('Server delete workspace failed:', error.message);
+            } catch (e) { /* ignore */ }
+            try {
+                let local = JSON.parse(localStorage.getItem('swl_workspaces') || '[]') || [];
+                local = local.filter(x=>x.id!==id);
+                localStorage.setItem('swl_workspaces', JSON.stringify(local));
+            } catch (e) { console.warn(e); }
+            // If deleted active workspace, revert
+            if (activeWorkspaceId === id) await setActiveWorkspace(null);
         }
 
         async function switchWorkspace(ownerId) {
@@ -2626,6 +3612,7 @@
                 currentBoardId = null;
             }
             updateBoardNameDisplay();
+            renderConversations();
             await switchWorkspace(sessionUser.id);
         }
 
@@ -2655,6 +3642,30 @@
                 if (nameDisplay) nameDisplay.innerHTML = `Project Board`;
                 if (chatBoardDisplay) chatBoardDisplay.textContent = '';
             }
+        }
+
+        function renderConversations() {
+            const list = document.getElementById('conversationsList');
+            if (!list) return;
+            list.innerHTML = '';
+            if (!userBoards || userBoards.length === 0) {
+                list.innerHTML = '<div style="color:var(--text-muted);padding:12px;">No boards available</div>';
+                return;
+            }
+            userBoards.forEach(board => {
+                const btn = document.createElement('div');
+                btn.className = 'conversation-item';
+                btn.style.cssText = 'padding:10px;border-radius:10px;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:8px;';
+                btn.innerHTML = `<div style="width:36px;height:36px;border-radius:10px;background:var(--btn-primary);color:white;display:grid;place-items:center;font-weight:800;">${escapeHtml((board.name||'').split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase())}</div><div style="min-width:0;overflow:hidden;"><div style="font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(board.name||'Untitled')}</div><div style="font-size:12px;color:var(--text-muted);">${escapeHtml(board.description||'Board')}</div></div>`;
+                btn.addEventListener('click', async () => {
+                    currentBoardId = board.id;
+                    localStorage.setItem('lastBoardId', currentBoardId);
+                    updateBoardNameDisplay();
+                    await loadMessages();
+                    try { setupRealtime(); } catch (e) { /* ignore */ }
+                });
+                list.appendChild(btn);
+            });
         }
 
         function handleTopbarSearch(value) {
@@ -2726,7 +3737,10 @@
                 if (btnDashboard) btnDashboard.classList.remove('active');
                 if (filterContainer) filterContainer.style.visibility = 'visible';
             } else if (normalizedView === 'messages') {
-                // focus chat input when opening messages
+                // render conversation list, load messages and focus chat input when opening messages
+                try { renderConversations(); } catch (e) { /* ignore */ }
+                try { loadMessages(); } catch (e) { /* ignore */ }
+                try { setupRealtime(); } catch (e) { /* ignore */ }
                 setTimeout(() => { const ci = document.getElementById('chatInput'); if (ci) ci.focus(); }, 200);
             } else if (normalizedView === 'calendar') {
                 // initialize a lightweight calendar if needed
@@ -2753,10 +3767,50 @@
             const first = new Date(year, month, 1);
             const last = new Date(year, month + 1, 0);
             const startDay = first.getDay();
-            let html = '<div class="calendar-grid">';
-            for (let i = 0; i < startDay; i++) html += '<div class="calendar-empty-day" aria-hidden="true"></div>';
+
+            // Extract tasks from the DOM
+            const tasks = [];
+            document.querySelectorAll('.task-card').forEach(card => {
+                tasks.push({
+                    title: card.querySelector('.task-title').textContent,
+                    priority: card.getAttribute('data-priority') || 'Medium',
+                    dueDate: card.getAttribute('data-due') || null,
+                    status: card.getAttribute('data-status') || 'todo'
+                });
+            });
+
+            let html = `
+                <div class="calendar-weekdays" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: clamp(4px, 1vw, 10px); margin-bottom: 8px; text-align: center; font-weight: 700; font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="calendar-grid">
+            `;
+            for (let i = 0; i < startDay; i++) {
+                html += '<div class="calendar-empty-day" aria-hidden="true"></div>';
+            }
             for (let d = 1; d <= last.getDate(); d++) {
-                html += `<div class="calendar-day" data-day="${d}">${d}</div>`;
+                const dayStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                const dayTasks = tasks.filter(t => t.dueDate === dayStr && t.status !== 'done');
+                
+                let taskDotsHtml = '';
+                if (dayTasks.length > 0) {
+                    taskDotsHtml = `
+                        <div class="calendar-day-tasks" style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; justify-content: center;">
+                            ${dayTasks.slice(0, 3).map(t => {
+                                const priorityColor = t.priority === 'High' ? 'var(--priority-high)' : t.priority === 'Low' ? 'var(--priority-low)' : 'var(--priority-medium)';
+                                return `<span class="calendar-task-dot" style="width: 6px; height: 6px; border-radius: 50%; background: ${priorityColor};" title="${swlEscapeHtml(t.title)} (${t.priority})"></span>`;
+                            }).join('')}
+                            ${dayTasks.length > 3 ? `<span style="font-size: 9px; color: var(--text-muted); font-weight: 800;">+${dayTasks.length - 3}</span>` : ''}
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <div class="calendar-day" data-day="${d}" style="display: flex; flex-direction: column; justify-content: space-between; align-items: stretch; min-height: clamp(64px, 9vw, 104px); padding: clamp(8px, 1.2vw, 12px); box-sizing: border-box;">
+                        <span class="calendar-day-number">${d}</span>
+                        ${taskDotsHtml}
+                    </div>
+                `;
             }
             html += '</div>';
             el.innerHTML = html;
@@ -2780,8 +3834,8 @@
             document.querySelectorAll('.task-card').forEach(card => {
                 tasks.push({
                     id: card.id,
-                    status: card.closest('.column').id,
-                    priority: card.getAttribute('data-priority'),
+                    status: card.getAttribute('data-status') || card.closest('.column')?.id || 'todo',
+                    priority: card.getAttribute('data-priority') || 'Medium',
                     hours: parseFloat(card.querySelector('.time-display-val').getAttribute('data-hours')) || 0,
                     dueDate: card.getAttribute('data-due') || null,
                     title: card.querySelector('.task-title').textContent
@@ -2794,20 +3848,81 @@
             const doneTasks = tasks.filter(t => t.status === 'done').length;
             const completionRate = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
 
+            const now = new Date();
+            const overdueTasks = tasks.filter(t => {
+                if (t.status === 'done') return false;
+                if (t.status === 'overdue') return true;
+                if (t.dueDate) {
+                    const d = new Date(t.dueDate);
+                    return !isNaN(d) && d < now;
+                }
+                return false;
+            }).length;
+
             document.getElementById('statTotalTasks').textContent = totalTasks;
             document.getElementById('statTotalHours').textContent = totalHours.toFixed(2) + 'h';
             document.getElementById('statCompletionRate').textContent = completionRate + '%';
+            document.getElementById('statOverdueAlerts').textContent = overdueTasks;
 
-            // Chart
+            // Welcome Name
+            const userNameSpan = document.getElementById('dashboardUserNameSpan');
+            if (userNameSpan) {
+                const name = sessionUser?.user_metadata?.name || sessionUser?.email?.split('@')[0] || 'User';
+                userNameSpan.textContent = name;
+            }
+
+            // Status Distribution Rows
             const todoTasks = tasks.filter(t => t.status === 'todo').length;
             const inProgressTasks = tasks.filter(t => t.status === 'inprogress').length;
             const pausedTasks = tasks.filter(t => t.status === 'paused').length;
-            
-            const maxVal = Math.max(todoTasks, inProgressTasks, pausedTasks, doneTasks, 1);
-            document.getElementById('barTodo').style.height = (todoTasks / maxVal * 100) + '%';
-            document.getElementById('barInProgress').style.height = (inProgressTasks / maxVal * 100) + '%';
-            document.getElementById('barPaused').style.height = (pausedTasks / maxVal * 100) + '%';
-            document.getElementById('barDone').style.height = (doneTasks / maxVal * 100) + '%';
+            const doneCount = tasks.filter(t => t.status === 'done').length;
+
+            const todoPct = totalTasks > 0 ? Math.round((todoTasks / totalTasks) * 100) : 0;
+            const inProgressPct = totalTasks > 0 ? Math.round((inProgressTasks / totalTasks) * 100) : 0;
+            const pausedPct = totalTasks > 0 ? Math.round((pausedTasks / totalTasks) * 100) : 0;
+            const donePct = totalTasks > 0 ? Math.round((doneCount / totalTasks) * 100) : 0;
+
+            const distributionContainer = document.getElementById('statusDistributionContainer');
+            if (distributionContainer) {
+                distributionContainer.innerHTML = `
+                    <div class="distribution-row">
+                        <div class="distribution-row-info">
+                            <span class="status-name-label"><span class="status-dot dot-todo"></span> To Do</span>
+                            <span class="status-count-label">${todoPct}% <span class="count-pill">${todoTasks}</span></span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill fill-todo" style="width: ${todoPct}%"></div>
+                        </div>
+                    </div>
+                    <div class="distribution-row">
+                        <div class="distribution-row-info">
+                            <span class="status-name-label"><span class="status-dot dot-inprogress"></span> In Progress</span>
+                            <span class="status-count-label">${inProgressPct}% <span class="count-pill">${inProgressTasks}</span></span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill fill-inprogress" style="width: ${inProgressPct}%"></div>
+                        </div>
+                    </div>
+                    <div class="distribution-row">
+                        <div class="distribution-row-info">
+                            <span class="status-name-label"><span class="status-dot dot-paused"></span> Paused</span>
+                            <span class="status-count-label">${pausedPct}% <span class="count-pill">${pausedTasks}</span></span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill fill-paused" style="width: ${pausedPct}%"></div>
+                        </div>
+                    </div>
+                    <div class="distribution-row">
+                        <div class="distribution-row-info">
+                            <span class="status-name-label"><span class="status-dot dot-completed"></span> Completed</span>
+                            <span class="status-count-label">${donePct}% <span class="count-pill">${doneCount}</span></span>
+                        </div>
+                        <div class="progress-bar-track">
+                            <div class="progress-bar-fill fill-completed" style="width: ${donePct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
 
             // Deadlines
             const upcomingContainer = document.getElementById('upcomingTasks');
@@ -2816,17 +3931,30 @@
                 .slice(0, 5);
 
             if (withDeadlines.length > 0) {
-                upcomingContainer.innerHTML = withDeadlines.map(t => `
-                    <div style="background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="font-weight: 600; font-size: 14px;">${t.title}</div>
-                            <div style="font-size: 12px; color: var(--priority-high);">${new Date(t.dueDate).toLocaleDateString()}</div>
+                upcomingContainer.innerHTML = withDeadlines.map(t => {
+                    const dateStr = new Date(t.dueDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+                    return `
+                        <div class="deadline-item-card">
+                            <div class="deadline-card-left">
+                                <h4 class="deadline-task-title">${swlEscapeHtml(t.title)}</h4>
+                                <div class="deadline-date-row">
+                                    <i data-lucide="calendar" class="deadline-calendar-icon"></i>
+                                    <span class="deadline-date-text">Due: ${dateStr}</span>
+                                </div>
+                            </div>
+                            <div class="deadline-card-right">
+                                <span class="deadline-priority-badge priority-${t.priority.toLowerCase()}">${t.priority}</span>
+                            </div>
                         </div>
-                        <span class="task-priority-badge" style="font-size: 10px;">${t.priority}</span>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             } else {
-                upcomingContainer.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 20px;">No upcoming deadlines found.</div>';
+                upcomingContainer.innerHTML = '<div class="dashboard-empty">No upcoming deadlines found.</div>';
+            }
+
+            // Refresh Lucide Icons in dashboard
+            if (window.lucide) {
+                window.lucide.createIcons();
             }
         }
 
@@ -2864,7 +3992,7 @@
                 const { error: dbError } = await supabaseClient.from('shared_worklogs').insert([{
                     owner_id: sessionUser.id,
                     owner_name: sessionUser.user_metadata?.name || 'User',
-                    guest_email: email
+                    guest_email: email.toLowerCase()
                 }]);
 
                 if (dbError) {
@@ -3031,32 +4159,85 @@
                 document.getElementById('chatMessages').innerHTML = '';
                 return;
             }
-
             const { data, error } = await supabaseClient
                 .from('messages')
                 .select('*')
                 .eq('board_id', currentBoardId)
                 .order('created_at', { ascending: true });
-                
-            document.getElementById('chatMessages').innerHTML = '';
-            
-            if (data) {
-                data.forEach(msg => appendChatMessage(msg));
+
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = '';
+
+            if (error) {
+                console.error('Error loading messages:', error);
+                container.innerHTML = '<div style="color:var(--text-muted);padding:12px;">Could not load messages.</div>';
+                return;
             }
-            const msgs = document.getElementById('chatMessages');
-            msgs.scrollTop = msgs.scrollHeight;
+
+            if (data && data.length) {
+                data.forEach(msg => appendChatMessage(msg));
+            } else {
+                container.innerHTML = '<div style="color:var(--text-muted);padding:12px;">No messages yet. Say hello 👋</div>';
+            }
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        const _seenMessageIds = new Set();
+        function formatTimestamp(iso) {
+            try {
+                const d = new Date(iso);
+                return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            } catch (e) { return '' + iso; }
+        }
+
+        function getInitials(name) {
+            if (!name) return 'U';
+            return name.split(/\s+/).map(p => p[0]).join('').substring(0,2).toUpperCase();
         }
 
         function appendChatMessage(msg) {
+            if (!msg || !msg.id) {
+                // If no id present, try to generate a key
+                msg.id = msg.id || ('m_' + (msg.created_at || Date.now()) + '_' + Math.random().toString(36).slice(2,6));
+            }
+            if (_seenMessageIds.has(msg.id)) return; // avoid duplicates
+            _seenMessageIds.add(msg.id);
+
             const container = document.getElementById('chatMessages');
+            if (!container) return;
+
+            // remove empty placeholder if present
+            const firstChild = container.firstElementChild;
+            if (firstChild && firstChild.textContent && firstChild.textContent.includes('No messages yet')) {
+                container.innerHTML = '';
+            }
+
             const el = document.createElement('div');
-            el.className = `chat-message ${msg.sender_id === sessionUser.id ? 'me' : ''}`;
+            el.className = `chat-message ${msg.sender_id === sessionUser?.id ? 'me' : ''}`;
+
+            const initials = getInitials(msg.sender_name || (msg.sender_email || 'User'));
+            const time = msg.created_at ? formatTimestamp(msg.created_at) : '';
+
             el.innerHTML = `
-                <div class="chat-sender">${msg.sender_name}</div>
-                <div>${msg.content}</div>
+                <div style="display:flex;gap:12px;align-items:flex-start;">
+                    <div style="min-width:40px;display:grid;place-items:center;border-radius:8px;background:rgba(0,0,0,0.06);color:var(--text-main);font-weight:800;width:40px;height:40px;">${initials}</div>
+                    <div style="flex:1;min-width:0;">
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <div style="font-weight:800;color:var(--text-main);font-size:0.95rem;">${escapeHtml(msg.sender_name || 'User')}</div>
+                            <div style="color:var(--text-muted);font-size:0.8rem;margin-left:auto;">${escapeHtml(time)}</div>
+                        </div>
+                        <div style="margin-top:6px;color:var(--text-main);">${escapeHtml(msg.content)}</div>
+                    </div>
+                </div>
             `;
+
             container.appendChild(el);
             container.scrollTop = container.scrollHeight;
+        }
+
+        function escapeHtml(value) {
+            return String(value || '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[c]);
         }
 
         async function sendChatMessage() {
@@ -3075,13 +4256,14 @@
             
             const payload = {
                 worklog_owner_id: activeWorkspaceOwnerId,
+                workspace_id: activeWorkspaceId || null,
                 sender_id: sessionUser.id,
                 sender_name: sessionUser.user_metadata?.name || 'User',
                 content: content,
                 board_id: currentBoardId
             };
             
-            const { error } = await supabaseClient.from('messages').insert([payload]);
+            const { data, error } = await safeInsert('messages', payload);
             if (error) {
                 console.error("Error sending message:", error);
                 showToast("Failed to send message.", "error");
@@ -3099,11 +4281,27 @@
         }
 
         function updateThemeIcon(theme) {
-            const btn = document.getElementById('themeToggleBtn');
-            if (!btn) return;
-            btn.textContent = theme === 'dark' ? '☀️' : '🌙';
-            btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-            btn.setAttribute('title', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+            // Update all theme toggle controls (desktop + mobile)
+            const btns = Array.from(document.querySelectorAll('#themeToggleBtn, .theme-toggle, .profile-theme-toggle'));
+            if (!btns.length) return;
+            btns.forEach(btn => {
+                try {
+                    const label = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+                    btn.setAttribute('aria-label', label);
+                    btn.setAttribute('title', label);
+
+                    // Preserve markup for anchors: use lucide icons + text
+                    if (btn.tagName === 'A') {
+                        const iconName = theme === 'dark' ? 'sun' : 'moon';
+                        btn.innerHTML = `<i data-lucide="${iconName}"></i> Theme`;
+                    } else {
+                        // Buttons: show compact icon
+                        const iconName = theme === 'dark' ? 'sun' : 'moon';
+                        btn.innerHTML = `<i data-lucide="${iconName}"></i>`;
+                    }
+                } catch (e) { /* ignore individual update errors */ }
+            });
+            if (window.lucide) lucide.createIcons();
         }
 
         const savedTheme = localStorage.getItem('studentLogTheme') || 'dark';
@@ -3251,15 +4449,23 @@
             // Save state immediately with timestamp
             TaskStateStore.save(taskId, { isRunning: true, lastTick: Date.now(), hours: initialHours });
 
+            let lastTickTime = Date.now();
             timers[taskId] = {
                 hours: initialHours,
+                ticks: 0,
                 interval: setInterval(() => {
                     if (!document.getElementById(taskId)) return;
-                    timers[taskId].hours += (1 / 3600);
+                    const now = Date.now();
+                    const deltaSeconds = (now - lastTickTime) / 1000;
+                    lastTickTime = now;
+
+                    timers[taskId].ticks++;
+                    timers[taskId].hours += (deltaSeconds / 3600);
                     setTaskHoursDisplay(taskId, timers[taskId].hours);
-                    // Save every 10 seconds
-                    if (Math.floor(timers[taskId].hours * 3600) % 10 === 0) {
-                        TaskStateStore.save(taskId, { hours: timers[taskId].hours, lastTick: Date.now() });
+
+                    // Save every 10 ticks (approximately 10 seconds)
+                    if (timers[taskId].ticks % 10 === 0) {
+                        TaskStateStore.save(taskId, { hours: timers[taskId].hours, lastTick: now });
                     }
                 }, 1000)
             };
@@ -3438,6 +4644,7 @@
 
             const payload = {
                 user_id: activeWorkspaceOwnerId,
+                workspace_id: activeWorkspaceId || null,
                 board_id: currentBoardId,
                 title: title,
                 description: desc,
@@ -3448,7 +4655,7 @@
                 assignee_email: assigneeEmail || null
             };
             
-            const { data, error } = await supabaseClient.from('tasks').insert([payload]);
+            const { data, error } = await safeInsert('tasks', payload);
             if (!error) {
                 closeTaskModal();
                 // We don't manually call createTaskElement because setupRealtime/loadTasks handles it
@@ -3647,18 +4854,23 @@
             isLoadingTasks = true;
 
             try {
-                let query = supabaseClient
-                    .from('tasks')
-                    .select('*')
-                    .eq('user_id', activeWorkspaceOwnerId)
-                    .order('created_at', { ascending: true });
-                
-                if (currentBoardId) {
-                    query = query.eq('board_id', currentBoardId);
+                // Build query; always filter by owner id for backwards compatibility
+                let query = supabaseClient.from('tasks').select('*').eq('user_id', activeWorkspaceOwnerId).order('created_at', { ascending: true });
+                if (currentBoardId) query = query.eq('board_id', currentBoardId);
+
+                // If a workspace id is selected, attempt to ask server to filter by workspace_id.
+                let usedServerWorkspaceFilter = false;
+                if (activeWorkspaceId) {
+                    try {
+                        query = query.eq('workspace_id', activeWorkspaceId);
+                        usedServerWorkspaceFilter = true;
+                    } catch (e) {
+                        // Some Supabase schemas may not have workspace_id; we'll fallback to client filtering below
+                        usedServerWorkspaceFilter = false;
+                    }
                 }
-                
+
                 const { data, error } = await query;
-                
                 if (error) throw error;
 
                 // âœ… Only wipe the board AFTER a successful fetch â€” never on error
@@ -3671,7 +4883,17 @@
                 document.getElementById('overdue-tasks').innerHTML = '';
                 
                 if (data) {
-                    data.forEach(task => {
+                    let tasksToUse = data || [];
+                    // If server did not support workspace_id filter, filter client-side when possible
+                    if (activeWorkspaceId && tasksToUse.length > 0) {
+                        const hasWorkspaceField = tasksToUse.some(t => Object.prototype.hasOwnProperty.call(t, 'workspace_id'));
+                        if (!usedServerWorkspaceFilter && hasWorkspaceField) {
+                            tasksToUse = tasksToUse.filter(t => String(t.workspace_id) === String(activeWorkspaceId));
+                        }
+                        // If tasks don't have workspace field, we treat them as personal workspace-only and do not filter
+                    }
+
+                    tasksToUse.forEach(task => {
                         // If a timer is running for this task, don't reset its hours display
                         const isTimerRunning = runningTimers.includes(task.id);
                         // Map legacy 'paused' status into 'inprogress' display column
@@ -4168,7 +5390,10 @@
                 if (userDisplay && savedState) {
                     const role = (sessionUser?.user_metadata?.role || 'student').toLowerCase();
                     const roleLabel = role === 'admin' ? 'Admin' : 'Student';
-                    userDisplay.textContent = `${savedState.profile.username || 'User'} (${roleLabel})`;
+                    userDisplay.innerHTML = `<i data-lucide="user"></i> ${escapeHtml(savedState.profile.username || 'User')} (${roleLabel})`;
+                    if (window.lucide) {
+                        window.lucide.createIcons();
+                    }
                 }
                 const sidebarName = document.getElementById('sidebarUserName');
                 if (sidebarName && savedState?.profile?.username) {
@@ -4242,6 +5467,8 @@
                 if (nextWorkspace !== previousWorkspace) {
                     await applyWorkspaceSelection(nextWorkspace);
                 }
+
+                try { if (typeof refreshProfileHeader === 'function') refreshProfileHeader(); } catch (e) {}
 
                 return true;
             }
@@ -4333,6 +5560,14 @@
         })();
 
         window.SettingsManager = SettingsManager;
+
+        // Keep the profile header in sync when SettingsManager renders the form
+        try {
+            const _origRenderForm = SettingsManager.renderForm;
+            if (typeof _origRenderForm === 'function' && typeof refreshProfileHeader === 'function') {
+                SettingsManager.renderForm = function() { _origRenderForm(); try { refreshProfileHeader(); } catch(e){} };
+            }
+        } catch (e) { /* ignore */ }
 
         window.addEventListener('beforeunload', (event) => {
             if (!SettingsManager.hasUnsavedChanges()) return;

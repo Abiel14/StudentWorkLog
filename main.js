@@ -605,3 +605,69 @@ document.addEventListener('click', function(event) {
 });
 
 console.log('✅ Website loaded successfully!');
+
+// Compatibility helper used by `index.html` demo sidebar links.
+// If the full in-app `setView` exists (in app.html), delegate to it,
+// otherwise navigate to `app.html` and set a hash so the app can open the view.
+function switchView(view) {
+    try {
+        if (typeof setView === 'function') {
+            setView(view);
+            return;
+        }
+    } catch (e) {
+        // ignore
+    }
+
+    // Fallback: navigate to app.html and include the desired view in the hash
+    try {
+        const target = new URL('app.html', window.location.href);
+        if (view) target.hash = '#' + encodeURIComponent(view);
+        window.location.href = target.href;
+    } catch (e) {
+        // final fallback: open app.html in same origin
+        window.location.href = 'app.html' + (view ? '#' + encodeURIComponent(view) : '');
+    }
+}
+
+// Global logout handler for index.html demo and other callers
+async function handleLogout(e) {
+    if (e && typeof e.preventDefault === 'function') e.preventDefault();
+    try {
+        // attempt to tear down realtime / polling if present
+        try { if (typeof realtimeChannel !== 'undefined' && realtimeChannel) { supabaseClient.removeChannel(realtimeChannel); realtimeChannel = null; } } catch (e) { console.warn('Could not remove realtime channel during logout', e); }
+        try { if (typeof stopPolling === 'function') stopPolling(); } catch (e) { /* ignore */ }
+
+        const { error } = await supabaseClient.auth.signOut();
+        if (error) {
+            console.error('Sign out error:', error);
+            try { showToast('Could not sign out: ' + (error.message || 'Unknown'), 'warning'); } catch (e) {}
+            return;
+        }
+
+        // Remove Supabase-related localStorage keys for this project
+        try {
+            const urlObj = new URL(supabaseUrl);
+            const slug = urlObj.hostname.split('.')[0];
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (!key) continue;
+                if (key.startsWith(`sb-${slug}`) || key === `sb-${slug}-auth-token`) {
+                    localStorage.removeItem(key);
+                }
+            }
+        } catch (e) { console.warn('Could not clean Supabase localStorage keys during logout:', e); }
+
+        try { sessionStorage.clear(); } catch (e) { /* ignore */ }
+        try { document.cookie.split(';').forEach(function(c) { document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/'); }); } catch (e) { /* ignore */ }
+
+        // Update in-memory state and UI
+        try { if (typeof sessionUser !== 'undefined') sessionUser = null; } catch (e) {}
+        try { const app = document.getElementById('appContainer'); if (app) app.style.display = 'none'; const landing = document.getElementById('landingPage'); if (landing) landing.style.display = ''; } catch (e) {}
+
+        window.location.href = 'index.html';
+    } catch (err) {
+        console.error('Logout failed:', err);
+        try { showToast('Logout failed: ' + (err.message || 'Unknown'), 'error'); } catch (e) {}
+    }
+}
